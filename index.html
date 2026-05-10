@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Método VPPN – Thiago Beraldo | Ecoturismo Lucrativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --f1:#152e20;--f2:#1e4530;--f3:#2e6644;--f4:#4a8c63;
+  --el:#c4a67a;--cr:#f4efe6;--cd:#e8e1d2;--w:#fff;
+  --ch:#0f0f0f;--tx:#222;--tm:#5e5e5e;
+  --gold:#c8a84b;--gold2:#e4cc82;
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --r:8px;
+  --sha:0 2px 20px rgba(0,0,0,.07);
+  --sha2:0 16px 56px rgba(0,0,0,.16);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--tx);background:var(--cr);overflow-x:hidden;line-height:1.75;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{text-decoration:none}
+h1,h2,h3,h4{font-family:var(--disp);line-height:1.15}
+h1{font-size:clamp(2rem,4.5vw,3.6rem)}
+h2{font-size:clamp(1.5rem,3vw,2.6rem)}
+h3{font-size:clamp(1.05rem,2vw,1.45rem)}
+p{font-weight:300}
+
+.w{max-width:1080px;margin:0 auto;padding:0 24px}
+.s{padding:88px 0}
+.s--dk{background:var(--f1);color:var(--cr)}
+.s--f2{background:var(--f2);color:var(--cr)}
+.s--cd{background:var(--cd)}
+.s--w{background:var(--w)}
+
+.lbl{font-size:.62rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;display:block;margin-bottom:10px;color:var(--f4)}
+.lbl--lt{color:var(--el)}.lbl--c{text-align:center}
+hr.div{width:44px;height:3px;background:var(--gold);border:none;margin:14px 0;border-radius:2px}
+hr.div--c{margin:14px auto}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:17px 40px;
+  font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;border-radius:var(--r);cursor:pointer;transition:all .25s;border:none;gap:8px}
+.btn--gold{background:linear-gradient(135deg,var(--gold),#b8942e);color:var(--f1)}
+.btn--gold:hover{background:linear-gradient(135deg,var(--gold2),var(--gold));transform:translateY(-2px);box-shadow:0 10px 32px rgba(200,168,75,.45)}
+.btn--out{background:transparent;color:var(--cr);border:2px solid var(--gold)}
+.btn--out:hover{background:var(--gold);color:var(--f1)}
+.btn--lg{padding:20px 56px;font-size:.88rem}
+.btn--blk{display:flex;width:100%}
+.btn-c{text-align:center;margin-top:44px}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+
+.yt{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.yt--shadow{box-shadow:0 24px 72px rgba(0,0,0,.5)}
+
+/* ══ HERO ══ */
+.hero{background:var(--f1);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 70% at 50% 0%,rgba(46,102,68,.35) 0%,transparent 65%)}
+.hero__in{position:relative;z-index:1;max-width:820px;margin:0 auto;
+  padding:56px 0 64px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero__logo{margin-bottom:32px}
+.hero__logo img{max-width:260px;width:100%;filter:brightness(0) invert(1)}
+.hero__h1{color:var(--cr);margin-bottom:14px;letter-spacing:-.02em}
+.hero__h1 em{color:var(--gold);font-style:italic}
+.hero__sub{color:rgba(244,239,230,.75);font-size:.96rem;margin-bottom:16px;max-width:620px}
+.hero__hint{color:rgba(244,239,230,.48);font-size:.76rem;margin-bottom:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.hero__list{list-style:none;margin-bottom:32px;display:flex;flex-direction:column;gap:9px;text-align:left;max-width:580px;width:100%}
+.hero__list li{display:flex;gap:10px;align-items:flex-start;color:rgba(244,239,230,.82);font-size:.88rem}
+.hero__list li::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:2px}
+.hero__video{width:100%;margin-bottom:28px}
+.hero__cta{display:flex;flex-direction:column;align-items:center;gap:12px}
+
+/* ── ICONS ── */
+.icons-row{background:var(--cd);padding:32px 24px;border-bottom:1px solid rgba(0,0,0,.06)}
+.icons-row__in{max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center}
+.icon-it{display:flex;flex-direction:column;align-items:center;gap:9px;padding:10px 24px;flex:1 1 150px;max-width:190px}
+.icon-it svg{width:32px;height:32px;fill:var(--f1);opacity:.85}
+.icon-it span{font-size:.74rem;font-weight:600;color:var(--f1);text-align:center;line-height:1.35}
+
+/* ── TRUST ── */
+.trust{background:var(--f2);padding:16px 24px}
+.trust__in{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px 32px;justify-content:center}
+.trust__it{color:rgba(244,239,230,.78);font-size:.78rem;display:flex;align-items:center;gap:7px}
+
+/* ── PARA QUEM ── */
+.fw__list{list-style:none;display:flex;flex-direction:column;gap:13px}
+.fw__list li{display:grid;grid-template-columns:26px 1fr;gap:10px;font-size:.9rem;color:rgba(244,239,230,.9);align-items:start}
+.chk{width:26px;height:26px;border-radius:50%;background:rgba(74,140,99,.2);border:2px solid rgba(74,140,99,.6);
+  display:flex;align-items:center;justify-content:center;font-size:.62rem;color:var(--gold2);flex-shrink:0;margin-top:2px}
+
+/* ── CARROSSEL ── */
+.carr-wrap{position:relative}
+.carr{overflow:hidden;border-radius:var(--r)}
+.carr__track{display:flex;transition:transform .44s cubic-bezier(.25,.46,.45,.94)}
+.slide{flex-shrink:0;padding:0 6px}
+.slide img{width:100%;border-radius:var(--r);display:block;object-fit:cover}
+.carr-arr{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;
+  border:none;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.carr-arr--prev{left:4px}.carr-arr--next{right:4px}
+.carr-arr svg{width:16px;height:16px;fill:currentColor}
+.arr-lt{background:rgba(255,255,255,.92);color:var(--f1);box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.arr-lt:hover{background:var(--gold);color:var(--f1)}
+.arr-dk{background:rgba(255,255,255,.12);color:var(--cr)}
+.arr-dk:hover{background:var(--gold);color:var(--f1)}
+.carr-dots{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.carr-dots span{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.16);cursor:pointer;transition:background .2s}
+.carr-dots span.on{background:var(--gold)}
+.carr--wapp .slide img{height:360px;width:auto;max-width:100%}
+.carr--logos .slide img{height:170px;width:170px;object-fit:contain;background:var(--w);border-radius:var(--r);padding:8px}
+.carr--deps .slide img{height:300px;width:auto;max-width:100%;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+@media(max-width:600px){
+  .carr--wapp .slide img{height:240px}
+  .carr--logos .slide img{height:130px;width:130px}
+  .carr--deps .slide img{height:210px}
+}
+
+/* ── SHORTS ── */
+.shorts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.sf{position:relative;aspect-ratio:9/16;border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.3);background:#000;cursor:pointer}
+.sf__thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.sf:hover .sf__thumb{transform:scale(1.04)}
+.sf__play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);transition:background .2s}
+.sf:hover .sf__play{background:rgba(0,0,0,.1)}
+.sf__play svg{width:54px;height:54px;fill:white;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.sf iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:none}
+.sf.active .sf__thumb,.sf.active .sf__play{display:none}
+.sf.active iframe{display:block}
+@media(max-width:700px){.shorts-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── COMUNIDADE ── */
+.comm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.comm-grid img{width:100%;border-radius:var(--r);box-shadow:var(--sha)}
+@media(max-width:700px){.comm-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── SILVESTRE ── */
+.sfeat{display:flex;gap:12px;background:var(--w);border-radius:var(--r);padding:14px 17px;box-shadow:var(--sha);align-items:flex-start}
+.sfeat span{font-size:1.2rem;flex-shrink:0}
+.sfeat p{font-size:.85rem;margin:0;color:var(--tm)}
+
+/* ── DEPOIMENTOS VÍDEO ── */
+.nf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.nfc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);overflow:hidden;transition:transform .3s,box-shadow .3s}
+.nfc:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.nfc__vid{aspect-ratio:16/9}
+.nfc__vid iframe{width:100%;height:100%;border:none;display:block}
+.nfc__body{padding:20px}
+.nfc__q{font-family:var(--disp);font-style:italic;color:var(--cr);font-size:.92rem;line-height:1.72;margin-bottom:10px}
+.nfc__au{font-size:.68rem;color:var(--el);font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-top:10px}
+
+/* ── COMPARAÇÃO ── */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cmp-col{border-radius:12px;padding:38px 32px}
+.cmp-col--bad{background:#ede8e0;border:1px solid #d5cec6}
+.cmp-col--good{background:var(--f1)}
+.cmp-tag{display:inline-block;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:9px}
+.cmp-col--bad .cmp-tag{background:#ddd7ce;color:#7a5c3e}
+.cmp-col--good .cmp-tag{background:var(--gold);color:var(--f1)}
+.cmp-col h3{margin-bottom:22px}
+.cmp-col--bad h3{color:var(--tm)}
+.cmp-col--good h3{color:var(--cr)}
+.cmp-ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.cmp-ul li{font-size:.86rem;display:flex;gap:9px;align-items:flex-start;line-height:1.55}
+.cmp-col--bad .cmp-ul li{color:var(--tm)}
+.cmp-col--bad .cmp-ul li::before{content:'✗';color:#c97b6b;flex-shrink:0;font-weight:700}
+.cmp-col--good .cmp-ul li{color:rgba(244,239,230,.88)}
+.cmp-col--good .cmp-ul li::before{content:'✓';color:var(--gold);flex-shrink:0;font-weight:700}
+
+/* ══════════════════════════════════════════
+   TRILHA ZIGZAG — desktop
+══════════════════════════════════════════ */
+.trilha{position:relative;padding:0 0 20px}
+
+/* linha vertical central */
+.trilha__line{
+  position:absolute;
+  left:50%;top:0;bottom:0;
+  width:4px;
+  transform:translateX(-50%);
+  background:linear-gradient(to bottom,var(--f4),var(--gold),var(--f4));
+  border-radius:4px;
+  z-index:0;
+}
+
+.trilha__items{position:relative;z-index:1}
+
+/* cada item: 3 colunas — card | nó | espaço  ou  espaço | nó | card */
+.trilha__item{
+  display:grid;
+  grid-template-columns:1fr 80px 1fr;
+  align-items:start;
+  margin-bottom:0;
+}
+
+/* padding-top para deslocar cada card um pouco abaixo do anterior */
+.trilha__item:nth-child(1){padding-top:0}
+.trilha__item:nth-child(2){padding-top:40px}
+.trilha__item:nth-child(3){padding-top:40px}
+.trilha__item:nth-child(4){padding-top:40px}
+.trilha__item:nth-child(5){padding-top:40px}
+
+/* nó central */
+.trilha__node{
+  display:flex;justify-content:center;
+  padding-top:32px;
+  z-index:2;
+}
+.trilha__dot{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--gold);
+  border:4px solid var(--cd);
+  box-shadow:0 0 0 3px var(--gold);
+  flex-shrink:0;
+}
+
+/* card */
+.trilha__card{
+  background:var(--w);border-radius:12px;overflow:hidden;
+  border-top:3px solid var(--f4);
+  box-shadow:var(--sha);
+  transition:transform .3s,box-shadow .3s;
+}
+.trilha__card:hover{transform:translateY(-5px);box-shadow:var(--sha2)}
+.trilha__card img{width:100%;height:150px;object-fit:cover;display:block}
+.trilha__body{padding:18px}
+.trilha__n{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--f4);font-weight:700;margin-bottom:3px}
+.trilha__card h4{font-family:var(--disp);font-size:1rem;color:var(--f1);margin-bottom:8px}
+.trilha__card ul{list-style:none;font-size:.78rem;color:var(--tm);display:flex;flex-direction:column;gap:4px}
+.trilha__card ul li::before{content:'✔ ';color:var(--f4);font-size:.7rem}
+.trilha__cta{margin-top:9px;font-size:.73rem;color:#7a5c3e;font-weight:700;border-top:1px solid var(--cd);padding-top:9px}
+
+/* ímpar: card esquerda, vazio direita */
+.trilha__item--L .trilha__card{grid-column:1;padding-right:24px}
+.trilha__item--L .trilha__node{grid-column:2}
+.trilha__item--L .trilha__empty{grid-column:3}
+
+/* par: vazio esquerda, card direita */
+.trilha__item--R .trilha__empty{grid-column:1}
+.trilha__item--R .trilha__node{grid-column:2}
+.trilha__item--R .trilha__card{grid-column:3;padding-left:24px}
+
+/* ── MOBILE: coluna única com linha à esquerda ── */
+@media(max-width:700px){
+  .trilha__line{left:18px;transform:none}
+  .trilha__item{grid-template-columns:40px 1fr;padding-top:0 !important;margin-bottom:24px}
+  .trilha__item--L .trilha__card,
+  .trilha__item--R .trilha__card{grid-column:2;grid-row:1;padding:0}
+  .trilha__item--L .trilha__node,
+  .trilha__item--R .trilha__node{grid-column:1;grid-row:1;padding-top:20px;justify-content:center}
+  .trilha__item--L .trilha__empty,
+  .trilha__item--R .trilha__empty{display:none}
+}
+
+/* ── PASSOS ── */
+.passo{display:grid;grid-template-columns:68px 1fr 1fr;gap:32px;align-items:start;padding:44px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.passo:last-child{border-bottom:none}
+.passo__n{font-family:var(--disp);font-size:3.2rem;font-weight:700;color:rgba(255,255,255,.06);line-height:1;text-align:right;padding-top:4px}
+.passo__tag{display:inline-block;background:rgba(200,168,75,.16);color:var(--gold2);font-size:.66rem;padding:3px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.1em;font-weight:500}
+.passo h3{color:var(--cr);margin-bottom:6px}
+.passo p{color:rgba(244,239,230,.62);font-size:.87rem;margin-bottom:5px}
+.passo__img{border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.passo__img img{width:100%;height:auto;display:block;object-fit:contain;background:var(--f2)}
+
+/* ── BÔNUS ── */
+.bonus-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.bcard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:28px 24px}
+.bcard img{width:100%;border-radius:var(--r);margin-bottom:16px}
+.bcard h3{color:var(--gold2);font-family:var(--disp);font-size:1.1rem;margin-bottom:11px}
+.bcard ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.bcard ul li{font-size:.84rem;color:rgba(244,239,230,.8);display:flex;gap:7px;align-items:flex-start}
+.bcard ul li::before{content:'—';color:var(--el);flex-shrink:0}
+
+/* ── SUPORTE ── */
+.garantia{display:flex;gap:14px;align-items:center;background:var(--w);border-radius:10px;padding:18px 22px;box-shadow:var(--sha);margin-top:24px}
+.garantia img{width:72px;flex-shrink:0}
+.garantia p{font-size:.84rem;color:var(--tm);margin:0}
+
+/* ── PRICING ── */
+.pbox{max-width:640px;margin:0 auto;background:var(--w);border-radius:16px;padding:54px 42px;box-shadow:0 24px 72px rgba(0,0,0,.13);border-top:5px solid var(--f1);text-align:center}
+.pbox__lbl{color:var(--tm);font-size:.86rem;margin-bottom:5px}
+.pbox__from{font-size:.95rem;color:var(--tm);font-weight:300}
+.pbox__price{font-family:var(--disp);font-size:4.4rem;font-weight:700;color:var(--f1);line-height:1;margin-bottom:3px}
+.pbox__alt{color:var(--tm);font-size:.9rem;margin-bottom:32px}
+.pbox__feats{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;text-align:left;margin-bottom:30px}
+.pf{font-size:.82rem;color:var(--tx);display:flex;align-items:center;gap:7px}
+.pf::before{content:'✔';color:var(--f4);font-weight:700;flex-shrink:0}
+.pbox__gua{font-size:.76rem;color:var(--tm);margin-top:14px}
+
+/* ── BIO ── */
+.bio-grid{display:grid;grid-template-columns:290px 1fr;gap:56px;align-items:start}
+.bio-imgs{position:sticky;top:28px}
+.bio-imgs img{width:100%;border-radius:10px}
+.bio-imgs img+img{margin-top:12px}
+.bio-t h2{color:var(--cr);margin-bottom:5px}
+.bio-t .sub4{font-family:var(--sans);font-weight:400;font-size:.86rem;color:var(--el);margin-bottom:20px;display:block;line-height:1.6}
+.bio-creds{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.bcred{display:flex;gap:10px;background:rgba(255,255,255,.05);border-radius:var(--r);padding:11px 15px;align-items:flex-start;transition:background .2s}
+.bcred:hover{background:rgba(255,255,255,.09)}
+.bcred__d{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px}
+.bcred p{font-size:.82rem;color:rgba(244,239,230,.75);margin:0}
+
+/* ── FAQ ── */
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--w);border-radius:10px;overflow:hidden;box-shadow:var(--sha)}
+.faq-q{padding:17px 22px;font-weight:600;font-size:.88rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:color .2s;user-select:none}
+.faq-q:hover{color:var(--f1)}
+.faq-ic{font-size:1.3rem;color:var(--f4);transition:transform .3s;flex-shrink:0}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-a p{padding:0 22px 17px;color:var(--tm);font-size:.85rem}
+.faq-item.open .faq-ic{transform:rotate(45deg)}
+.faq-item.open .faq-a{max-height:300px}
+.faq-contact{text-align:center;margin-top:36px;background:var(--w);border-radius:12px;padding:32px;box-shadow:var(--sha)}
+.faq-contact p{font-weight:600;margin-bottom:7px}
+.faq-contact .sub{color:var(--tm);font-size:.82rem;margin-bottom:18px}
+
+/* ── CTA FINAL ── */
+.cta-final{background:var(--f1);text-align:center;padding:104px 24px;position:relative;overflow:hidden}
+.cta-final::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(46,102,68,.4) 0%,transparent 70%);pointer-events:none}
+.cta-final img{max-width:250px;width:100%;margin:0 auto 28px;filter:brightness(0) invert(1);position:relative;z-index:1}
+.cta-final h2{color:var(--cr);margin-bottom:12px;max-width:640px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
+.cta-final .sub{color:rgba(244,239,230,.62);max-width:480px;margin:0 auto 32px;position:relative;z-index:1}
+.cta-final .btn{position:relative;z-index:1}
+
+footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding:24px 20px;font-size:.73rem}
+
+.rv{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:960px){
+  .g2,.bio-grid,.cmp-grid,.bonus-grid,.nf-grid{grid-template-columns:1fr}
+  .bio-grid{gap:24px}
+  .bio-imgs{position:static;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .bio-imgs img+img{margin-top:0}
+  .passo{grid-template-columns:52px 1fr}
+  .passo__img{display:none}
+  .nf-grid{gap:14px}
+}
+@media(max-width:640px){
+  .s{padding:60px 0}
+  .trust__in{flex-direction:column;gap:8px;align-items:center}
+  .pbox{padding:36px 20px}
+  .pbox__feats{grid-template-columns:1fr}
+  .passo{grid-template-columns:40px 1fr}
+  .passo__n{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+<div class="w"><div class="hero__in">
+  <div class="hero__logo"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2025/05/vivendo_de-3_copy-1-768x285.png" alt="Vivendo de Ecoturismo" loading="eager"/></div>
+  <h1 class="hero__h1">Transforme sua área natural em um negócio de <em>ecoturismo lucrativo</em></h1>
+  <p class="hero__sub">Descubra como organizar sua visitação e gerar renda sustentável com o Método VPPN – inspirado nos melhores parques nacionais do mundo.</p>
+  <p class="hero__hint">Assista o vídeo e entenda:</p>
+  <ul class="hero__list">
+    <li>Porque algumas áreas atraem mais visitantes que outras e como avaliar a sua</li>
+    <li>Os critérios que os parques nacionais usam para definir as melhores infraestruturas e serviços</li>
+    <li>Os elementos mais importantes para você começar a implementar imediatamente</li>
+  </ul>
+  <div class="hero__video"><div class="yt yt--shadow"><iframe src="https://www.youtube.com/embed/gCMrY32G0jk" title="VSL" loading="eager" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div></div>
+  <div class="hero__cta"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO TRANSFORMAR MINHA ÁREA</a></div>
+</div></div>
+</section>
+
+<!-- ── ICONS ── -->
+<div class="icons-row"><div class="icons-row__in">
+  <div class="icon-it"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 15H11v-6h1.5v6zm0-8H11V7h1.5v2z"/></svg><span>Acesso imediato</span></div>
+  <div class="icon-it"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>Suporte direto com Thiago</span></div>
+  <div class="icon-it"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 15H11v-5h1.5v5zm.5-8.5c0 .83-.67 1.5-1.5 1.5S10 9.33 10 8.5 10.67 7 11.5 7s1.5.67 1.5 1.5z"/></svg><span>Encontros ao vivo quinzenais</span></div>
+  <div class="icon-it"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span>Comunidade exclusiva</span></div>
+  <div class="icon-it"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg><span>Garantia 30 dias</span></div>
+</div></div>
+
+<!-- ── TRUST ── -->
+<div class="trust"><div class="trust__in">
+  <div class="trust__it">🌍 Consultoria para ONU, PNUD e Banco Mundial</div>
+  <div class="trust__it">🏞️ +20 anos de experiência em ecoturismo</div>
+  <div class="trust__it">📋 +15 Planos de Uso Público elaborados</div>
+  <div class="trust__it">🏆 Prêmio Melhor Gestor Público — MTur 2019</div>
+</div></div>
+
+<!-- ══ O QUE É ══ -->
+<section class="s"><div class="w">
+  <div style="max-width:700px;margin:0 auto;text-align:center;">
+    <span class="lbl lbl--c">O Método</span>
+    <h2>O que é o Método Visitação Padrão Parque Nacional (VPPN)?</h2>
+    <hr class="div div--c"/>
+    <p style="color:var(--tm);margin-bottom:28px;">O <strong>Método Visitação Padrão Parque Nacional (VPPN)</strong> é uma abordagem inspirada nos melhores parques nacionais do Brasil e do mundo para quem quer desenvolver Projetos de Ecoturismo que equilibram preservação ambiental, encantamento dos visitantes e geração de renda.</p>
+    <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO TRANSFORMAR MINHA ÁREA</a>
+  </div>
+</div></section>
+
+<!-- ══ PARA QUEM ══ -->
+<section class="s s--dk"><div class="w">
+  <div style="max-width:680px;margin:0 auto;">
+    <span class="lbl lbl--lt">Para quem é</span>
+    <h2 style="color:var(--cr);margin-bottom:26px;">Este método é para você se…</h2>
+    <ul class="fw__list">
+      <li><span class="chk">✔</span>Quer trabalhar com ecoturismo, turismo rural ou de base comunitária, turismo ecológico, sustentável, regenerativo, agrofloresta demonstrativa</li>
+      <li><span class="chk">✔</span>Tem uma fazenda, sítio ou chácara e quer gerar renda de forma sustentável</li>
+      <li><span class="chk">✔</span>Quer comprar uma área e precisa avaliar o potencial turístico</li>
+      <li><span class="chk">✔</span>Já recebe visitantes e quer profissionalizar</li>
+      <li><span class="chk">✔</span>Trabalha com conservação e quer viabilidade econômica para sua área</li>
+      <li><span class="chk">✔</span>Quer trabalhar como consultor em ecoturismo elaborando projetos</li>
+    </ul>
+    <div style="margin-top:32px;"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--out">QUERO FAZER PARTE</a></div>
+  </div>
+</div></section>
+
+<!-- ══ IAT ══ -->
+<section class="s s--cd"><div class="w"><div class="g2">
+  <div class="rv"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Gemini_Generated_Image_fwq2nafwq2nafwq2.png" alt="Calculadora IAT" loading="lazy" style="width:100%;border-radius:12px;mix-blend-mode:multiply"/></div>
+  <div>
+    <span class="lbl">Ferramenta exclusiva</span>
+    <h2 style="color:var(--f1);">Calculadora do IAT</h2>
+    <hr class="div"/>
+    <p style="color:var(--tm);margin-bottom:10px;"><strong>Calcule sua Atratividade Turística em 30 minutos!</strong></p>
+    <p style="color:var(--tm);margin-bottom:10px;">Realize sua primeira análise e já receba recomendações para melhorar seu projeto.</p>
+    <p style="color:var(--tm);margin-bottom:10px;">A Calculadora do Índice de Atratividade Turística (IAT) é projetada para te auxiliar a avaliar o potencial de atratividade da sua área. Basta selecionar as características da Área e do Destino Turístico, escolher as atividades, infraestruturas e serviços existentes ou que você deseja inserir.</p>
+    <p style="color:var(--tm);margin-bottom:18px;">Em segundos, ela gera um PDF com a avaliação e uma lista de recomendações para você começar a melhorar seu projeto imediatamente.</p>
+    <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold">Quero calcular minha Atratividade</a>
+  </div>
+</div></div></section>
+
+<!-- ══ TURISMO CRESCE ══ -->
+<section class="s s--dk"><div class="w">
+  <span class="lbl lbl--lt lbl--c">Mercado em crescimento</span>
+  <h2 style="color:var(--cr);text-align:center;margin-bottom:40px;">O turismo no Brasil é um dos mercados que mais cresce, aproveite o momento</h2>
+  <div class="carr-wrap rv"><div class="carr carr--wapp" id="wapp"><div class="carr__track" id="wapp-t"></div></div>
+  <button class="carr-arr carr-arr--prev arr-dk" onclick="cMove('wapp',-1)"><svg viewBox="0 0 24 24"><path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></button>
+  <button class="carr-arr carr-arr--next arr-dk" onclick="cMove('wapp',1)"><svg viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></button></div>
+  <div class="carr-dots" id="wapp-d"></div>
+</div></section>
+
+<!-- ══ EMPREENDIMENTOS ══ -->
+<section class="s s--cd"><div class="w">
+  <span class="lbl lbl--c">Quem confia no VPPN</span>
+  <h2 style="text-align:center;margin-bottom:40px;">Empreendimentos, Parques e RPPNs que confiam no VPPN</h2>
+  <div class="carr-wrap rv"><div class="carr carr--logos" id="logos"><div class="carr__track" id="logos-t"></div></div>
+  <button class="carr-arr carr-arr--prev arr-lt" onclick="cMove('logos',-1)"><svg viewBox="0 0 24 24"><path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></button>
+  <button class="carr-arr carr-arr--next arr-lt" onclick="cMove('logos',1)"><svg viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></button></div>
+  <div class="carr-dots" id="logos-d"></div>
+</div></section>
+
+<!-- ══ DEPOIMENTOS ══ -->
+<section class="s s--w"><div class="w">
+  <span class="lbl lbl--c">Resultados reais</span>
+  <h2 style="text-align:center;margin-bottom:40px;">O que os alunos estão dizendo…</h2>
+  <div class="carr-wrap rv" style="margin-bottom:36px;"><div class="carr carr--deps" id="deps"><div class="carr__track" id="deps-t"></div></div>
+  <button class="carr-arr carr-arr--prev arr-lt" onclick="cMove('deps',-1)"><svg viewBox="0 0 24 24"><path d="M15.41 16.58L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></button>
+  <button class="carr-arr carr-arr--next arr-lt" onclick="cMove('deps',1)"><svg viewBox="0 0 24 24"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></button></div>
+  <div class="carr-dots" id="deps-d" style="margin-bottom:44px;"></div>
+
+  <div class="shorts-grid rv">
+    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/n8idoIxLt0Q/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/n8idoIxLt0Q?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/5Nw-vS3Z508/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/5Nw-vS3Z508?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/l9z2mJuwvEs/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/l9z2mJuwvEs?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/_KGYffErFWU/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/_KGYffErFWU?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+  </div>
+
+  <p style="text-align:center;color:var(--tm);margin:40px 0 18px;">Acelere seu processo de implementação, faça parte de uma comunidade de pessoas que buscam o mesmo propósito.</p>
+  <div class="comm-grid rv">
+    <img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-17-at-15.04.13-2.webp" alt="" loading="lazy"/>
+    <img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-17-at-15.03.29-2.png" alt="" loading="lazy"/>
+    <img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-17-at-15.03.48-2.webp" alt="" loading="lazy"/>
+    <img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-17-at-15.01.06-2.png" alt="" loading="lazy"/>
+  </div>
+  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO GERAR RENDA COM MINHA ÁREA</a></div>
+</div></section>
+
+<!-- ══ SILVESTRE ══ -->
+<section class="s s--cd"><div class="w"><div class="g2">
+  <div class="rv"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Plano-de-Uso-Publico-RPPN-Recanto-Arco-Iris-2v.jpg" alt="Silvestre IA" loading="lazy" style="width:100%;border-radius:12px;box-shadow:var(--sha2)"/></div>
+  <div>
+    <span class="lbl">Inteligência Artificial</span>
+    <h2 style="color:var(--f1)"><em style="color:var(--f4);font-style:italic">Silvestre</em> — o agente de IA que escreve seu Plano de Ecoturismo com você</h2>
+    <p style="color:var(--tm);font-size:.92rem;margin:10px 0 16px;">Tenha seu primeiro planejamento elaborado em 2 dias.</p>
+    <hr class="div"/>
+    <p style="color:var(--tm);margin-bottom:12px;">Escrever um plano técnico exige tempo, dedicação e horas no computador. Agora, meu Assistente de IA – o Silvestre – irá fazer esse trabalho com você.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;margin:18px 0;">
+      <div class="sfeat"><span>🤖</span><p>O Método VPPN conta com <strong>4 Agentes de Inteligência Artificial</strong> treinados com base em mais de 20 anos de experiência em ecoturismo e dezenas de Planos de Visitação elaborados.</p></div>
+      <div class="sfeat"><span>📝</span><p>Você fornece as informações sobre sua Área e o Silvestre organiza, estrutura e redige o plano passo a passo.</p></div>
+      <div class="sfeat"><span>🔄</span><p>Quando você precisar, ele revisita e atualiza sua estratégia mantendo o projeto sempre atual.</p></div>
+    </div>
+    <p style="font-family:var(--disp);font-style:italic;color:var(--f2);font-size:1rem;"><strong>"Ele não substitui o método. Ele executa com você."</strong></p>
+  </div>
+</div></div></section>
+
+<!-- ══ NOVA FORMA ══ -->
+<section class="s s--dk"><div class="w">
+  <span class="lbl lbl--lt lbl--c">Depoimentos</span>
+  <h2 style="color:var(--cr);text-align:center;margin-bottom:44px;">Uma nova forma de viver com o Ecoturismo</h2>
+  <div class="nf-grid rv">
+    <div class="nfc"><div class="nfc__vid"><iframe src="https://www.youtube.com/embed/JY51zvBeOuk" title="Connie" loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="nfc__body"><p class="nfc__q">"Totalmente virou nossa chave, encheu a gente de esperança. O que você está fazendo aqui é nos guiando pelo caminho que você já passou, já provou, sabe dar certo. Isso não tem preço, só valor."</p><span class="nfc__au">Connie — Maple Leaf Reserva Florestal</span></div></div>
+    <div class="nfc"><div class="nfc__vid"><iframe src="https://www.youtube.com/embed/bZ8nkCnSbiI" title="Sheila" loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="nfc__body"><p class="nfc__q">"O método trouxe uma visão do todo e das particularidades que muitas vezes a gente não consegue enxergar. Já conseguimos direcionar melhor nosso público e criar continuidade de receita."</p><span class="nfc__au">Sheila — Fazenda Colomi</span></div></div>
+    <div class="nfc"><div class="nfc__vid"><iframe src="https://www.youtube.com/embed/TWBhKg9sg5Y" title="Bernardo" loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="nfc__body"><p class="nfc__q">"Na Imersão, já começamos construindo o projeto: fizemos o IAT, usamos o Silvestre e aplicamos as ferramentas de verdade. Saímos com um documento concreto em mãos. Isso é extremamente estimulante."</p><span class="nfc__au">Bernardo — Pesquisador e Consultor</span></div></div>
+  </div>
+  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--out btn--lg">QUERO ESTRUTURAR MINHA ÁREA COM SEGURANÇA</a></div>
+</div></section>
+
+<!-- ══ COMPARAÇÃO ══ -->
+<section class="s"><div class="w">
+  <span class="lbl lbl--c">Sua escolha</span>
+  <h2 style="text-align:center;margin-bottom:10px;">Manter sua área fechada custa caro. Tentar abrir sem um método custa mais ainda.</h2>
+  <p style="text-align:center;color:var(--tm);max-width:560px;margin:0 auto 44px;">Muitos proprietários de áreas naturais sonham em viver do ecoturismo, mas enfrentam desafios que parecem impossíveis de resolver.</p>
+  <div class="cmp-grid rv">
+    <div class="cmp-col cmp-col--bad"><span class="cmp-tag">Sem método</span><h3>O caminho do improviso</h3><ul class="cmp-ul"><li>Dificuldade para definir o público e a vocação da área</li><li>Insegurança sobre o que pode ou não pode ser feito</li><li>Procrastinação por não saber por onde começar</li><li>Investimentos em infraestrutura desnecessária</li><li>Decisões baseadas em tentativa e erro</li><li>Alto risco de prejuízo financeiro e retrabalho</li><li>Projeto parado ou muito abaixo do potencial</li></ul></div>
+    <div class="cmp-col cmp-col--good"><span class="cmp-tag">Com o Método VPPN</span><h3>Primeiros visitantes em 30 dias</h3><ul class="cmp-ul"><li>Calculadora de Atratividade Turística indicando onde investir</li><li>Definição clara do perfil de público e da experiência</li><li>Decisões estratégicas baseadas em vocação real</li><li>Agentes de IA gerando diretrizes e planos técnicos</li><li>Passo a passo da ideia à execução imediata</li><li>Uso eficiente do orçamento e redução de riscos</li><li>Projeto viável, estruturado e pronto para receber visitantes</li></ul></div>
+  </div>
+</div></section>
+
+<!-- ══ TRILHA DOS CICLOS ══ -->
+<section class="s s--cd"><div class="w">
+  <span class="lbl lbl--c">Evolução do projeto</span>
+  <h2 style="text-align:center;margin-bottom:10px;">Uma trilha clara para transformar sua área em um destino turístico consolidado</h2>
+  <p style="text-align:center;color:var(--tm);max-width:580px;margin:0 auto 56px;">Comece com estrutura mínima, valide o potencial da área e evolua com segurança.</p>
+
+  <div class="trilha rv">
+    <div class="trilha__line"></div>
+    <div class="trilha__items">
+
+      <!-- 1 — esquerda -->
+      <div class="trilha__item trilha__item--L">
+        <div class="trilha__card"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/M1_apa_serra_da_mantiqueira_Acervo_ICMBio-768x512.webp" alt="Ciclo 1" loading="lazy"/><div class="trilha__body"><div class="trilha__n">🌱 Ciclo 1</div><h4>Essencial</h4><ul><li>Trilhas curtas</li><li>Infraestrutura mínima</li><li>Alimentação simples</li><li>Camping ou visitação básica</li></ul><div class="trilha__cta">👉 Primeiros visitantes e validação</div></div></div>
+        <div class="trilha__node"><div class="trilha__dot"></div></div>
+        <div class="trilha__empty"></div>
+      </div>
+
+      <!-- 2 — direita -->
+      <div class="trilha__item trilha__item--R">
+        <div class="trilha__empty"></div>
+        <div class="trilha__node"><div class="trilha__dot"></div></div>
+        <div class="trilha__card"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/IMG_3949-768x576.webp" alt="Ciclo 2" loading="lazy"/><div class="trilha__body"><div class="trilha__n">🌿 Ciclo 2</div><h4>Expansão</h4><ul><li>Novos atrativos</li><li>Serviços ampliados</li><li>Mais capacidade de visitantes</li></ul><div class="trilha__cta">👉 Crescimento sustentável</div></div></div>
+      </div>
+
+      <!-- 3 — esquerda -->
+      <div class="trilha__item trilha__item--L">
+        <div class="trilha__card"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/elementor/thumbs/IMG_7037-scaled-rjak7eyef7lkdzy9962ynzlqg6t9gb9u0lxz75s668.webp" alt="Ciclo 3" loading="lazy"/><div class="trilha__body"><div class="trilha__n">🌳 Ciclo 3</div><h4>Consolidação</h4><ul><li>Atrativos estruturados</li><li>Vivências culturais</li><li>Espaços interpretativos</li><li>Serviços permanentes</li></ul><div class="trilha__cta">👉 Consolidação como destino</div></div></div>
+        <div class="trilha__node"><div class="trilha__dot"></div></div>
+        <div class="trilha__empty"></div>
+      </div>
+
+      <!-- 4 — direita -->
+      <div class="trilha__item trilha__item--R">
+        <div class="trilha__empty"></div>
+        <div class="trilha__node"><div class="trilha__dot"></div></div>
+        <div class="trilha__card"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/YellowstoneNP_ThiagoBeraldo059-768x576.webp" alt="Ciclo 4" loading="lazy"/><div class="trilha__body"><div class="trilha__n">🌄 Ciclo 4</div><h4>Diversificação</h4><ul><li>Eventos e experiências imersivas</li><li>Centro de visitantes</li><li>Gastronomia</li><li>Hospedagem estruturada</li></ul><div class="trilha__cta">👉 Ampliação de público e receita</div></div></div>
+      </div>
+
+      <!-- 5 — esquerda -->
+      <div class="trilha__item trilha__item--L">
+        <div class="trilha__card"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/ROVUC-UNB.073.webp" alt="Ciclo 5" loading="lazy"/><div class="trilha__body"><div class="trilha__n">🌎 Ciclo 5</div><h4>Maturidade e Inovação</h4><ul><li>Experiências inovadoras</li><li>Parcerias estratégicas</li><li>Serviços de alto padrão</li><li>Posicionamento de referência</li></ul><div class="trilha__cta">👉 Liderança no segmento</div></div></div>
+        <div class="trilha__node"><div class="trilha__dot"></div></div>
+        <div class="trilha__empty"></div>
+      </div>
+
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ PASSOS ══ -->
+<section class="s s--dk"><div class="w">
+  <span class="lbl lbl--lt lbl--c">Passo a passo</span>
+  <h2 style="color:var(--cr);text-align:center;margin-bottom:8px;">Um plano, passo a passo, para você abrir a área e receber os primeiros visitantes</h2>
+  <p style="text-align:center;color:rgba(244,239,230,.48);margin-bottom:56px;">Método Visitação Padrão Parque Nacional</p>
+  <div class="passo rv"><div class="passo__n">01</div><div><span class="passo__tag">Ferramenta: Calculadora do IAT</span><h3>Passo 1 – Avaliação Geral</h3><p><strong style="color:var(--cr)">Caracterização Geral e Inventário e análise de mercado</strong></p><p>Objetivo: É o momento de entender o ambiente interno e externo, as características da área e as oportunidades.</p></div><div class="passo__img"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-17-at-01.00.31-768x693.webp" alt="IAT" loading="lazy"/></div></div>
+  <div class="passo rv"><div class="passo__n">02</div><div><span class="passo__tag">Ferramenta: Triplo Perfil</span><h3>Passo 2 – Definição Estratégica</h3><p><strong style="color:var(--cr)">Definição de Vocação e da Experiência do Visitante</strong></p><p>Objetivo: Entender a Vocação da sua Área e criar experiências autênticas e memoráveis, focando no encantamento, recreação e interpretação ambiental.</p></div><div class="passo__img"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-17-at-01.00.31-768x693.webp" alt="Triplo Perfil" loading="lazy"/></div></div>
+  <div class="passo rv"><div class="passo__n">03</div><div><span class="passo__tag">Ferramenta: ROVUC</span><h3>Passo 3 – Crescimento Tático (ROVUC)</h3><p><strong style="color:var(--cr)">Aplicação do Rol de Oportunidades de Visitação em Unidades de Conservação</strong></p><p>Objetivo: Com base na Vocação e Experiências desejadas iniciar a estruturação da área definindo Classes de Experiências, Ambientes, Atividades, Infraestruturas, Serviços e Regulamentações.</p></div><div class="passo__img"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2025/05/rovuc2-768x636.jpg" alt="ROVUC" loading="lazy"/></div></div>
+  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO APLICAR O MÉTODO PASSO A PASSO</a></div>
+</div></section>
+
+<!-- ══ BÔNUS ══ -->
+<section class="s s--f2"><div class="w">
+  <span class="lbl lbl--lt lbl--c">Bônus — Melhoria Contínua</span>
+  <h2 style="color:var(--cr);text-align:center;margin-bottom:40px;">Bônus — Melhoria Contínua</h2>
+  <div class="bonus-grid rv">
+    <div class="bcard"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Gestao-de-Seguranca-da-Visitacao-768x432.webp" alt="" loading="lazy"/><h3>Aulas extras com Thiago Beraldo e profissionais convidados 2x por mês</h3><ul><li>Entendendo a Interpretação Ambiental</li><li>Monitoramento Ambiental, Social e Econômico</li><li>Turismo de Base Comunitária</li><li>Certificação de Atrativos e Serviços</li><li>Programa de Gestão da Segurança do Visitante</li><li>Precificação e Rentabilidade de Empreendimentos</li></ul></div>
+    <div class="bcard"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Gemini_Generated_Image_aqzokwaqzokwaqzo-768x419.webp" alt="" loading="lazy"/><h3>Materiais de referência (biblioteca virtual)</h3><ul><li>Manuais da IUCN sobre Turismo e gestão da Visitação</li><li>Manuais do ICMBio sobre Planejamento do Uso Público, ROVUC, Trilhas, Sinalização e Interpretação</li><li>Manuais do Global Sustainable Tourism Council</li><li>Planos de Ecoturismo de Parques Nacionais no Brasil e outros países</li></ul></div>
+  </div>
+</div></section>
+
+<!-- ══ SUPORTE ══ -->
+<section class="s s--cd"><div class="w"><div class="g2">
+  <div class="rv"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/WhatsApp-Image-2026-02-11-at-21.15.10-768x319.webp" alt="Suporte" loading="lazy" style="width:100%;border-radius:12px;box-shadow:var(--sha2)"/></div>
+  <div>
+    <span class="lbl">Suporte e Acompanhamento</span>
+    <h2 style="color:var(--f1);">Suporte e Acompanhamento</h2>
+    <hr class="div"/>
+    <p style="color:var(--tm);font-size:.86rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:20px 0 7px;">Encontros ao vivo com Thiago Beraldo</p>
+    <p style="color:var(--tm);font-size:.88rem;margin-bottom:10px;"><strong>Encontros virtuais quinzenais em grupo</strong> com Thiago Beraldo. Momentos para tirar dúvidas, compartilhar experiências e acelerar o desenvolvimento do seu projeto com a orientação direta do especialista.</p>
+    <p style="color:var(--tm);font-size:.86rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:20px 0 7px;">Suporte direto com Thiago Beraldo</p>
+    <p style="color:var(--tm);font-size:.88rem;">Além dos encontros, você terá <strong>acesso a um espaço de suporte na plataforma e no WhatsApp</strong> para enviar dúvidas ou pedir auxílio diretamente com <strong>o próprio Thiago Beraldo</strong>.</p>
+    <div class="garantia"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2025/10/Selo-de-Garantia-de-30-Dias-PNG-Transparente-Sem-Fundo.png" alt="Garantia" loading="lazy"/><p><strong>Até 30 dias depois do pagamento, você pode cancelar por qualquer motivo, e devolvemos o valor pago.</strong></p></div>
+  </div>
+</div></div></section>
+
+<!-- ══ PRICING ══ -->
+<section class="s"><div class="w">
+  <span class="lbl lbl--c">Investimento</span>
+  <h2 style="text-align:center;margin-bottom:10px;">Tudo o que você precisa para criar seu projeto de ecoturismo</h2>
+  <p style="text-align:center;color:var(--tm);margin-bottom:44px;">Método VPPN – Acesso Completo</p>
+  <div class="pbox rv">
+    <p class="pbox__lbl">Valor do Investimento</p>
+    <p class="pbox__from">12x de</p>
+    <div class="pbox__price">R$ 149<span style="font-size:2.5rem">,96</span></div>
+    <p class="pbox__alt">ou <strong>R$ 1.490,00 à vista</strong></p>
+    <div class="pbox__feats"><div class="pf">Aulas Práticas Passo a Passo</div><div class="pf">Encontros ao Vivo Quinzenais</div><div class="pf">Calculadora do IAT</div><div class="pf">4 Agentes Silvestre de IA</div><div class="pf">Suporte Direto com Thiago</div><div class="pf">Comunidade Exclusiva</div><div class="pf">Biblioteca Técnica Completa</div><div class="pf">Acesso por 1 ano</div><div class="pf">Garantia de 30 dias</div></div>
+    <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg btn--blk">QUERO COMEÇAR MEU PROJETO AGORA</a>
+    <p class="pbox__gua">🔒 Até 30 dias, cancele por qualquer motivo e devolvemos o valor pago.</p>
+  </div>
+</div></section>
+
+<!-- ══ BIO ══ -->
+<section class="s s--dk"><div class="w"><div class="bio-grid">
+  <div class="bio-imgs rv"><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/elementor/thumbs/EDU09385-scaled-rjak5fil9kffp9sv2cpekshlfvoq9df9uksn37vgao.webp" alt="Thiago Beraldo" loading="lazy"/><img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-17-at-10.10.11-768x432.webp" alt="Thiago em campo" loading="lazy"/></div>
+  <div class="bio-t">
+    <span class="lbl lbl--lt">Guiado por um dos maiores especialistas em ecoturismo do Brasil</span>
+    <h2>THIAGO BERALDO</h2>
+    <span class="sub4">Com mais de 20 anos de atuação em visitação e turismo no Brasil e outros países — Cabo Verde, Uzbequistão, Albânia, Angola. Presta serviços para UICN, PNUD, Banco Mundial e ONU Turismo.</span>
+    <div class="bio-creds">
+      <div class="bcred"><div class="bcred__d"></div><p>Quando jovem descobriu que sua missão é reconectar as pessoas à Natureza</p></div>
+      <div class="bcred"><div class="bcred__d"></div><p>18 anos como Analista Ambiental do Instituto Chico Mendes (ICMBio)</p></div>
+      <div class="bcred"><div class="bcred__d"></div><p>Elaborou manuais de Planejamento do Uso Público, ROVUC, Monitoramento da Visitação e Sinalização usados pelo ICMBio</p></div>
+      <div class="bcred"><div class="bcred__d"></div><p>Elaborou e participou de mais de 15 Planos de Uso Público</p></div>
+      <div class="bcred"><div class="bcred__d"></div><p>Ministrou mais de 20 Cursos de Visitação — mais de 500 alunos no Brasil e exterior</p></div>
+      <div class="bcred"><div class="bcred__d"></div><p>PhD em Ecologia pela Universidade da Flórida — desenvolveu o Índice de Atratividade Turística</p></div>
+      <div class="bcred"><div class="bcred__d"></div><p>Prêmio Melhor Gestor Público pelo Ministério do Turismo em 2019</p></div>
+      <div class="bcred"><div class="bcred__d"></div><p>Presidente do Grupo de Especialistas em Turismo em Áreas Protegidas da UICN/ONU</p></div>
+    </div>
+  </div>
+</div></div></section>
+
+<!-- ══ FAQ ══ -->
+<section class="s s--cd"><div class="w">
+  <span class="lbl lbl--c">Dúvidas</span>
+  <h2 style="text-align:center;margin-bottom:40px;">Perguntas Frequentes</h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-q">Deu certo em um parque nacional, mas será que vai dar certo comigo? <span class="faq-ic">+</span></div><div class="faq-a"><p>Por isso eu criei o Método Padrão Parque Nacional onde você vai poder aplicar o conhecimento gerado ao redor do mundo. O método serve para quem já opera a visitação e quer melhorar mas também para quem tem uma área e quer começar do zero.</p></div></div>
+    <div class="faq-item"><div class="faq-q">Minha área é pequena, não posso receber muitos visitantes, como faço? <span class="faq-ic">+</span></div><div class="faq-a"><p>O VPPN não é apenas para áreas grandes. Em áreas pequenas, a estratégia é criar vivências e gerar muito valor à experiência através de serviços agregados, aumentando o ticket médio do visitante.</p></div></div>
+    <div class="faq-item"><div class="faq-q">Posso assistir o conteúdo até que dia? <span class="faq-ic">+</span></div><div class="faq-a"><p>O conteúdo ficará disponível por um ano. Você pode acessar pelo computador, televisão e celular. Pode baixar as aulas no telefone e ouvir enquanto faz uma trilha ou dirige.</p></div></div>
+    <div class="faq-item"><div class="faq-q">Será que minha área tem potencial para ecoturismo? <span class="faq-ic">+</span></div><div class="faq-a"><p>Esse é o ponto fundamental do método. Você vai poder aplicar a ferramenta Índice de Atratividade Turística, onde você pode entender em detalhes a atratividade da sua área e quais os públicos mais indicados.</p></div></div>
+    <div class="faq-item"><div class="faq-q">Precisarei contratar uma consultoria após terminar o curso? <span class="faq-ic">+</span></div><div class="faq-a"><p>Não. Tudo que você precisa para elaborar seu Plano de Visitação e Turismo e abrir seu atrativo está no curso. Você é a pessoa que mais tem condições de entender sua área e saber qual é sua vocação.</p></div></div>
+    <div class="faq-item"><div class="faq-q">Posso parcelar a compra? Posso pagar por boleto ou pix? <span class="faq-ic">+</span></div><div class="faq-a"><p>Sim. A plataforma permite parcelamento em até 12x. Também é possível pagar por boleto ou pix.</p></div></div>
+  </div>
+  <div class="faq-contact"><p>Ainda ficou alguma dúvida?</p><p class="sub">QUER MARCAR UMA REUNIÃO PARA A GENTE CONVERSAR? CLIQUE NO BOTÃO ABAIXO PARA AGENDAR</p><a href="https://wa.me/+5561996860377" class="btn btn--gold">💬 WhatsApp Thiago Beraldo</a></div>
+</div></section>
+
+<!-- ══ CTA FINAL ══ -->
+<section class="cta-final"><div class="w">
+  <img src="https://thiagodovalberaldo.com.br/wp-content/uploads/2025/05/vivendo_de-3_copy-1-768x285.png" alt="Vivendo de Ecoturismo" loading="lazy"/>
+  <h2>Transforme sua área natural em um negócio de ecoturismo lucrativo</h2>
+  <p class="sub">Descubra como organizar sua visitação e gerar renda sustentável com o Método VPPN – inspirado nos melhores parques nacionais do mundo.</p>
+  <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO COMEÇAR MEU PROJETO AGORA</a>
+  <br/><br/>
+  <a href="https://wa.me/+5561996860377" class="btn btn--out">💬 Falar com Thiago no WhatsApp</a>
+</div></section>
+
+<footer><p>Aviso Legal: Nenhuma informação contida neste produto deve ser interpretada como uma garantia de resultados.</p><p style="margin-top:5px">Copyright © 2026 — Todos os direitos reservados.</p></footer>
+
+<script>
+const C={};
+const DATA={
+  wapp:['https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/WhatsApp-Image-2026-01-19-at-23.11.43-768x1036.jpeg','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/WhatsApp-Image-2026-01-19-at-23.10.10-copy-768x1047.jpeg','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/WhatsApp-Image-2026-01-19-at-23.13.13-1-768x1046.jpeg','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/WhatsApp-Image-2026-01-20-at-15.48.33-3.jpeg','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/WhatsApp-Image-2026-01-19-at-23.11.27-768x1067.jpeg','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/WhatsApp-Image-2026-01-17-at-14.36.48-1.jpeg'],
+  logos:['https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/12950478_1616616805327032_994816819_a-300x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-16-at-17.55.07-278x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/619233131_18096551977920544_8146139642014855735_n-300x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/278233231_682089502996455_6937450411317529182_n-300x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/311590757_5517301125002919_9217191871632142246_n-300x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/305117348_385582940405908_6968819597850787877_n-300x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/488718874_944339594568644_2908169185157840188_n-300x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/325310360_895694164803605_2642893111402422666_n-300x300.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/510038903_17909281038167479_7780907699132425429_n-300x300.jpg','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/474892996_662166249757060_2364799322204737967_n-300x300.jpg'],
+  deps:['https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/2-IMG_5646-768x960.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/1-Debora-Pier-768x1064.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-01-19-at-08.12.06-768x1064.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/3-IMG_68638DBED8C8-1-2-768x719.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2026-02-02-at-20.02.46-768x392.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Screenshot-2025-10-08-at-21.27.48-768x676.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/Connie-VPPNista-768x1041.webp','https://thiagodovalberaldo.com.br/wp-content/uploads/2026/02/4-WhatsApp-Image-2025-06-09-at-11.04.09-768x1278.webp']
+};
+function cSpv(id){const w=window.innerWidth;if(id==='wapp')return w<600?1:w<900?2:4;if(id==='logos')return w<600?2:w<900?3:5;if(id==='deps')return w<600?1:w<900?2:4;return 1}
+function buildCarr(id){const imgs=DATA[id];const v=cSpv(id);const track=document.getElementById(id+'-t');if(!track)return;const cl=[...imgs,...imgs,...imgs];track.innerHTML='';const sw=100/v;cl.forEach(src=>{const d=document.createElement('div');d.className='slide';d.style.cssText=`flex-shrink:0;width:${sw}%;padding:0 6px`;const img=document.createElement('img');img.src=src;img.loading='lazy';img.alt='';d.appendChild(img);track.appendChild(d)});C[id]={idx:imgs.length,total:imgs.length,spv:v,busy:false};track.style.transition='none';setPos(id);buildDots(id)}
+function setPos(id,a){const{idx,spv}=C[id];const track=document.getElementById(id+'-t');if(!track)return;const sw=track.parentElement.offsetWidth/spv;track.style.transition=a?'transform .44s cubic-bezier(.25,.46,.45,.94)':'none';track.style.transform=`translateX(${-idx*sw}px)`;if(!a)track.offsetHeight}
+function wrap(id){const c=C[id];if(c.idx>=c.total*2){c.idx-=c.total;setPos(id)}if(c.idx<c.total){c.idx+=c.total;setPos(id)}c.busy=false;updDots(id)}
+function cNext(id){const c=C[id];if(c.busy)return;c.busy=true;c.idx+=c.spv;setPos(id,true);setTimeout(()=>wrap(id),450)}
+function cPrev(id){const c=C[id];if(c.busy)return;c.busy=true;c.idx-=c.spv;setPos(id,true);setTimeout(()=>wrap(id),450)}
+function cMove(id,dir){dir>0?cNext(id):cPrev(id)}
+function buildDots(id){const el=document.getElementById(id+'-d');if(!el)return;const{total,spv}=C[id];const pages=Math.ceil(total/spv);el.innerHTML='';for(let i=0;i<pages;i++){const s=document.createElement('span');if(i===0)s.classList.add('on');s.addEventListener('click',()=>{C[id].idx=C[id].total+i*C[id].spv;setPos(id,true);updDots(id)});el.appendChild(s)}}
+function updDots(id){const c=C[id];const n=((c.idx-c.total)%c.total+c.total)%c.total;const p=Math.floor(n/c.spv);document.querySelectorAll('#'+id+'-d span').forEach((s,i)=>s.classList.toggle('on',i===p))}
+window.addEventListener('DOMContentLoaded',()=>['wapp','logos','deps'].forEach(id=>buildCarr(id)));
+window.addEventListener('resize',()=>Object.keys(C).forEach(id=>buildCarr(id)));
+function sfPlay(el){const iframe=el.querySelector('iframe');iframe.src=iframe.dataset.src;el.classList.add('active')}
+document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>{const it=q.parentElement;const open=it.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!open)it.classList.add('open')})});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.07});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
