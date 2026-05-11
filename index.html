@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Método VPPN – Thiago Beraldo | Ecoturismo Lucrativo</title>
 <link rel="stylesheet" href="fonts/fonts.css"/>
+<script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
+<link rel="preconnect" href="https://cdn.converteai.net">
+<link rel="preconnect" href="https://scripts.converteai.net">
+<link rel="dns-prefetch" href="https://images.converteai.net">
+<link rel="dns-prefetch" href="https://api.vturb.com.br">
+<link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+<link rel="preload" href="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a01353ff18251980def0e70/v4/player.js" as="script">
 <style>
 :root{
   --f1:#152e20;--f2:#1e4530;--f3:#2e6644;--f4:#4a8c63;
@@ -50,7 +57,11 @@ hr.div--c{margin:14px auto}
 .btn--lg{padding:20px 56px;font-size:.88rem}
 .btn--blk{display:flex;width:100%}
 .btn-c{text-align:center;margin-top:44px}
-.cta__sub{font-size:.78rem;opacity:.68;margin-top:10px;letter-spacing:.02em}
+.btn-trust{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:12px;font-size:.76rem;font-weight:500;letter-spacing:.01em}
+.btn-trust span{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-trust svg{width:14px;height:14px;flex-shrink:0}
+.btn-trust--lt{color:rgba(244,239,230,.65)}
+.btn-trust--dk{color:rgba(80,80,80,.72)}
 
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
 
@@ -163,26 +174,20 @@ hr.div--c{margin:14px auto}
 .carr-dots span{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,.16);cursor:pointer;transition:background .2s;padding:8px;box-sizing:content-box}
 .carr-dots span.on{background:var(--gold)}
 .carr-counter{font-size:.75rem;opacity:.52;font-variant-numeric:tabular-nums;margin-left:8px;white-space:nowrap}
-.carr--wapp .slide img{height:360px;width:auto;max-width:100%}
+.carr--wapp .slide img{height:360px;width:auto;max-width:100%;margin:0 auto}
 .carr--logos .slide img{height:170px;width:170px;object-fit:contain;background:var(--w);border-radius:var(--r);padding:8px}
-.carr--deps .slide img{height:300px;width:auto;max-width:100%;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.carr--deps .slide{display:flex;align-items:center;justify-content:center}
+.carr--deps .slide img{height:auto;max-height:320px;width:auto;max-width:100%;object-fit:contain;box-shadow:0 4px 16px rgba(0,0,0,.1);margin:0 auto}
 @media(max-width:600px){
   .carr--wapp .slide img{height:240px}
   .carr--logos .slide img{height:130px;width:130px}
-  .carr--deps .slide img{height:210px}
+  .carr--deps .slide img{max-height:220px}
 }
 
 /* ── SHORTS ── */
 .shorts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.sf{position:relative;aspect-ratio:9/16;border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.3);background:#000;cursor:pointer}
-.sf__thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.sf:hover .sf__thumb{transform:scale(1.04)}
-.sf__play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);transition:background .2s}
-.sf:hover .sf__play{background:rgba(0,0,0,.1)}
-.sf__play svg{width:54px;height:54px;fill:white;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
-.sf iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:none}
-.sf.active .sf__thumb,.sf.active .sf__play{display:none}
-.sf.active iframe{display:block}
+.svt{border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.3)}
+.svt>vturb-smartplayer{display:block;width:100%}
 @media(max-width:700px){.shorts-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:480px){.shorts-grid{grid-template-columns:1fr}}
 
@@ -197,11 +202,15 @@ hr.div--c{margin:14px auto}
 .sfeat p{font-size:.85rem;margin:0;color:var(--tm)}
 
 /* ── DEPOIMENTOS VÍDEO ── */
-.nf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.nf-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+.nf-col{display:flex;flex-direction:column;gap:22px}
+.nf-col--vert{display:flex;flex-direction:column}
+.nf-col--vert .nfc{flex:1;display:flex;flex-direction:column}
+.nf-col--vert .nfc__vid{flex:1}
 .nfc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);overflow:hidden;transition:transform .3s,box-shadow .3s}
 .nfc:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
-.nfc__vid{aspect-ratio:16/9}
-.nfc__vid iframe{width:100%;height:100%;border:none;display:block}
+.nfc__vid{width:100%;overflow:hidden}
+.nfc__vid>*{width:100%!important}
 .nfc__body{padding:20px}
 .nfc__q{font-family:var(--disp);font-style:italic;color:var(--cr);font-size:.92rem;line-height:1.72;margin-bottom:10px}
 .nfc__au{font-size:.68rem;color:var(--el);font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-top:10px}
@@ -463,7 +472,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
   <div class="hero__logo"><img src="images/vivendo_de-3_copy-1-768x285.png" alt="Vivendo de Ecoturismo" loading="eager"/></div>
   <h1 class="hero__h1">Transforme sua área natural em um negócio de <em>ecoturismo lucrativo</em></h1>
   <p class="hero__sub">Descubra como organizar sua visitação e gerar renda sustentável com o Método VPPN – inspirado nos melhores parques nacionais do mundo.</p>
-  <div class="hero__video"><div class="yt yt--shadow"><iframe src="https://www.youtube.com/embed/gCMrY32G0jk" title="VSL" loading="eager" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div></div>
+  <div class="hero__video yt--shadow"><vturb-smartplayer id="vid-6a01353ff18251980def0e70" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a01353ff18251980def0e70/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div>
   <p class="hero__hint">Assista o vídeo e entenda:</p>
   <ul class="hero__list">
     <li>Porque algumas áreas atraem mais visitantes que outras e como avaliar a sua</li>
@@ -472,7 +481,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
   </ul>
   <div class="hero__cta">
     <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO TRANSFORMAR MINHA ÁREA</a>
-    <p class="cta__sub" style="color:rgba(244,239,230,.7);">Acesso imediato após confirmação · Garantia de 30 dias</p>
+    <p class="btn-trust btn-trust--lt"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p>
   </div>
 </div></div>
 </section>
@@ -507,6 +516,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
       <hr class="div"/>
       <p style="color:var(--tm);margin-bottom:28px;">O <strong>Método Visitação Padrão Parque Nacional (VPPN)</strong> é uma abordagem inspirada nos melhores parques nacionais do Brasil e do mundo para quem quer desenvolver Projetos de Ecoturismo que equilibram preservação ambiental, encantamento dos visitantes e geração de renda.</p>
       <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO TRANSFORMAR MINHA ÁREA</a>
+    <p class="btn-trust btn-trust--dk"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p>
     </div>
 
     <!-- Coluna direita — lista dos 5 itens -->
@@ -580,6 +590,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
     <p style="color:var(--tm);margin-bottom:10px;">A Calculadora do Índice de Atratividade Turística (IAT) é projetada para te auxiliar a avaliar o potencial de atratividade da sua área. Basta selecionar as características da Área e do Destino Turístico, escolher as atividades, infraestruturas e serviços existentes ou que você deseja inserir.</p>
     <p style="color:var(--tm);margin-bottom:18px;">Em segundos, ela gera um PDF com a avaliação e uma lista de recomendações para você começar a melhorar seu projeto imediatamente.</p>
     <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold">Quero calcular a atratividade da minha área</a>
+  <p class="btn-trust btn-trust--dk"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p>
   </div>
 </div></div></section>
 
@@ -613,14 +624,14 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
   <div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:44px;"><div class="carr-dots" id="deps-d" style="margin-top:0"></div><span class="carr-counter" id="deps-c"></span></div>
 
   <div class="shorts-grid rv">
-    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/n8idoIxLt0Q/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/n8idoIxLt0Q?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
-    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/5Nw-vS3Z508/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/5Nw-vS3Z508?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
-    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/l9z2mJuwvEs/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/l9z2mJuwvEs?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
-    <div class="sf" onclick="sfPlay(this)"><img class="sf__thumb" src="https://i.ytimg.com/vi/_KGYffErFWU/maxresdefault.jpg" alt=""/><div class="sf__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><iframe data-src="https://www.youtube.com/embed/_KGYffErFWU?autoplay=1&rel=0&playsinline=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+    <div class="svt"><vturb-smartplayer id="vid-6a00ff61dfb822d9d6b12824" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a00ff61dfb822d9d6b12824/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div>
+    <div class="svt"><vturb-smartplayer id="vid-6a00ffbf4d6e3177e1f581f7" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a00ffbf4d6e3177e1f581f7/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div>
+    <div class="svt"><vturb-smartplayer id="vid-6a00ffdf08dd22f8e6155776" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a00ffdf08dd22f8e6155776/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div>
+    <div class="svt"><vturb-smartplayer id="vid-6a010010f7dfb345ee3876f1" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a010010f7dfb345ee3876f1/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div>
   </div>
 
   <p style="text-align:center;color:var(--tm);margin:40px 0 18px;">Acelere seu processo de implementação, faça parte de uma comunidade de pessoas que buscam o mesmo propósito.</p>
-  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO GERAR RENDA COM MINHA ÁREA</a></div>
+  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO GERAR RENDA COM MINHA ÁREA</a><p class="btn-trust btn-trust--dk"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p></div>
 </div></section>
 
 <!-- ══ SILVESTRE ══ -->
@@ -646,9 +657,15 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
   <span class="lbl lbl--lt lbl--c">Depoimentos</span>
   <h2 style="color:var(--cr);text-align:center;margin-bottom:44px;">Uma nova forma de viver com o Ecoturismo</h2>
   <div class="nf-grid rv">
-    <div class="nfc"><div class="nfc__vid"><iframe src="https://www.youtube.com/embed/JY51zvBeOuk" title="Connie" loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="nfc__body"><p class="nfc__q">"Totalmente virou nossa chave, encheu a gente de esperança. O que você está fazendo aqui é nos guiando pelo caminho que você já passou, já provou, sabe dar certo. Isso não tem preço, só valor."</p><span class="nfc__au">Connie — Maple Leaf Reserva Florestal</span></div></div>
-    <div class="nfc"><div class="nfc__vid"><iframe src="https://www.youtube.com/embed/bZ8nkCnSbiI" title="Sheila" loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="nfc__body"><p class="nfc__q">"O método trouxe uma visão do todo e das particularidades que muitas vezes a gente não consegue enxergar. Já conseguimos direcionar melhor nosso público e criar continuidade de receita."</p><span class="nfc__au">Sheila — Fazenda Colomi</span></div></div>
-    <div class="nfc"><div class="nfc__vid"><iframe src="https://www.youtube.com/embed/TWBhKg9sg5Y" title="Bernardo" loading="lazy" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div><div class="nfc__body"><p class="nfc__q">"Na Imersão, já começamos construindo o projeto: fizemos o IAT, usamos o Silvestre e aplicamos as ferramentas de verdade. Saímos com um documento concreto em mãos. Isso é extremamente estimulante."</p><span class="nfc__au">Bernardo — Pesquisador e Consultor</span></div></div>
+    <!-- Coluna esquerda: Connie + Bernardo (horizontal) -->
+    <div class="nf-col">
+      <div class="nfc"><div class="nfc__vid"><vturb-smartplayer id="vid-6a00fafb9c0c7d2462e9f7ad" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a00fafb9c0c7d2462e9f7ad/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div><div class="nfc__body"><p class="nfc__q">"Totalmente virou nossa chave, encheu a gente de esperança. O que você está fazendo aqui é nos guiando pelo caminho que você já passou, já provou, sabe dar certo. Isso não tem preço, só valor."</p><span class="nfc__au">Connie — Maple Leaf Reserva Florestal</span></div></div>
+      <div class="nfc"><div class="nfc__vid"><vturb-smartplayer id="vid-6a00fa0d9c0c7d2462e9f697" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a00fa0d9c0c7d2462e9f697/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div><div class="nfc__body"><p class="nfc__q">"Na Imersão, já começamos construindo o projeto: fizemos o IAT, usamos o Silvestre e aplicamos as ferramentas de verdade. Saímos com um documento concreto em mãos. Isso é extremamente estimulante."</p><span class="nfc__au">Bernardo — Pesquisador e Consultor</span></div></div>
+    </div>
+    <!-- Coluna direita: Sheila (vertical) -->
+    <div class="nf-col nf-col--vert">
+      <div class="nfc"><div class="nfc__vid"><vturb-smartplayer id="vid-6a00f993319b5efaa42588a7" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a00f993319b5efaa42588a7/v4/player.js",s.async=!0,document.head.appendChild(s);</script></div><div class="nfc__body"><p class="nfc__q">"O método trouxe uma visão do todo e das particularidades que muitas vezes a gente não consegue enxergar. Já conseguimos direcionar melhor nosso público e criar continuidade de receita."</p><span class="nfc__au">Sheila — Fazenda Colomi</span></div></div>
+    </div>
   </div>
   <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--out btn--lg">QUERO ESTRUTURAR MINHA ÁREA COM SEGURANÇA</a></div>
 </div></section>
@@ -662,7 +679,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
     <div class="cmp-col cmp-col--bad"><span class="cmp-tag">Sem método</span><h3>O caminho do improviso</h3><ul class="cmp-ul"><li>Dificuldade para definir o público e a vocação da área</li><li>Insegurança sobre o que pode ou não pode ser feito</li><li>Procrastinação por não saber por onde começar</li><li>Investimentos em infraestrutura desnecessária</li><li>Decisões baseadas em tentativa e erro</li><li>Alto risco de prejuízo financeiro e retrabalho</li><li>Projeto parado ou muito abaixo do potencial</li></ul></div>
     <div class="cmp-col cmp-col--good"><span class="cmp-tag">Com o Método VPPN</span><h3>Primeiros visitantes em 30 dias</h3><ul class="cmp-ul"><li>Calculadora de Atratividade Turística indicando onde investir</li><li>Definição clara do perfil de público e da experiência</li><li>Decisões estratégicas baseadas em vocação real</li><li>Agentes de IA gerando diretrizes e planos técnicos</li><li>Passo a passo da ideia à execução imediata</li><li>Uso eficiente do orçamento e redução de riscos</li><li>Projeto viável, estruturado e pronto para receber visitantes</li></ul></div>
   </div>
-  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO O MÉTODO CERTO</a></div>
+  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO O MÉTODO CERTO</a><p class="btn-trust btn-trust--dk"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p></div>
 </div></section>
 
 <!-- ══ TRILHA DOS CICLOS ══ -->
@@ -712,7 +729,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
 
     </div>
   </div>
-  <div class="btn-c" style="margin-top:44px;"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO COMEÇAR PELO CICLO 1</a></div>
+  <div class="btn-c" style="margin-top:44px;"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO COMEÇAR PELO CICLO 1</a><p class="btn-trust btn-trust--dk"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p></div>
 </div></section>
 
 <!-- ══ PASSOS ══ -->
@@ -723,7 +740,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
   <div class="passo rv"><div class="passo__n">01</div><div><span class="passo__tag">Ferramenta: Calculadora do IAT</span><h3>Passo 1 – Avaliação Geral</h3><p><strong style="color:var(--cr)">Caracterização Geral e Inventário e análise de mercado</strong></p><p>Objetivo: É o momento de entender o ambiente interno e externo, as características da área e as oportunidades.</p></div><div class="passo__img"><img src="images/Gemini_Generated_Image_fwq2nafwq2nafwq2-768x665.png" alt="IAT" loading="lazy" class="blend"/></div></div>
   <div class="passo rv"><div class="passo__n">02</div><div><span class="passo__tag">Ferramenta: Triplo Perfil</span><h3>Passo 2 – Definição Estratégica</h3><p><strong style="color:var(--cr)">Definição de Vocação e da Experiência do Visitante</strong></p><p>Objetivo: Entender a Vocação da sua Área e criar experiências autênticas e memoráveis, focando no encantamento, recreação e interpretação ambiental.</p></div><div class="passo__img"><img src="images/Screenshot-2026-02-17-at-01.00.31-768x693.webp" alt="Triplo Perfil" loading="lazy" class="blend"/></div></div>
   <div class="passo rv"><div class="passo__n">03</div><div><span class="passo__tag">Ferramenta: ROVUC</span><h3>Passo 3 – Crescimento Tático (ROVUC)</h3><p><strong style="color:var(--cr)">Aplicação do Rol de Oportunidades de Visitação em Unidades de Conservação</strong></p><p>Objetivo: Com base na Vocação e Experiências desejadas iniciar a estruturação da área definindo Classes de Experiências, Ambientes, Atividades, Infraestruturas, Serviços e Regulamentações.</p></div><div class="passo__img"><img src="images/rovuc2-768x636.jpg" alt="ROVUC" loading="lazy"/></div></div>
-  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO APLICAR O MÉTODO PASSO A PASSO</a></div>
+  <div class="btn-c"><a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO APLICAR O MÉTODO PASSO A PASSO</a><p class="btn-trust btn-trust--lt"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p></div>
 </div></section>
 
 <!-- ══ BÔNUS ══ -->
@@ -765,7 +782,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
     <p style="font-size:.82rem;color:var(--f4);font-weight:600;margin-bottom:20px;">Menos de <strong>R$5 por dia</strong> para estruturar seu negócio de ecoturismo.</p>
     <div class="pbox__feats"><div class="pf">Aulas Práticas Passo a Passo</div><div class="pf">Encontros ao Vivo Quinzenais</div><div class="pf">Calculadora do IAT</div><div class="pf">4 Agentes Silvestre de IA</div><div class="pf">Suporte Direto com Thiago</div><div class="pf">Comunidade Exclusiva</div><div class="pf">Biblioteca Técnica Completa</div><div class="pf">Acesso por 1 ano</div><div class="pf">Garantia de 30 dias</div></div>
     <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg btn--blk">QUERO COMEÇAR MEU PROJETO AGORA</a>
-    <p class="cta__sub" style="color:var(--tm);margin-top:12px;">Acesso imediato após confirmação · Garantia de 30 dias</p>
+    <p class="btn-trust btn-trust--dk"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p>
     <div class="pbox__gua">
       <img src="images/Selo-de-Garantia-de-30-Dias-PNG-Transparente-Sem-Fundo.png" alt="Garantia 30 dias" loading="lazy"/>
       <div>
@@ -827,7 +844,7 @@ footer{background:var(--ch);color:rgba(255,255,255,.3);text-align:center;padding
   <p class="sub">Proprietários de fazendas, RPPNs e áreas naturais já estão estruturando seus projetos com o Método VPPN. Garantia de 30 dias — se não for para você, devolvemos tudo sem perguntas.</p>
   <div style="display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;z-index:1;">
     <a href="https://pay.hotmart.com/Y95953606Y?off=815peobn&_hi=eyJjaWQiOiIxNzYxODI0ODU1MDMzNDA0OTYzNzEwNDA3MDk3ODAwIiwiYmlkIjoiMTc2MTgyNDg1NTAzMzQwNDk2MzcxMDQwNzA5NzgwMCIsInNpZCI6IjNmMTFjMzA1ZTEyOTRiZjA4ZTNlMzdkNDE0YWFiZmY2In0=.1767734392233&bid=1767734394367" class="btn btn--gold btn--lg">QUERO COMEÇAR MEU PROJETO AGORA</a>
-    <p class="cta__sub" style="color:rgba(244,239,230,.7);">Acesso imediato após confirmação · Garantia de 30 dias</p>
+    <p class="btn-trust btn-trust--lt"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> 30 dias de Garantia</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Compra segura</span></p>
     <a href="https://wa.me/+5561996860377" class="btn btn--out" target="_blank" rel="noopener noreferrer">Ainda tem dúvidas? Fale com Thiago</a>
   </div>
 </div></section>
@@ -842,7 +859,7 @@ const DATA={
   logos:['images/12950478_1616616805327032_994816819_a-300x300.webp','images/Screenshot-2026-02-16-at-17.55.07-278x300.webp','images/619233131_18096551977920544_8146139642014855735_n-300x300.webp','images/278233231_682089502996455_6937450411317529182_n-300x300.webp','images/311590757_5517301125002919_9217191871632142246_n-300x300.webp','images/305117348_385582940405908_6968819597850787877_n-300x300.webp','images/488718874_944339594568644_2908169185157840188_n-300x300.webp','images/325310360_895694164803605_2642893111402422666_n-300x300.webp','images/510038903_17909281038167479_7780907699132425429_n-300x300.jpg','images/474892996_662166249757060_2364799322204737967_n-300x300.jpg'],
   deps:['images/2-IMG_5646-768x960.webp','images/1-Debora-Pier-768x1064.webp','images/Screenshot-2026-01-19-at-08.12.06-768x1064.webp','images/3-IMG_68638DBED8C8-1-2-768x719.webp','images/Screenshot-2026-02-02-at-20.02.46-768x392.webp','images/Screenshot-2025-10-08-at-21.27.48-768x676.webp','images/Connie-VPPNista-768x1041.webp','images/4-WhatsApp-Image-2025-06-09-at-11.04.09-768x1278.webp']
 };
-function cSpv(id){const w=window.innerWidth;if(id==='wapp')return w<600?1:w<900?2:4;if(id==='logos')return w<600?2:w<900?3:5;if(id==='deps')return w<600?1:w<900?2:4;return 1}
+function cSpv(id){const w=window.innerWidth;if(id==='wapp')return w<600?1:w<900?2:3;if(id==='logos')return w<600?2:w<900?3:5;if(id==='deps')return w<600?1:w<900?2:4;return 1}
 function buildCarr(id){const imgs=DATA[id];const v=cSpv(id);const track=document.getElementById(id+'-t');if(!track)return;const cl=[...imgs,...imgs,...imgs];track.innerHTML='';const sw=100/v;cl.forEach(src=>{const d=document.createElement('div');d.className='slide';d.style.cssText=`flex-shrink:0;width:${sw}%;padding:0 6px`;const img=document.createElement('img');img.src=src;img.loading='lazy';img.alt='';d.appendChild(img);track.appendChild(d)});C[id]={idx:imgs.length,total:imgs.length,spv:v,busy:false};track.style.transition='none';setPos(id);buildDots(id)}
 function setPos(id,a){const{idx,spv}=C[id];const track=document.getElementById(id+'-t');if(!track)return;const sw=track.parentElement.offsetWidth/spv;track.style.transition=a?'transform .44s cubic-bezier(.25,.46,.45,.94)':'none';track.style.transform=`translateX(${-idx*sw}px)`;if(!a)track.offsetHeight}
 function wrap(id){const c=C[id];if(c.idx>=c.total*2){c.idx-=c.total;setPos(id)}if(c.idx<c.total){c.idx+=c.total;setPos(id)}c.busy=false;updDots(id)}
@@ -859,7 +876,6 @@ window.addEventListener('DOMContentLoaded',()=>{
   });
 });
 window.addEventListener('resize',()=>Object.keys(C).forEach(id=>buildCarr(id)));
-function sfPlay(el){const iframe=el.querySelector('iframe');iframe.src=iframe.dataset.src;el.classList.add('active')}
 document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>{const it=q.parentElement;const open=it.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-a').style.maxHeight='';});if(!open){it.classList.add('open');const a=it.querySelector('.faq-a');a.style.maxHeight=a.scrollHeight+'px';}})});
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.07});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
