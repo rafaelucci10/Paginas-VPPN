@@ -189,12 +189,17 @@ hr.div--c{margin:14px auto}
 .shorts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .svt{border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.3)}
 .svt>vturb-smartplayer{display:block;width:100%}
-.vt-facade{position:relative;cursor:pointer;overflow:hidden;border-radius:var(--r);background:#000;display:block}
+.vt-facade{position:relative;cursor:pointer;overflow:hidden;border-radius:var(--r);background:#0a1e12;display:block}
 .vt-facade img{width:100%;display:block;object-fit:cover;transition:transform .3s}
 .vt-facade:hover img{transform:scale(1.03)}
 .vt-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.22);border:none;cursor:pointer;width:100%;padding:0;transition:background .2s}
 .vt-facade:hover .vt-play{background:rgba(0,0,0,.08)}
 .vt-play svg{width:58px;height:58px;filter:drop-shadow(0 2px 14px rgba(0,0,0,.6))}
+/* Depoimento 16:9 videos — dark branded overlay hides low-res thumbnail */
+.nfc__vid .vt-facade img{filter:brightness(.32) saturate(.4)}
+.nfc__vid .vt-play{background:linear-gradient(160deg,rgba(21,46,32,.55),rgba(10,15,10,.45))}
+.nfc__vid .vt-facade:hover img{filter:brightness(.42) saturate(.5)}
+.nfc__vid .vt-play svg{width:60px;height:60px;background:var(--gold);border-radius:50%;padding:15px;filter:none;box-shadow:0 4px 24px rgba(200,168,75,.55)}
 .svt .vt-facade{aspect-ratio:9/16}
 .svt .vt-facade img{position:absolute;inset:0;width:100%;height:100%}
 @media(max-width:700px){.shorts-grid{grid-template-columns:repeat(2,1fr)}}
