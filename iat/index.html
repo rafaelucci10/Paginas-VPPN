@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório IAT - Índice de Atratividade Turística</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+
+        header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .header-content {
+            text-align: left;
+            max-width: 900px;
+            margin: 10px auto; 
+            font-size: 0.9em; 
+            line-height: 1.5;
+        }
+
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        section.step {
+            background-color: #fff;
+            padding: 20px; 
+            margin-bottom: 15px; 
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #BB7B44; 
+            border-bottom: 2px solid #BB7B44;
+            padding-bottom: 8px; 
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #A0B965;
+            margin-top: 10px; 
+            margin-bottom: 8px; 
+        }
+        
+        .attribute-container {
+            border: 1px dashed #D0DDB1; 
+            padding: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+        .attribute-container h3 {
+            margin-top: 5px; 
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 5px;
+        }
+        
+        .indicator-title-highlight {
+            color: #A0B965; 
+            font-size: 1em; 
+            font-weight: bold;
+            display: block; 
+        }
+        .input-group p {
+            margin: 5px 0; 
+        }
+        
+        .checkbox-subtitle {
+            color: #000; 
+            font-weight: bold; 
+            font-size: 1.1em; 
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .indicator-explanation {
+            background-color: #f9f9f7;
+            border: 1px solid #D0DDB1;
+            padding: 15px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+        .indicator-explanation p {
+            margin: 0 0 10px 0;
+        }
+        .indicator-explanation strong {
+            color: #BB7B44; 
+        }
+        .indicator-explanation .howto {
+            font-style: italic;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Checkbox List Styling */
+        .checkbox-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+
+        .checkbox-list label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .checkbox-list input[type="checkbox"] {
+            margin-right: 10px;
+            width: auto;
+        }
+
+        .checkbox-list label:has(input[type="checkbox"]:checked) {
+            background-color: #A0B965; 
+            color: #333; 
+        }
+
+        /* Button Styling */
+        #calculateButton, #downloadButton {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        #calculateButton {
+            background-color: #BB7B44;
+        }
+        #calculateButton:hover {
+            background-color: #a06a38;
+        }
+        #downloadButton {
+            background-color: #819551;
+            margin-bottom: 30px;
+        }
+        #downloadButton:hover {
+            background-color: #6a7c43;
+        }
+
+        /* Results Section */
+        #results {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Detalhes da Análise */
+        #analysisDetails {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        #analysisDetails p {
+            margin: 5px 0;
+        }
+
+        /* Tabela de Dados de Entrada */
+        .input-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        .input-data-table th, .input-data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .input-data-table th {
+            background-color: #f1f1f1;
+            color: #333;
+            width: 30%;
+            font-weight: bold;
+        }
+        .input-data-table td {
+            background-color: #fafafa;
+        }
+
+
+        /* Blocos de Média */
+        .results-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+
+        .result-block {
+            text-align: center;
+            padding: 15px; 
+            border-radius: 8px;
+            flex: 1;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-block.final-index {
+            color: #333; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .big-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .small-number {
+            font-size: 1.8em; 
+            font-weight: bold;
+            color: inherit; 
+        }
+        
+        /* Seção de Pontuações Detalhadas - Tabelas */
+        .score-details-tables {
+            display: flex;
+            gap: 15px; 
+            margin-top: 20px; 
+            margin-bottom: 20px; 
+        }
+        .score-details-tables > div {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .details-table-score {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .details-table-score th, .details-table-score td {
+            border: 1px solid #eee;
+            padding: 6px; 
+            text-align: left;
+        }
+        .details-table-score th {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        
+        .score-cell {
+            font-weight: bold;
+            text-align: center;
+            color: #333; 
+            background-color: #f8f8f8; 
+            transition: background-color 0.3s;
+        }
+        .table-average-row td {
+            font-weight: bold;
+            color: #333;
+            border-top: 2px solid #000 !important;
+        }
+
+        /* Caracterizações */
+        .characterization-block {
+            margin-top: 25px; 
+            border-top: 2px solid #BB7B44; 
+            padding-top: 12px; 
+        }
+        
+        .characterization-block h4 {
+            color: #BB7B44;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 5px;
+            font-size: 1.2em;
+        }
+        .characterization-block .checkbox-subtitle {
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+
+        .char-indicator-detail {
+            margin-bottom: 10px; 
+            padding: 8px; 
+            border-left: 3px solid #BB7B44;
+            background-color: #f1fff1;
+            border-radius: 4px;
+        }
+        .char-indicator-detail strong {
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .char-indicator-detail .score-char-label {
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #333;
+        }
+
+        .char-general-text {
+            background-color: #eaf3ff;
+            padding: 12px; 
+            border-left: 5px solid #BB7B44;
+            border-radius: 4px;
+            font-style: italic;
+        }
+
+        /* Gráfico Único */
+        .charts-container {
+            display: flex;
+            flex-direction: row; 
+            justify-content: space-between; 
+            gap: 15px; 
+            margin-top: 15px; 
+            padding-top: 15px; 
+            border-top: 1px dashed #D0DDB1;
+        }
+
+        .chart-block {
+            flex: 1 1 50%; 
+            max-width: 50%; 
+            min-width: 300px; 
+            background-color: #fff;
+            padding: 15px; 
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Tabela de Recomendações */
+        .recommendations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95em; 
+        }
+        .recommendations-table th, .recommendations-table td {
+            border: 1px solid #ddd;
+            padding: 7px; 
+            text-align: left;
+            vertical-align: top; 
+        }
+        .recommendations-table th {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        
+        .recommendations-table .rec-score-cell {
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+            color: #333;
+            width: 80px; 
+        }
+        
+        .recommendations-table td:nth-child(3) {
+            width: 60%; 
+            line-height: 1.4;
+            white-space: pre-line;
+        }
+        
+        .recommendations-table .recommendation-group-header td {
+            background-color: #f9f9f7; 
+            font-weight: bold;
+            color: #BB7B44; 
+            font-size: 1.1em;
+            border-top: 2px solid #D0DDB1;
+            border-bottom: 1px solid #D0DDB1;
+        }
+
+
+        /* Media Query para telas menores */
+        @media (max-width: 900px) { 
+            .charts-container {
+                flex-direction: column; 
+            }
+            .chart-block {
+                flex: 1 1 100%;
+                max-width: 100%; 
+                min-width: auto;
+            }
+        }
+        
+        /* Media Query para telas MUITO pequenas (Mobile) */
+        @media (max-width: 768px) {
+            .results-container {
+                flex-direction: column;
+            }
+            .score-details-tables {
+                flex-direction: column; 
+            }
+            .chart-block {
+                flex: 1 1 100%; 
+                min-width: auto;
+            }
+            .recommendations-table, .recommendations-table tbody, .recommendations-table tr, .recommendations-table td {
+                display: block; 
+            }
+            .recommendations-table thead {
+                display: none; 
+            }
+            .recommendations-table tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+            }
+            .recommendations-table td {
+                border: none;
+                border-bottom: 1px dotted #eee;
+                position: relative;
+                padding-left: 50%; 
+            }
+            .recommendations-table td:before {
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+            }
+            .recommendations-table td:nth-of-type(1):before { content: "Indicador:"; }
+            .recommendations-table td:nth-of-type(2):before { content: "Pontuação:"; }
+            .recommendations-table td:nth-of-type(3):before { content: "Recomendação:"; }
+            
+            .recommendations-table .rec-score-cell {
+                width: auto; 
+                text-align: left; 
+            }
+            .recommendations-table td:nth-child(3) {
+                width: auto;
+                white-space: pre-wrap; 
+            }
+            
+            .recommendations-table tr.recommendation-group-header {
+                display: block; 
+                border: none;
+                margin-bottom: 0;
+                margin-top: 15px;
+            }
+            .recommendations-table .recommendation-group-header td {
+                padding-left: 10px !important; 
+                border: none;
+                border-bottom: 2px solid #BB7B44; 
+            }
+            .recommendations-table .recommendation-group-header td:before {
+                content: "" !important; 
+            }
+        }
+
+
+        /* Media Print para Relatório PDF - MELHORADO */
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.5cm; /* Margens definidas para evitar corte */
+            }
+
+            body {
+                background-color: #fff;
+                color: #333; /* Mantém cor escura suave, não preto total */
+                margin: 0;
+                padding: 0;
+                /* Força a impressão das cores de fundo */
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+            }
+            
+            main {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            header, form, #downloadButton { 
+                display: none; 
+            }
+            
+            #results {
+                box-shadow: none;
+                padding: 0;
+                margin-top: 0;
+                border: none;
+            }
+            
+            /* Ajuste dos blocos de resultados (IAT) */
+            .results-container {
+                display: flex !important; 
+                flex-direction: row !important;
+                justify-content: space-between;
+                gap: 10px;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+            .result-block {
+                flex: 1 1 32%; /* Levemente menor que 33% para garantir que caiba */
+                margin-bottom: 5px;
+                border: 1px solid #eee; /* Adiciona borda leve para definição */
+                box-shadow: none;
+            }
+            
+            /* Gráficos lado a lado */
+            .charts-container {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between;
+                gap: 15px;
+                border: none;
+                padding-top: 10px;
+                page-break-inside: avoid;
+            }
+            .chart-block {
+                flex: 1 1 48% !important; /* Reduzido para garantir lado a lado */
+                max-width: 48% !important; 
+                width: 48% !important;
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid; 
+                margin-bottom: 10px;
+            }
+            
+            /* Tabelas de scores lado a lado */
+            .score-details-tables {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 20px;
+                margin-top: 15px; 
+                page-break-inside: avoid;
+            }
+            .score-details-tables > div {
+                flex: 1 1 48% !important;
+                width: 48% !important;
+                padding: 0;
+                border: none; /* Remove borda do container na impressão */
+            }
+            
+            .characterization-block {
+                page-break-inside: avoid;
+                border-top: 2px solid #BB7B44;
+                margin-top: 20px;
+            }
+            
+            /* Cores e estilos de texto na impressão */
+            h2, h4 {
+                color: #BB7B44 !important; /* Mantém a cor da marca */
+            }
+            
+            .result-block.final-index h4, 
+            .result-block.final-index .big-number,
+            .result-block.final-index p {
+                 color: #333 !important; /* Texto escuro para contraste */
+            }
+
+            /* Tabela de Recomendações */
+            .recommendations-table {
+                font-size: 0.9em; 
+                width: 100%;
+            }
+            .recommendations-table tr {
+                page-break-inside: avoid; 
+            }
+            .recommendations-table th {
+                background-color: #f1f1f1 !important; /* Força cor de fundo */
+                color: #333 !important;
+            }
+            .recommendations-table td {
+                border-bottom: 1px solid #ccc;
+            }
+            .recommendations-table .rec-score-cell {
+                /* As cores de fundo dinâmicas (verde/laranja) serão mantidas pelo print-color-adjust */
+                color: #333 !important;
+                border: 1px solid #ddd;
+            }
+            
+            .recommendations-table .recommendation-group-header td {
+                background-color: #f9f9f7 !important;
+                color: #BB7B44 !important;
+                border-top: 2px solid #D0DDB1;
+            }
+            
+            /* Quebra de página após dados de entrada */
+            #inputDataBlock {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+        <header>
+        <h1>Calculadora de Índice de Atratividade Turística (IAT) — Versão 2</h1>
+        <div class="header-content">
+            <p>A <strong>Calculadora de Índice de Atratividade Turística (IAT)</strong> é uma ferramenta simples e prática desenvolvida para apoiar o planejamento da visitação e do ecoturismo em áreas naturais públicas ou privadas.</p>
+            
+            <p>Esta é a segunda versão, aprimorada a partir da aplicação prática em diferentes territórios e integrada ao <strong>Método Visitação Padrão Parque Nacional (VPPN)</strong>, do qual constitui uma parte essencial. O IAT corresponde à ferramenta de diagnóstico estratégico do método, permitindo avaliar de forma objetiva o potencial turístico de uma área.</p>
+            
+            <p>A calculadora estima o nível de atratividade turística a partir da forma como a área é percebida como destino, analisando indicadores dos seguintes componentes:</p>
+            <ul>
+                <li><strong>Ambiente Interno:</strong> atrativos, atividades, infraestrutura, serviços e densidade de visitantes.</li>
+                <li><strong>Ambiente Externo:</strong> atrativos regionais, acesso, contexto socioeconômico e oferta turística.</li>
+            </ul>
+            <p>Os indicadores são objetivos, fáceis de preencher e podem ser obtidos diretamente pelo administrador da área, por pesquisa na internet ou em bases públicas como TripAdvisor, Google e IBGE.</p>
+            
+            <p>Cada indicador recebe uma pontuação de 1 a 5. A planilha calcula automaticamente:</p>
+            <ul>
+                <li>As pontuações dos ambientes interno e externo.</li>
+                <li>O Índice de Atratividade Turística (IAT).</li>
+                <li>A classificação final da área, que pode ser: Local, Regional, Estadual, Nacional ou Internacional.</li>
+            </ul>
+            <p>Use este guia para preencher corretamente os campos, interpretar os resultados e orientar decisões de planejamento, manejo e priorização de investimentos na visitação.</p>
+            
+            <p><strong>⚠️ Importante:</strong> o IAT deve ser aplicado inicialmente como uma “fotografia” da situação atual da área — ou seja, como ela se encontra hoje. Posteriormente, a análise pode ser refeita para simular cenários futuros, permitindo avaliar como diferentes intervenções podem aumentar a atratividade turística e apoiar a tomada de decisão.</p>
+            
+            <p>A Calculadora do IAT foi desenvolvida para ser utilizada de forma independente no diagnóstico da atratividade turística. Com ela, é possível obter uma primeira avaliação consistente do projeto e identificar os indicadores que merecem maior aprofundamento.</p>
+            
+            <p>No entanto, o IAT representa apenas o primeiro passo no processo completo de planejamento da visitação. Seus resultados atingem máximo potencial quando aplicados dentro do <strong>Método VPPN</strong>, que oferece, além da calculadora para diagnóstico, outras ferramentas complementares, como:</p>
+            <ul>
+                <li>O <strong>Triplo Perfil</strong>, para definição da vocação da área.</li>
+                <li>O <strong>ROVUC</strong> — Rol de Oportunidades de Visitação em Unidades de Conservação, para estruturação e implementação das atividades turísticas.</li>
+            </ul>
+            <p>Em conjunto, essas ferramentas permitem evoluir do diagnóstico inicial para um planejamento estruturado e orientado à implementação do turismo em áreas naturais.</p>
+        </div>
+    </header>
+
+    <main>
+        <form id="iatForm">
+            <section class="step" id="step0">
+                <h2>Dados da Análise</h2>
+                <div class="input-group">
+                    <label for="uc_name">Nome da área:</label>
+                    <input type="text" id="uc_name" required>
+                </div>
+                <div class="input-group">
+                    <label for="analyst_name">Nome do Analista/Pessoa Preenchendo:</label>
+                    <input type="text" id="analyst_name" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="municipio_estado">Município e Estado:</label>
+                    <input type="text" id="municipio_estado" placeholder="Ex: Brotas, SP">
+                </div>
+                <div class="input-group">
+                    <label for="coordenadas">Coordenadas Geográficas (se tiver, no formato que tiver):</label>
+                    <input type="text" id="coordenadas" placeholder="Ex: -22.8465, -47.9351">
+                </div>
+                <div class="input-group">
+                    <label for="area_propriedade">Área total da propriedade (hectares):</label>
+                    <input type="number" id="area_propriedade" min="0" step="0.01" placeholder="Ex: 500">
+                </div>
+                <div class="input-group">
+                    <label for="bioma_ambientes">Bioma e principais ambientes:</label>
+                    <input type="text" id="bioma_ambientes" placeholder="Ex: Mata Atlântica (Floresta Ombrófila Densa), Manguezais, Praia.">
+                </div>
+                <div class="input-group">
+                    <label for="atr_conhecidos">Nomes dos Atrativos naturais/culturais mais conhecidos:</label>
+                    <input type="text" id="atr_conhecidos" placeholder="Ex: Cachoeira do Véu de Noiva, Ruínas da Fazenda, Mirante X.">
+                </div>
+                <div class="input-group">
+                    <label for="comunidades_proximas">Comunidades próximas:</label>
+                    <input type="text" id="comunidades_proximas" placeholder="Ex: Quilombo Kalunga, Aldeia Indígena Guarani.">
+                </div>
+                <div class="input-group">
+                    <label for="eventos_saberes">Eventos ou saberes culturais locais:</label>
+                    <input type="text" id="eventos_saberes" placeholder="Ex: Festa da colheita, Roda de Capoeira, Culinária Típica.">
+                </div>
+                <div class="input-group">
+                    <label for="projetos_pesquisas">Projetos, pesquisas ou informações estratégicas:</label>
+                    <input type="text" id="projetos_pesquisas" placeholder="Ex: Projeto de manejo de trilhas 2024, Censo de visitantes de 2023.">
+                </div>
+                </section>
+
+            <section class="step" id="guide">
+                <h2>Como preencher cada indicador do IAT e por que ele é importante</h2>
+                <p>O IAT utiliza indicadores simples para avaliar o potencial de visitação de uma área, considerando tanto as características internas quanto o contexto externo. A seguir, você encontra uma explicação clara sobre para que serve cada indicador e como preenchê-lo corretamente.</p>
+            </section>
+
+            <section class="step" id="ambienteInterno">
+                <h2>1. Ambiente Interno (Área) - Indicadores de Atratividade na área</h2>
+                
+                <div class="attribute-container">
+                    <h3>1.1. Atributo Biofísico Interno (I1, I2)</h3>
+
+                    <div class="input-group">
+                        <p><strong class="indicator-title-highlight">I1: Variedade Natural/Cultural.</strong> Selecione os atrativos naturais e culturais presentes na sua área. (12 ou mais = 5)</p>
+                        
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> A diversidade de tipos de atrativos aumenta o interesse do visitante e amplia o tempo de permanência.</p>
+                            <p class="howto"><strong>Como preencher:</strong> Informe o número de tipos (não quantidade) diferentes de atrativos existentes na área (cachoeiras, mirantes, cavernas, ruínas, trilhas temáticas etc.). Cada tipo conta como 1.</p>
+                        </div>
+                        <div class="input-group">
+                            <h4 class="checkbox-subtitle">Atrativos Naturais</h4>
+                            <div class="checkbox-list" data-indicator="atr_naturais">
+                                <label><input type="checkbox" value="Refices de Coral"> Refices de Coral</label>
+                                <label><input type="checkbox" value="Cavernas"> Cavernas</label>
+                                <label><input type="checkbox" value="Formações Geológicas"> Formações Geológicas</label>
+                                <label><input type="checkbox" value="Sítios Palenteológicos"> Sítios Palenteológicos</label>
+                                <label><input type="checkbox" value="Árvores centenárias"> Árvores centenárias</label>
+                                <label><input type="checkbox" value="Cachoeiras"> Cachoeiras</label>
+                                <label><input type="checkbox" value="Oceano"> Oceano</label>
+                                <label><input type="checkbox" value="Montanha"> Montanha</label>
+                                <label><input type="checkbox" value="Neve"> Neve</label>
+                                <label><input type="checkbox" value="Ilhas fluviais"> Ilhas fluviais</label>
+                                <label><input type="checkbox" value="Corredeiras"> Corredeiras</label>
+                                <label><input type="checkbox" value="Pântanos"> Pântanos</label>
+                                <label><input type="checkbox" value="Fauna Hotspots"> Fauna Hotspots</label>
+                                <label><input type="checkbox" value="Rios"> Rios</label>
+                                <label><input type="checkbox" value="Visibilidade Submarina"> Visibilidade Submarina</label>
+                                <label><input type="checkbox" value="Mirantes Naturais"> Mirantes Naturais</label>
+                                <label><input type="checkbox" value="Formações de vegetação específicas"> Formações de vegetação específicas</label>
+                                <label><input type="checkbox" value="Mangues"> Mangues</label>
+                                <label><input type="checkbox" value="Piscinas Naturais"> Piscinas Naturais</label>
+                                <label><input type="checkbox" value="Rotas de Migração de Aves"> Rotas de Migração de Aves</label>
+                                <label><input type="checkbox" value="Dunas"> Dunas</label>
+                                <label><input type="checkbox" value="Campos"> Campos</label>
+                                <label><input type="checkbox" value="Lagos e lagoas"> Lagos e lagoas</label>
+                                <label><input type="checkbox" value="Praia"> Praia</label>
+                                <label><input type="checkbox" value="Áreas alagadas"> Áreas alagadas</label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <h4 class="checkbox-subtitle">Atrativos Culturais</h4>
+                            <div class="checkbox-list" data-indicator="atr_culturais">
+                                <label><input type="checkbox" value="Comunidades tradicionais"> Comunidades tradicionais</label>
+                                <label><input type="checkbox" value="Museus"> Museus</label>
+                                <label><input type="checkbox" value="Patrimônio Cultural"> Patrimônio Cultural</label>
+                                <label><input type="checkbox" value="Igreja"> Igreja</label>
+                                <label><input type="checkbox" value="Patrimônio Arquitetônico"> Patrimônio Arquitetônico</label>
+                                <label><input type="checkbox" value="Áreas de plantio"> Áreas de plantio</label>
+                                <label><input type="checkbox" value="Sítio Arqueológico"> Sítio Arqueológico</label>
+                                <label><input type="checkbox" value="Campo de Futebol"> Campo de Futebol</label>
+                                <label><input type="checkbox" value="Centro de Educação Ambiental"> Centro de Educação Ambiental</label>
+                                <label><input type="checkbox" value="Lago artificial"> Lago artificial</label>
+                                <label><input type="checkbox" value="Centro de Visitantes"> Centro de Visitantes</label>
+                                <label><input type="checkbox" value="Festejo Tradicional"> Festejo Tradicional</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" style="margin-top: 20px;">
+                        <p><strong class="indicator-title-highlight">I2: Notoriedade Cênica.</strong> Média de Avaliação do Google multiplicada pelo Número de Avaliações (Rating x Reviews).</p>
+                        
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> Uma alta pontuação e grande volume de avaliações em plataformas como o Google Maps/Reviews indicam tanto a **satisfação do visitante** (qualidade da experiência) quanto o **volume de visitação** (popularidade), fatores essenciais para a atratividade.</p>
+                            <p class="howto"><strong>Como preencher:</strong> No Google Maps ou Google Reviews, busque o nome da sua área. Insira a **Média da Avaliação** (de 1.0 a 5.0) e o **Número Total de Avaliações** (Reviews). O IAT calcula o Score a partir do produto dessas duas métricas.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="google_rating">Média de Avaliação no Google (ex: 4.5):</label>
+                            <input type="number" id="google_rating" min="1" max="5" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="google_reviews">Número Total de Avaliações (Reviews) no Google (ex: 1500):</label>
+                            <input type="number" id="google_reviews" min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="attribute-container">
+                    <h3>1.2. Atributo Sociocultural Interno (I3, I4)</h3>
+                    
+                    <div class="input-group">
+                        <p><strong class="indicator-title-highlight">I3: Diversidade de Atividades.</strong> Selecione as atividades de recreação e esporte oferecidas. (17 ou mais = 5)</p>
+                        
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> Áreas que oferecem mais atividades atraem públicos variados e ampliam o tempo de permanência.</p>
+                            <p class="howto"><strong>Como preencher:</strong> Conte quantas atividades recreativas ou esportivas acontecem na área (ex.: caminhada, ciclismo, observação de aves, travessias, escalada, cavalgada, banho, canoagem etc.).</p>
+                        </div>
+                        <div class="input-group">
+                            <h4 class="checkbox-subtitle">Atividades Oferecidas</h4>
+                            <div class="checkbox-list" data-indicator="atividades">
+                                <label><input type="checkbox" value="Caminhadas até 5km"> Caminhadas até 5km</label>
+                                <label><input type="checkbox" value="Caminhada de um dia com mais de 5 km"> Caminhada de um dia com mais de 5 km</label>
+                                <label><input type="checkbox" value="Travessia"> Travessia</label>
+                                <label><input type="checkbox" value="Visitas de escola / educacional"> Visitas de escola / educacional</label>
+                                <label><input type="checkbox" value="Visitas de pesquisa de campo"> Visitas de pesquisa de campo</label>
+                                <label><input type="checkbox" value="Observação de flora e fauna em geral"> Observação de flora e fauna em geral</label>
+                                <label><input type="checkbox" value="Contemplação"> Contemplação</label>
+                                <label><input type="checkbox" value="Fotografia / Filmagem"> Fotografia / Filmagem</label>
+                                <label><input type="checkbox" value="Banho de rio / cachoeira"> Banho de rio / cachoeira</label>
+                                <label><input type="checkbox" value="Banho em piscinas naturais"> Banho em piscinas naturais</label>
+                                <label><input type="checkbox" value="Banho de mar"> Banho de mar</label>
+                                <label><input type="checkbox" value="Banho de piscina"> Banho de piscina</label>
+                                <label><input type="checkbox" value="Passeio de automóvel"> Passeio de automóvel</label>
+                                <label><input type="checkbox" value="Passeio de moto"> Passeio de moto</label>
+                                <label><input type="checkbox" value="Passeio de quadriciclo"> Passeio de quadriciclo</label>
+                                <label><input type="checkbox" value="Passeio veículo off-road"> Passeio veículo off-road</label>
+                                <label><input type="checkbox" value="Passeios a cavalo"> Passeios a cavalo</label>
+                                <label><input type="checkbox" value="Passeio de barco"> Passeio de barco</label>
+                                <label><input type="checkbox" value="Passeio de barco em canoa artesanal"> Passeio de barco em canoa artesanal</label>
+                                <label><input type="checkbox" value="Passeio de canoa ou caiaque"> Passeio de canoa ou caiaque</label>
+                                <label><input type="checkbox" value="Corrida de aventura"> Corrida de aventura</label>
+                                <label><input type="checkbox" value="Ciclismo"> Ciclismo</label>
+                                <label><input type="checkbox" value="Montain Bike"> Montain Bike</label>
+                                <label><input type="checkbox" value="Escalada / Montanhismo"> Escalada / Montanhismo</label>
+                                <label><input type="checkbox" value="Escalada em caverna"> Escalada em caverna</label>
+                                <label><input type="checkbox" value="Rapel"> Rapel</label>
+                                <label><input type="checkbox" value="Rapel em cânios"> Rapel em cânios</label>
+                                <label><input type="checkbox" value="Arvorismo"> Arvorismo</label>
+                                <label><input type="checkbox" value="Tirolesa"> Tirolesa</label>
+                                <label><input type="checkbox" value="Exploração de cavernas"> Exploração de cavernas</label>
+                                <label><input type="checkbox" value="Visita a patrimônios culturais (edifícios e ruínas)"> Visita a patrimônios culturais (edifícios e ruínas)</label>
+                                <label><input type="checkbox" value="Visita a vilas e comunidades"> Visita a vilas e comunidades</label>
+                                <label><input type="checkbox" value="Exposições"> Exposições</label>
+                                <label><input type="checkbox" value="Casamentos"> Casamentos</label>
+                                <label><input type="checkbox" value="Batismo religioso"> Batismo religioso</label>
+                                <label><input type="checkbox" value="Flutuação e snorquel"> Flutuação e snorquel</label>
+                                <label><input type="checkbox" value="Mergulho autônomo"> Mergulho autônomo</label>
+                                <label><input type="checkbox" value="Mergulho planasub"> Mergulho planasub</label>
+                                <label><input type="checkbox" value="Surfe"> Surfe</label>
+                                <label><input type="checkbox" value="Kitesurf"> Kitesurf</label>
+                                <label><input type="checkbox" value="Pesca esportiva"> Pesca esportiva</label>
+                                <label><input type="checkbox" value="Rafting"> Rafting</label>
+                                <label><input type="checkbox" value="Boiacross"> Boiacross</label>
+                                <label><input type="checkbox" value="Astronomia"> Astronomia</label>
+                                <label><input type="checkbox" value="Visitas palenteológicas"> Visitas palenteológicas</label>
+                                <label><input type="checkbox" value="Sandbord (Surfe de dunas)"> Sandbord (Surfe de dunas)</label>
+                                <label><input type="checkbox" value="Paraquedismo"> Paraquedismo</label>
+                                <label><input type="checkbox" value="Passeio de helicóptero"> Passeio de helicóptero</label>
+                                <label><input type="checkbox" value="Asa delta"> Asa delta</label>
+                                <label><input type="checkbox" value="Ultraleve"> Ultraleve</label>
+                                <label><input type="checkbox" value="Acampamento"> Acampamento</label>
+                                <label><input type="checkbox" value="Piquenique"> Piquenique</label>
+                                <label><input type="checkbox" value="Coleta de produtos não madereiros"> Coleta de produtos não madereiros</label>
+                                <label><input type="checkbox" value="Observação de animais em cativeiro"> Observação de animais em cativeiro</label>
+                                <label><input type="checkbox" value="Observação de baleias"> Observação de baleias</label>
+                                <label><input type="checkbox" value="Observação de aves"> Observação de aves</label>
+                                <label><input type="checkbox" value="Observação de jacarés"> Observação de jacarés</label>
+                                <label><input type="checkbox" value="Observação de fauna em geral"> Observação de fauna em geral</label>
+                                <label><input type="checkbox" value="Interação com animais"> Interação com animais</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 20px;">
+                        <p><strong class="indicator-title-highlight">I4: Intensidade de Uso (Popularidade).</strong> Estimativa de m² por visitante no atrativo principal.</p>
+                        
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> No Roteiro de Monitoramento de Impactos da Visitação do ICMBio, o espaço por pessoa é o fator limitante de manejo. Aqui, quanto maior o número de pessoas que visitam esse espaço simultaneamente em relação ao tamanho dele, maior será a pontuação de popularidade.</p>
+                            <p class="howto"><strong>Como preencher:</strong>
+                            <br>Preencha a área útil (em m²) do atrativo principal (ponto de maior interesse da área.
+                            <br>Número de visitantes: insira a média diária de pessoas no local.</p>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="area_uc">Área do Atrativo Principal (m²):</label>
+                            <input type="number" id="area_uc" min="0" step="0.01" placeholder="Ex: 50 (área útil do ponto de maior interesse)">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="visitantes_anual">Média de visitas por dia no local (mínimo 1):</label>
+                            <input type="number" id="visitantes_anual" min="1">
+                        </div>
+                        </div>
+                </div>
+
+                <div class="attribute-container">
+                    <h3>1.3. Atributo Manejo Interno (I5, I6)</h3>
+
+                    <div class="input-group">
+                        <p><strong class="indicator-title-highlight">I5: Infraestrutura.</strong> Selecione as diferentes estruturas oferecidas. (26 ou mais = 5)</p>
+
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> Infraestruturas adequadas melhoram segurança, conforto e organização da visitação, aumentando a capacidade de receber público.</p>
+                            <p class="howto"><strong>Como preencher:</strong> Conte as estruturas existentes (banheiros, estacionamento, centro de visitantes, mirantes, píeres, portarias, áreas de camping etc.). Cada item = 1.</p>
+                        </div>
+                        <div class="input-group">
+                            <h4 class="checkbox-subtitle">Infraestruturas</h4>
+                            <div class="checkbox-list" data-indicator="infraestrutura">
+                                <label><input type="checkbox" value="Escritório/Casa dentro da Área"> Escritório/Casa dentro da Área</label>
+                                <label><input type="checkbox" value="Sinalização indicativa"> Sinalização indicativa</label>
+                                <label><input type="checkbox" value="Sinalização Interpretativa"> Sinalização Interpretativa</label>
+                                <label><input type="checkbox" value="Banheiros para visitantes"> Banheiros para visitantes</label>
+                                <label><input type="checkbox" value="Banheiro Seco"> Banheiro Seco</label>
+                                <label><input type="checkbox" value="Portões de entrada"> Portões de entrada</label>
+                                <label><input type="checkbox" value="Portão de entrada turístico"> Portão de entrada turístico</label>
+                                <label><input type="checkbox" value="Guaritas em outras entradas"> Guaritas em outras entradas</label>
+                                <label><input type="checkbox" value="Centro de Visitante"> Centro de Visitante</label>
+                                <label><input type="checkbox" value="Exposição Interpretativa"> Exposição Interpretativa</label>
+                                <label><input type="checkbox" value="Auditório"> Auditório</label>
+                                <label><input type="checkbox" value="Estacionamento"> Estacionamento</label>
+                                <label><input type="checkbox" value="Acessibilidade"> Acessibilidade</label>
+                                <label><input type="checkbox" value="Ponte para turistas"> Ponte para turistas</label>
+                                <label><input type="checkbox" value="Área de campismo"> Área de campismo</label>
+                                <label><input type="checkbox" value="Posto de Informação e Controle"> Posto de Informação e Controle</label>
+                                <label><input type="checkbox" value="Mirante"> Mirante</label>
+                                <label><input type="checkbox" value="Passarela"> Passarela</label>
+                                <label><input type="checkbox" value="Bilheteria"> Bilheteria</label>
+                                <label><input type="checkbox" value="Loja de conveniência"> Loja de conveniência</label>
+                                <label><input type="checkbox" value="Loja de souvenires"> Loja de souvenires</label>
+                                <label><input type="checkbox" value="Churrasqueira"> Churrasqueira</label>
+                                <label><input type="checkbox" value="Torre de observação"> Torre de observação</label>
+                                <label><input type="checkbox" value="Teleférico"> Teleférico</label>
+                                <label><input type="checkbox" value="Arvorismo"> Arvorismo</label>
+                                <label><input type="checkbox" value="Piscina artificial"> Piscina artificial</label>
+                                <label><input type="checkbox" value="Piscina natural"> Piscina natural</label> 
+                                <label><input type="checkbox" value="Deck"> Deck</label>
+                                <label><input type="checkbox" value="Redário"> Redário</label>
+                                <label><input type="checkbox" value="Campo de Futebol"> Campo de Futebol</label>
+                                <label><input type="checkbox" value="Playground"> Playground</label>
+                                <label><input type="checkbox" value="Fossa Bananeira/ Evapotransp."> Fossa Bananeira/ Evapotransp.</label>
+                                <label><input type="checkbox" value="Energia FotoVoltaica"> Energia FotoVoltaica</label>
+                                <label><input type="checkbox" value="Fossa Séptica"> Fossa Séptica</label>
+                                <label><input type="checkbox" value="Biodigestor"> Biodigestor</label>
+                                <label><input type="checkbox" value="Wi-Fi"> Wi-Fi</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 20px;">
+                        <p><strong class="indicator-title-highlight">I6: Serviços.</strong> Selecione as diferentes serviços oferecidos. (11 ou mais = 5)</p>
+
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> A oferta de serviços qualificados aumenta a permanência, o gasto médio e a qualidade da experiência.</p>
+                            <p class="howto"><strong>Como preencher:</strong> Conte os serviços disponíveis, como alimentação, guias, transporte interno, receptivo, venda de ingressos, hospedagem, aluguel de equipamentos etc. Cada item = 1.</p>
+                        </div>
+                        <div class="input-group">
+                            <h4 class="checkbox-subtitle">Serviços</h4>
+                            <div class="checkbox-list" data-indicator="servicos">
+                                <label><input type="checkbox" value="Guias cadastrados"> Guias cadastrados</label>
+                                <label><input type="checkbox" value="Transporte interno"> Transporte interno</label>
+                                <label><input type="checkbox" value="Turismo de aventura"> Turismo de aventura</label>
+                                <label><input type="checkbox" value="Lanchonete"> Lanchonete</label>
+                                <label><input type="checkbox" value="Restaurante"> Restaurante</label>
+                                <label><input type="checkbox" value="Cobrança de ingresso"> Cobrança de ingresso</label>
+                                <label><input type="checkbox" value="Abrigos de Montanha"> Abrigos de Montanha</label>
+                                <label><input type="checkbox" value="Acampamento estruturado"> Acampamento estruturado</label>
+                                <label><input type="checkbox" value="Hotel / Pousada"> Hotel / Pousada</label>
+                                <label><input type="checkbox" value="Alojamento"> Alojamento</label>
+                                <label><input type="checkbox" value="Hostel"> Hostel</label>
+                                <label><input type="checkbox" value="Aluguel de equipamentos"> Aluguel de equipamentos</label>
+                                <label><input type="checkbox" value="Aluguel de bicicleta"> Aluguel de bicicleta</label>
+                                <label><input type="checkbox" value="Venda de produtos de conveniência"> Venda de produtos de conveniência</label>
+                                <label><input type="checkbox" value="Venda de souvenires"> Venda de souvenires</label>
+                                <label><input type="checkbox" value="Atividades Terapêuticas"> Atividades Terapêuticas</label>
+                                <label><input type="checkbox" value="Atividades Físicas/Esportivas"> Atividades Físicas/Esportivas</label>
+                                <label><input type="checkbox" value="Atividades Espirituais/Religiosas"> Atividades Espirituais/Religiosas</label>
+                                <label><input type="checkbox" value="Fotografia"> Fotografia</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="step" id="ambienteExterno">
+                <h2>2. Ambiente Externo (Região) - Indicadores de Contexto Regional</h2>
+                <div class="attribute-container">
+                    <h3>2.1. Atributo Biofísico Extern (I7, I8)</h3>
+
+                    <div class="input-group">
+                        <p><strong class="indicator-title-highlight">I7: Atrativos Regionais.</strong> Número de atrações turísticas no município de entrada.</p>
+
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> A região onde a área está inserida influencia fortemente o fluxo. Quanto mais atrativos no entorno, maior o potencial de complementaridade turística.</p>
+                            <p class="howto"><strong>Como preencher:</strong> No TripAdvisor, pesquise o município de entrada da área e conte o número total de itens na seção “O que fazer”. Você vai encontrar o total em “Melhores Atrações” > Ver tudo</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="atr_regionais">Número de atrações turísticas no município de entrada (ex: TripAdvisor):</label>
+                            <input type="number" id="atr_regionais" min="0">
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 20px;">
+                        <p><strong class="indicator-title-highlight">I8: Acesso Público.</strong> Tempo de viagem do aeroporto mais próximo.</p>
+
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> O tempo de viagem até a área é um dos fatores que mais influenciam a decisão do visitante.</p>
+                            <p class="howto"><strong>Como preencher:</strong> No Google Maps, calcule o tempo de deslocamento (em minutos) do aeroporto mais próximo (considere um aeroporto relevante que tenha vôos de capitais e regulares).</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="tempo_acesso">Tempo de viagem do aeroporto mais próximo (minutos):</label>
+                            <input type="number" id="tempo_acesso" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="attribute-container">
+                    <h3>2.2. Atributo Sociocultural Externo (I9, I10)</h3>
+
+                    <div class="input-group">
+                        <p><strong class="indicator-title-highlight">I9: Contexto Socioeconômico.</strong> Média do IDH municipal no buffer de 100km.</p>
+
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> Regiões com melhores indicadores sociais e econômicos tendem a gerar mais demanda turística e maior capacidade de investimentos.</p>
+                            <p class="howto"><strong>Como preencher:</strong> Consulte o IDH dos municípios em um raio de 100 km (IBGE) e informe o valor médio. Use a IA para te auxiliar com essa média se forem muitos municípios.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="idh">IDH médio no buffer de 100km (ex: 0.700):</label>
+                            <input type="number" id="idh" min="0" max="1" step="0.001">
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 20px;">
+                        <p><strong class="indicator-title-highlight">I10: Densidade Populacional.</strong> População total num buffer de 100km.</p>
+
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> A população do entorno é a principal base de visitantes potenciais, e áreas mais populosas geram mais oportunidades de visitação.</p>
+                            <p class="howto"><strong>Como preencher:</strong> Some a população dos municípios em um raio de 100 km (IBGE) e informe o total. Use o mesmo processo com a IA mas agora peça para somar a população.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="populacao">População total num buffer de 100km:</label>
+                            <input type="number" id="populacao" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="attribute-container">
+                    <h3>2.3. Atributo Manejo Externo (I11)</h3>
+
+                    <div class="input-group">
+                        <p><strong class="indicator-title-highlight">I11: Estabelecimentos de Hospitalidade.</strong> Total de estabelecimentos de hospedagem e restaurantes no município de entrada.</p>
+
+                        <div class="indicator-explanation">
+                            <p><strong>Por que importa:</strong> A oferta de hospedagem e alimentação no entorno determina a capacidade de receber visitantes e sustentar o turismo.</p>
+                            <p class="howto"><strong>Como preencher:</strong> No TripAdvisor, pesquise o município de entrada da área e conte o número total de itens na seção “Hotéis” e "Restaurantes". Você vai encontrar o total em “Encontre o hotel certo para você” / "Melhores restaurantes"</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="hospitalidade">Número de estabelecimentos de hospedagem (ex: TripAdvisor) no município de entrada:</label>
+                            <input type="number" id="hospitalidade" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label for="restaurantes">Número de restaurantes (ex: TripAdvisor) no município de entrada:</label>
+                            <input type="number" id="restaurantes" min="0">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <button type="submit" id="calculateButton">Calcular IAT e Gerar Relatório</button>
+        </form>
+
+        <section id="results" class="hidden">
+            <button id="downloadButton">📥 Baixar Relatório (PDF)</button>
+            <h2>Resultados do Índice de Atratividade Turística (IAT)</h2>
+            <div id="analysisDetails">
+                <p><strong>Área:</strong> <span id="ucNameResult"></span></p>
+                <p><strong>Analista:</strong> <span id="analystNameResult"></span></p>
+                <p><strong>Data da Análise:</strong> <span id="dateResult"></span></p>
+                <p><strong>Município/Estado:</strong> <span id="municipioEstadoResult"></span></p>
+                <p><strong>Coordenadas:</strong> <span id="coordenadasResult"></span></p>
+                <p><strong>Área Útil do Atrativo (m²):</strong> <span id="areaUcResult"></span></p>
+                <p><strong>Bioma e Ambientes:</strong> <span id="biomaAmbientesResult"></span></p>
+                <p><strong>Atrativos Conhecidos:</strong> <span id="atrConhecidosResult"></span></p>
+                <p><strong>Comunidades Próximas:</strong> <span id="comunidadesProximasResult"></span></p>
+                <p><strong>Eventos/Saberes Locais:</strong> <span id="eventosSaberesResult"></span></p>
+                <p><strong>Projetos/Pesquisas:</strong> <span id="projetosPesquisasResult"></span></p>
+                </div>
+
+            <div class="characterization-block" id="inputDataBlock">
+                <h4>Dados de Entrada do IAT</h4>
+                <p>Abaixo estão os dados preenchidos que serviram de base para o cálculo da pontuação de cada indicador.</p>
+                <table class="input-data-table">
+                    <thead>
+                        <tr>
+                            <th>Indicador/Campo</th>
+                            <th>Valor Inserido</th>
+                            <th>Itens Selecionados</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inputDataTableBody">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="results-container">
+                <div class="result-block" id="blockInterno">
+                    <h4>Índice Ambiente Interno</h4>
+                    <span class="small-number" id="indiceInternoValue">0.0</span>
+                    <p>Classificação: <strong id="classificacaoInterna"></strong></p>
+                </div>
+                <div class="result-block final-index">
+                    <h4>Índice de Atratividade Turística (IAT)</h4>
+                    <span class="big-number" id="indiceFinalValue">0.0</span>
+                    <p>Classificação Final: <strong id="finalClass"></strong></p>
+                </div>
+                <div class="result-block" id="blockExterno">
+                    <h4>Índice Ambiente Externo</h4>
+                    <span class="small-number" id="indiceExternoValue">0.0</span>
+                    <p>Classificação: <strong id="classificacaoExterna"></strong></p>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-block">
+                    <h4>Pontuação por Atributo</h4>
+                    <canvas id="chartBar" width="800" height="400"></canvas>
+                </div>
+                <div class="chart-block">
+                    <h4>Pontuação por Atributo (Radar)</h4>
+                    <canvas id="chartRadar" width="800" height="400"></canvas>
+                </div>
+            </div>
+            
+            <div class="score-details-tables">
+                <div>
+                    <h4>Ambiente Interno - Pontuação por Atributo</h4>
+                    <table class="details-table-score">
+                        <thead>
+                            <tr>
+                                <th>Atributo</th>
+                                <th>Pontuação (1-5)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="internalScoreBody">
+                            </tbody>
+                        <tfoot id="internalScoreFooter">
+                            </tfoot>
+                    </table>
+                </div>
+                <div>
+                    <h4>Ambiente Externo - Pontuação por Atributo</h4>
+                    <table class="details-table-score">
+                        <thead>
+                            <tr>
+                                <th>Atributo</th>
+                                <th>Pontuação (1-5)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="externalScoreBody">
+                            </tbody>
+                        <tfoot id="externalScoreFooter">
+                            </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="characterization-block">
+                <h4>Caracterização do Ambiente Interno por Atributo</h4>
+                <div id="internalIndicatorCharacterization"></div>
+                <h4 class="char-general-title">Caracterização Geral do Ambiente Interno (<span id="classInternaTitle"></span>)</h4>
+                <p id="internalCharacterizationText" class="char-general-text"></p>
+            </div>
+            
+            <div class="characterization-block">
+                <h4>Caracterização do Ambiente Externo por Atributo</h4>
+                <div id="externalIndicatorCharacterization"></div>
+                <h4 class="char-general-title">Caracterização Geral do Ambiente Externo (<span id="classExternaTitle"></span>)</h4>
+                <p id="externalCharacterizationText" class="char-general-text"></p>
+            </div>
+
+            <div class="characterization-block" id="recommendationsSection">
+                <h4>Recomendações por Indicador</h4>
+                <p>Com base na pontuação obtida em cada indicador, estas são algumas recomendações de manejo e planejamento para fortalecer a atratividade da área.</p>
+                
+                <table class="recommendations-table">
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Pontuação</th>
+                            <th>Recomendação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recommendationsTableBody">
+                        </tbody>
+                </table>
+            </div>
+            </section>
+
+    </main>
+    <script>
+        // Registra o plugin datalabels globalmente
+        Chart.register(ChartDataLabels);
+
+        // ===== INÍCIO DO NOVO OBJETO DE DADOS (RECOMENDAÇÕES) =====
+        // DADOS ATUALIZADOS CONFORME SOLICITAÇÃO
+        const RECOMMENDATIONS_DATA = {
+            'I1: Variedade Natural/Cultural': {
+                1: "1. Mapear e listar os atrativos existentes.\n2. Criar um ponto-chave de visita (trilha curta, mirante, nascente).\n3. Registrar fotos e vídeos básicos para documentação.\n4. Criar narrativa simples (história, fauna, flora, cultura).\n5. Organizar o espaço para visita simples sem riscos.",
+                2: "1. Criar pequenos circuitos conectando 2–3 atrativos.\n2. Melhorar acessibilidade e segurança nos atrativos existentes.\n3. Desenvolver painéis simples ou QR Codes.\n4. Criar mapas e materiais interpretativos básicos.\n5. Qualificar paisagens (banco, limpeza visual, poda correta).",
+                3: "1. Criar trilhas temáticas e pontos de observação mais estruturados.\n2. Produzir conteúdo interpretativo moderado (painéis, guia, QR).\n3. Desenvolver atividades que conectem atrativos.\n4. Criar experiências complementares (noite, água, cultura).\n5. Registrar imagens profissionais da área.",
+                4: "1. Consolidar atrativos com forte apelo e experiências premium.\n2. Criar produtos integrados entre atrativos principais.\n3. Produzir vídeos e materiais de alta qualidade.\n4. Criar áreas de permanência marcantes (mirantes avançados).\n5. Qualificar trilhas e estruturas para alta demanda.",
+                5: "1. Criar atrativos “signature” icônicos e únicos.\n2. Desenvolver mirantes e estruturas de design diferenciado.\n3. Criar produtos multilíngues baseados nos atrativos.\n4. Registrar fotos e vídeos profissionais nível internacional.\n5. Integrar atrativos a campanhas globais."
+            },
+            'I2: Notoriedade Cênica': {
+                1: "1. Identificar o ponto mais fotogênico da área.\n2. Criar um local simples de foto (marca, placa, moldura).\n3. Fotografar de manhã e fim da tarde para melhor luz.\n4. Criar hashtag oficial da área.\n5. Divulgar fotos em redes sociais locais.",
+                2: "1. Melhorar mirantes naturais com pequenas estruturas.\n2. Criar mini-roteiro fotográfico interno.\n3. Incentivar visitantes regionais a publicar e marcar a área.\n4. Criar placas de interpretação da paisagem.\n5. Convidar fotógrafos regionais.",
+                3: "1. Criar mirantes mais robustos e seguros.\n2. Criar mapa de spots fotográficos na área.\n3. Desenvolver painéis interpretativos panorâmicos.\n4. Criar conteúdo audiovisual profissional.\n5. Construir decks estrategicamente posicionados.",
+                4: "1. Criar mirantes emblemáticos e trilhas cênicas oficiais.\n2. Desenvolver roteiros fotográficos nacionais.\n3. Atrair creators para registrar a área.\n4. Criar banco de imagens profissional para mídia.\n5. Posicionar paisagens em campanhas de turismo nacional.",
+                5: "1. Investir em estruturas icônicas (mirantes, skywalks, vista 360º).\n2. Criar storytelling visual internacional.\n3. Atrair fotógrafos e influencers globais.\n4. Criar vídeos multilíngues para mercados emissores.\n5. Conectar paisagem a rotas e campanhas internacionais."
+            },
+            'I3: Diversidade de Atividades': {
+                1: "1. Criar uma atividade estruturada simples (trilha curta).\n2. Adicionar segunda atividade (mirante, observação, água).\n3. Mapear atividades futuras possíveis.\n4. Estabelecer percurso seguro e autoguiado.\n",
+                2: "1. Criar vivências de contato com natureza/cultura.\n2. Estabelecer diferentes níveis de atividades (leve/moderado).\n3. Criar trilha interpretativa de 1–2 km.\n4. Integrar atividades simples aos atrativos regionais.\n",
+                3: "1. Criar trilhas de maior extensão ou duração.\n2. Criar experiências temáticas (noite, fauna, cultura).\n3. Desenvolver atividades guiadas e autoguiadas.\n4. Integrar oferta com parceiros externos.\n",
+                4: "1. Estruturar atividades especializadas (birdwatching, fotografia).\n2. Criar experiências premium com duração maior.\n3. Desenvolver pacotes e roteiros completos.\n4. Treinar guias profissionais certificados.\n5. Criar calendário anual de atividades.",
+                5: "1. Criar portfólio multilíngue de atividades.\n2. Oferecer experiências exclusivas de alto padrão.\n3. Criar atividades imersivas científicas e culturais.\n4. Integrar produtos com operadores internacionais.\n5. Criar atividades pensadas para mercados emissores globais."
+            },
+            // 🛑 ALTERAÇÃO: CHAVE ATUALIZADA (Popularidade)
+            'I4: Intensidade de Uso (Popularidade)': {
+                5: "Popularidade Máxima. Implementar controle rigoroso de fluxo e rotatividade para manter a qualidade.",
+                4: "Alta Demanda. Monitorar pontos de gargalo e pisotreio no atrativo principal.",
+                3: "Equilíbrio. Uso moderado do espaço; manter a rotatividade atual.",
+                2: "Baixa Ocupação. Oportunidade para aumentar a divulgação e atrair mais visitantes.",
+                1: "Isolamento/Exclusividade. Destino voltado a nichos que buscam solidão e privacidade total."
+            },
+            'I5: Infraestrutura': {
+                1: "1. Criar entrada definida (portão, placa, trilha marcada).\n2. Melhorar acesso imediato (limpeza, nivelamento).\n3. Instalar placas básicas de orientação e segurança.\n4. Criar 1 ponto de permanência (banco, sombra).\n5. Construir sanitários simples ou secos.\n",
+                2: "1. Construir pequenos mirantes, escadas ou corrimãos simples.\n2. Melhorar qualidade da trilha (solo, curvas, dregagem).\n3. Ampliar sinalização interna padronizada.\n4. Criar áreas de descanso e contemplação.\n5. Criar estacionamento organizado ou área de chegada.\n",
+                3: "1. Implementar sanitários robustos e manutenção regular.\n2. Criar Centro de Visitantes básico e exposição interpretativa caseira.\n3. Melhorar mirantes, decks e pontos interpretativos.\n4. Estruturar trilhas principais com técnicas adequadas.\n5. Criar estruturas de controle (recepção, bilheteria, reservas).",
+                4: "Construir centro de visitantes com exposição interpretativa completa.\nDiversificar estrutura de atendimento\n3. Criar trilhas qualificadas com acessibilidade parcial.\n4. Implantar sinalização interpretativa completa.\n5. Modernizar estruturas de controle (recepção, bilheteria, reservas).",
+                5: "1. Desenvolver infraestrutura de padrão internacional (acessível, inovadora).\n2. Criar mirantes icônicos e trilhas-modelo certificadas.\n3. Implantar sistemas avançados de manejo (monitoramento, sensores).\n4. Construir centro de visitantes de qualidade.\n5. Garantir manutenção profissional e contínua."
+            },
+            'I6: Serviços': {
+                1: "1. Criar recepção simples com informações básicas.\n2. Treinar 1 guia local para conduzir atividade curta.\n3. Criar um folder ou QR Code com orientações ao visitante.\n4. Registrar contatos de visitantes para criar base inicial.\n5. Criar canal oficial de contato (WhatsApp, Instagram).\n6. Criar serviços básicos (guias, pequenas vendas, apoio leve).",
+                2: "1. Melhorar serviços básicos (lanches, produtos locais).\n2. Padronizar atendimento inicial ao visitante.\n3. Desenvolver roteiro guiado básico.\n4. Organizar outros canais (Google, Tripadivasor).\n5. Oferecer experiências programadas em horários definidos.",
+                3: "1. Profissionalizar guias e condutores.\n2. Criar catálogo de serviços (atividades, valores, horários).\n3. Integrar serviços a atrativos próximos.\n4. Criar serviços complementares (foto, aluguel, refeições completas).\n5. Estabelecer padrões de qualidade e atendimento.",
+                4: "1. Estruturar operação com prestadores profissionais.\n2. Criar pacotes completos (guias + atividades + logística).\n3. Criar sistema de reservas online.\n4. Conectar serviços à oferta hoteleira regional.\n5. Oferecer serviços premium (fotografia, observação, trilhas especiais).",
+                5: "1. Oferecer serviços multilíngues de alta qualidade.\n2. Criar experiências exclusivas premium.\n3. Implementar central de reservas internacional.\n4. Certificar guias e operação com padrões globais.\n5. Criar atendimento pré e pós-visita profissional."
+            },
+            'I7: Atrativos Regionais': {
+                1: "1. Mapear atrativos num raio de até 20–30 km.\n2. Criar um mapa simples mostrando o que existe na região.\n3. Estabelecer primeiros contatos com atrativos vizinhos.\n4. Iniciar conversas para criar uma futura rota local.\n5. Criar material básico de divulgação conjunta.",
+                2: "1. Conectar a área a pelo menos 2 atrativos regionais.\n2. Criar rotas sugeridas de meio dia ou 1 dia.\n3. Criar materiais conjuntos com parceiros regionais.\n4. Integrar-se à divulgação regional (sites, redes, calendários).\n5. Criar pacotes simples junto com operadores locais.",
+                3: "1. Integrar-se oficialmente a polos turísticos estaduais.\n2. Criar roteiros temáticos conectando atrativos próximos.\n3. Participar de campanhas e eventos estaduais de turismo.\n4. Estabelecer parceria com operadores estaduais.\n5. Desenvolver produtos integrados (natureza + cultura + gastronomia).",
+                4: "1. Posicionar-se como atrativo-chave dentro do destino nacional.\n2. Integrar a área com roteiros de longa distância e rotas nacionais.\n3. Criar produtos em parceria com operadores nacionais consolidados.\n4. Trabalhar com influenciadores nacionais em circuitos regionais.\n5. Criar material profissional para trade turístico nacional.",
+                5: "1. Conectar a área a rotas internacionais e itinerários longos.\n2. Integrar experiências com operadores globais (DMCs).\n3. Criar roteiros multilíngues de vários dias.\n4. Posicionar a área como “parada obrigatória” dentro da rota internacional.\n5. Participar de circuitos globais de natureza, aventura ou cultura."
+            },
+            'I8: Acesso Público': {
+                1: "1. Melhorar acesso imediato (nivelamento, limpeza).\n2. Sinalizar entrada e rotas com placas simples.\n3. Criar mapa “Como Chegar” em Google Maps/WhatsApp.\n4. Garantir mínima segurança no trajeto interno.\n5. Criar identificação visual visível na entrada.",
+                2: "1. Melhorar estradas e caminhos de acesso com parceiros locais.\n2. Instalar placas externas mais completas.\n3. Adicionar coordenadas e rotas digitais precisas.\n4. Criar orientações claras para carros e vans.\n5. Ajustar sinalização em zonas críticas.",
+                3: "1. Instalar placas rodoviárias oficiais (parceria com DER/estado).\n2. Criar mapa digital profissional da rota de acesso.\n3. Identificar pontos de risco e mitigá-los.\n4. Criar estacionamento organizado.\n5. Conectar a área ao transporte regional.",
+                4: "1. Melhorar acessos internos e externos com pavimentação parcial.\n2. Criar logística integrada com transportes turísticos.\n3. Integrar rotas a aeroportos nacionais.\n4. Criar sinalização turística nacional padronizada.\n5. Criar sistemas de recepção e fluxo no portal de entrada.",
+                5: "1. Integrar a área com transportes das principais capitais.\n2. Criar instruções multilíngues de acesso (site, PDF, vídeo).\n3. Estabelecer parcerias com operadores de transfer e DMCs.\n4. Criar rota de acesso com padrão internacional (visuais, segurança).\n5. Modelar a chegada do visitante internacional (recepção, reservas, logística)."
+            },
+            'I9: Contexto Socioeconômico': {
+                1: "1. Criar parcerias básicas com moradores e comércio local.\n2. Oferecer pequenas oportunidades de renda (guias, vendas simples).\n3. Engajar lideranças locais no turismo.\n",
+                2: "1. Desenvolver fornecedores locais (alimentação, artesanato).\n2. Integrar a área às dinâmicas econômicas regionais.\n3. Capacitar moradores para serviços básicos de turismo.\n4. Criar produto turístico local para gerar renda imediata.\n5. Engajar associações e grupos produtivos.",
+                3: "1. Estruturar rede de fornecedores regionais.\n2. Integrar turismo da área à economia estadual.\n3. Criar produtos turísticos formais com comunidades.\n4. Desenvolver cadeias produtivas (alimentação, transporte, recepção).\n5. Criar indicadores de impacto socioeconômico local.",
+                4: "1. Ampliar oportunidades de renda ligadas ao turismo.\n2. Conectar a área a políticas de desenvolvimento regional.\n3. Criar parcerias com instituições nacionais (SEBRAE, Senac).\n4. Profissionalizar empreendedores locais.\n5. Monitorar impacto econômico regional.",
+                5: "1. Posicionar a área como motor socioeconômico internacional.\n2. Criar programas de qualificação avançada para comunidade.\n3. Atrair investimentos socioeconômicos sustentáveis.\n4. Integrar a área a cadeias globais (gastronomia, aventura, natureza).\n5. Desenvolver indicadores internacionais de impacto."
+            },
+            'I10: Densidade Populacional': {
+                1: "1. Intensificar divulgação digital para compensar baixa população.\n2. Desenvolver produtos atraentes para visitantes de fora (experiências únicas).\n3. Criar eventos periódicos para atrair público de outras regiões.\n4. Criar parcerias com escolas, universidades e grupos organizados.\n",
+                2: "1. Criar campanhas regionais para atrair moradores da área ampliada.\n2. Desenvolver parcerias com redes regionais (rádios, prefeituras, circuitos).\n3. Integrar a área a calendários regionais de eventos.\n4. Criar produtos para diferentes segmentos da população regional.\n",
+                3: "1. Criar campanhas que alcancem grandes cidades do estado.\n2. Desenvolver produtos que respondam a perfis diversos do público estadual.\n3. Firmar parcerias com influenciadores estaduais.\n4. Melhorar materiais de comunicação (vídeos, roteiros, fotos).\n5. Participar ativamente da promoção turística estadual.",
+                4: "1. Desenvolver marketing nacional (SEO, redes sociais, PR).\n2. Criar produtos exclusivos de alto apelo nacional.\n3. Integrar a área a plataformas nacionais (Civitatis, Hurb, Voopter).\n4. Criar pacotes completos com operadores nacionais.\n5. Participar de feiras, eventos e campanhas do turismo nacional.",
+                5: "1. Desenvolver materiais multilíngues para mercados emissores.\n2. Posicionar a área como experiência buscada por turistas globais.\n3. Criar experiências de longa duração para visitantes internacionais.\n4. Firmar parcerias com operadores e DMCs internacionais.\n5. Integrar-se a estratégias internacionais de promoção."
+            },
+            'I11: Estabelecimentos de Hospitalidade': {
+                1: "1. Identificar pousadas, restaurantes e cafés próximos.\n2. Criar parcerias simples para indicar visitantes.\n3. Estimular a comunidade a oferecer produtos locais básicos.\n4. Criar pacotes simples integrando trilha + comida caseira.\n",
+                2: "1. Criar rede regional de parceiros turísticos.\n2. Desenvolver combos (experiência + refeição + hospedagem).\n3. Ajudar empreendimentos a melhorar atendimento básico.\n4. Criar material de indicação de estabelecimentos.\n5. Conectar a área a plataformas regionais (TripAdvisor, Google).",
+                3: "1. Firmar parcerias com hotéis e pousadas reconhecidos no estado.\n2. Desenvolver produtos integrados.\n3. Criar pacotes para grupos e operadores estaduais.\n4. Qualificar rede turística parceira com treinamentos.\n5. Criar mapa estadual de parceiros.",
+                4: "1. Integrar estabelecimentos locais com operadores nacionais.\n2. Padronizar preços, qualidade e comunicação com parceiros.\n3. Criar produtos turísticos profissionais.\n4. Conectar empreendimentos ao site oficial da área.\n5. Participar de feiras nacionais para promover parceiros.",
+                5: "1. Posicionar estabelecimentos da região como “porta de entrada”.\n2. Criar material multilíngue sobre hospedagem e gastronomia.\n3. Integrar parceiros a rotas internacionais e operadores.\n4. Treinar empreendedores para atender turistas globais.\n5. Criar pacotes premium para mercados emissores internacionais."
+            }
+        };
+        // ===== FIM DO NOVO OBJETO DE DADOS =====
+        
+        // Função para formatar números grandes
+        const formatNumber = (num) => {
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + ' B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + ' M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + ' mil';
+            return num.toString();
+        };
+
+        // Função para obter os valores dos checkboxes
+        const getCheckboxValues = (dataIndicator) => {
+            const list = document.querySelector(`.checkbox-list[data-indicator="${dataIndicator}"]`);
+            if (!list) return '';
+            const checkedBoxes = list.querySelectorAll('input[type="checkbox"]:checked');
+            return Array.from(checkedBoxes).map(cb => cb.value).join(', ');
+        };
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('iatForm');
+            const resultsSection = document.getElementById('results');
+
+            // Função para contar checkboxes marcados
+            const countChecked = (dataIndicator) => {
+                const list = document.querySelector(`.checkbox-list[data-indicator="${dataIndicator}"]`);
+                if (!list) return 0;
+                return list.querySelectorAll('input[type="checkbox"]:checked').length;
+            };
+
+            // --- FUNÇÕES DE COR E CLASSIFICAÇÃO ---
+
+            /**
+             * Retorna o código de cor (Hex) baseado na pontuação média (1 a 5).
+             * NOVO PADRÃO DE CORES:
+             * >= 4.5: #BB7B44
+             * >= 3.5: #EA9B56
+             * >= 2.5: #D0DDB1
+             * >= 1.5: #A0B965
+             * < 1.5: #819551
+             */
+            const getColorByScore = (score) => {
+                if (score >= 4.5) return '#BB7B44'; // Cor mais escura
+                if (score >= 3.5) return '#EA9B56';
+                if (score >= 2.5) return '#D0DDB1';
+                if (score >= 1.5) return '#A0B965';
+                return '#819551'; // Cor mais clara (para scores baixos)
+            };
+
+            // Mapeamento de Pontuação para Classe e Título
+            const getClassificationData = (score) => {
+                let title = "";
+                let scoreInt = 0;
+                let key = "";
+                let color = getColorByScore(score);
+
+                // --- ALTERAÇÃO APLICADA AQUI ---
+                if (score >= 4.5) {
+                    title = "Internacional";
+                    key = "Internacional";
+                    scoreInt = 5;
+                } else if (score >= 3.5) {
+                    title = "Nacional";
+                    key = "Nacional";
+                    scoreInt = 4;
+                } else if (score >= 2.5) {
+                    title = "Estadual";
+                    key = "Estadual";
+                    scoreInt = 3;
+                } else if (score >= 1.5) {
+                    title = "Regional";
+                    key = "Regional";
+                    scoreInt = 2;
+                } else {
+                    title = "Local";
+                    key = "Local";
+                    scoreInt = 1;
+                }
+                // ------------------------------------
+
+                return { title, scoreInt, key, color };
+            };
+
+            // Descrições de Caracterização Geral (Ambiente Interno e Externo)
+            const CHARACTERIZATIONS = {
+                
+                // === AMBIENTE INTERNO ===
+                'Local': "A área apresenta um conjunto muito simples de atrativos, geralmente de interesse apenas da comunidade local ou de visitantes ocasionais do entorno imediato. São paisagens modestas, pouco diversificadas e sem elementos marcantes de apelo turístico mais amplo. A experiência predominante é espontânea, desestruturada e de curta permanência, com atividades básicas como contemplação, banho de rio ou pequenas caminhadas. A infraestrutura turística praticamente não existe: não há centros de visitantes, sinalização, sanitários adequados ou estruturas mínimas de apoio. Os serviços também são escassos — normalmente, não há guias, alimentação ou hospedagem associados diretamente ao atrativo. O manejo é informal e pouco sistematizado, com baixa capacidade operacional para organizar fluxos, padronizar experiências ou monitorar impactos ambientais e sociais. A área tende a receber grupos pequenos, moradores locais ou visitantes eventuais.",
+                
+                'Regional': "A área já apresenta um conjunto mais interessante de atrativos naturais ou culturais, reconhecidos dentro da região. Há paisagens agradáveis, algum elemento diferenciado (cachoeiras, trilhas, mirantes, eventos culturais) e um início de diversificação das atividades. A experiência ainda é simples, mas oferece opções adicionais ao visitante, como trilhas curtas, artesanato, gastronomia local, passeios guiados básicos ou visitas a comunidades. Parte da infraestrutura já existe: algumas placas de orientação, áreas de estacionamento improvisadas ou pequenos pontos de apoio. Os serviços são pontuais, muitas vezes informais, mas já existe algum grau de profissionalização incipiente. A visitação é esporádica, com picos em fins de semana ou feriados, e começa a demandar organização mínima do gestor, como controle de acesso, definição de roteiros e manutenção básica.",
+                
+                'Estadual': "A área conta com um conjunto sólido de atrativos, reconhecidos no estado e capazes de gerar motivação própria de visita. As paisagens são marcantes, com diversidade significativa — mirantes, formações rochosas, rios, trilhas de diferentes níveis, atrativos culturais relevantes. A experiência turística é bem desenvolvida, com variedade de atividades que atendem a diferentes perfis: famílias, aventureiros, observadores de fauna e flora, grupos escolares etc. A infraestrutura é intermediária e relativamente bem distribuída: centros de visitantes funcionais, áreas de apoio, sinalização adequada, serviços operando com regularidade. O manejo já exige planejamento, monitoramento sistemático e manutenção contínua. O fluxo de visitantes é consistente ao longo do ano, com capacidade de gerar cadeia econômica local.",
+                
+                'Nacional': "A área possui forte diversidade de atrativos relevantes em escala nacional, incluindo paisagens icônicas, alta biodiversidade, patrimônios culturais de grande apelo e experiências amplamente divulgadas. As atividades são variadas e bem estruturadas: trilhas longas, esportes de aventura, experiências culturais profundas, observação de fauna, roteiros interpretativos. A infraestrutura é robusta: centros de visitantes completos, trilhas bem manejadas, áreas de alimentação e serviços profissionais. Os padrões de operação são mais elevados, com monitoramento constante, controle de impactos e protocolos avançados de segurança. O fluxo de visitantes é alto e regular, o que exige gestão sofisticada e equipes bem treinadas. A experiência possui reconhecimento consolidado em nível nacional e muitas vezes serve como referência para outros destinos.",
+                
+                'Internacional': "A área apresenta atrativos de relevância global — verdadeiros ícones naturais ou culturais — com forte valor simbólico e paisagens únicas reconhecidas mundialmente. A diversidade e a qualidade das atividades são de padrão internacional: trilhas icônicas, experiências culturais profundas, observação especializada de fauna, infraestrutura de alto nível, acessibilidade universal e serviços sofisticados. A gestão utiliza ferramentas avançadas de manejo, controle rigoroso de impactos, sistemas digitais, comunicação multilíngue e governança profissionalizada. O volume de visitantes é muito alto e inclui turistas de várias nacionalidades, exigindo operação robusta, padrões internacionais de segurança e estratégias contínuas de qualificação. A área funciona como referência internacional para gestão de visitação.",
+                
+                // === AMBIENTE EXTERNO ===
+                
+                'Local-Ext': "O entorno é caracterizado por isolamento geográfico e baixa conectividade, com pouca ou nenhuma integração com outros atrativos. O território carece de polos turísticos estruturados, não possui fluxo natural de visitantes e apresenta densidade populacional reduzida, além de renda média muito baixa. O acesso costuma ser difícil, precário ou pouco confiável, seja por falta de transporte público, estradas em más condições ou ausência de sinalização. Isso limita severamente o potencial de visitação e impede a atração de turistas de outras regiões. Não há serviços complementares, como hospedagem, restaurantes ou receptivos, e tampouco uma identidade ou narrativa que posicione o destino no mercado. Em síntese: trata-se de uma área com pouca visibilidade, alto grau de vulnerabilidade e baixa competitividade turística.",
+                
+                'Regional-Ext': "O entorno apresenta algum nível de dinamismo: há municípios próximos com oferta complementar de restaurantes, hospedagem e transporte, ainda que limitada. A presença de outros atrativos regionais cria oportunidades de integração, mas o destino ainda não funciona como polo consolidado. A infraestrutura de acesso é razoável, mas com gargalos — estradas sem manutenção, sinalização insuficiente ou transporte público inconsistente. A densidade populacional da região é moderada, oferecendo um mercado consumidor regional restrito, mas já relevante para fins de turismo de proximidade. Apesar do potencial, ainda há grande dependência de melhorias externas para que a área consolide sua atratividade e seja capaz de competir com outros destinos mais estruturados.",
+                
+                'Estadual-Ext': "A área está inserida em uma região com rede turística mais consistente. Há cidades com boa oferta de hospedagem, alimentação, receptivos e comércio, criando um ecossistema favorável. O acesso rodoviário é regular e confiável, possibilitando fluxo estável de visitantes de diferentes regiões do estado. A densidade populacional é suficiente para garantir mercado consumidor diversificado e constante. Há oferta de atrativos complementares e eventos regionais que ampliam o interesse do visitante. A visibilidade estadual fortalece a competitividade, e o destino começa a aparecer em guias, redes sociais e plataformas de avaliação com maior destaque.",
+                
+                'Nacional-Ext': "A área está integrada a um destino nacional consolidado, com ampla conectividade rodoviária e aérea, alta densidade econômica e forte presença de serviços turísticos de qualidade. O entorno possui oferta diversificada de hospedagem, gastronomia, transporte, operadores turísticos e centros urbanos estruturados. Há forte sinergia com outros atrativos de grande apelo nacional, permitindo a criação de roteiros amplos e competindo em mercados de diferentes regiões do país. A visibilidade nacional amplia o alcance e fortalece o posicionamento estratégico do destino.",
+                
+                'Internacional-Ext': "O destino está inserido em uma região altamente integrada, com acessos eficientes, incluindo aeroportos internacionais, rodovias bem conectadas e opções variadas de transporte. O entorno econômico é forte, com grande densidade urbana e estrutura turística profissionalizada. Há diversidade de hospedagens, restaurantes, receptivos, centros culturais e outros atrativos de nível internacional, criando um ambiente altamente competitivo e atrativo. O destino possui ampla visibilidade global, aparece em rankings internacionais e recebe grande atenção da mídia, operadores globais e plataformas digitais."
+            };
+
+
+            const getCharacterization = (score, environment) => {
+                const { key } = getClassificationData(score);
+                if (environment === 'interno') {
+                    return CHARACTERIZATIONS[key];
+                } else {
+                    // Mapeia a chave interna para a chave externa correspondente
+                    const externalKey = `${key}-Ext`; // Assumindo que a chave externa é sempre a interna + '-Ext'
+                    return CHARACTERIZATIONS[externalKey];
+                }
+            };
+
+            // Descrições Específicas por INDICADOR (Mantidas)
+            const getAttributeDescription = (indicatorName, score) => {
+                // Arredonda para o inteiro mais próximo para pegar a descrição correta do nível
+                const scoreInt = Math.round(score); 
+                const s = scoreInt > 0 ? (scoreInt > 5 ? 5 : scoreInt) : 1; 
+
+                const descriptions = {
+                    'I1: Variedade Natural/Cultural': {
+                        1: "A área é simples e conhecida apenas pelos moradores locais, com poucos elementos naturais ou culturais capazes de atrair visitantes de fora.",
+                        2: "A área apresenta alguns atrativos que despertam interesse na região, mas ainda com oferta limitada.",
+                        3: "A área reúne atrativos relevantes reconhecidos dentro do estado, capazes de motivar deslocamentos.",
+                        4: "A área possui grande variedade de atrativos e é reconhecida nacionalmente.",
+                        5: "A área é ícone turístico, com grande diversidade de atrativos e reconhecimento internacional."
+                    },
+                    'I2: Notoriedade Cênica': {
+                        1: "Paisagens belas mas recorrentes, pouco divulgadas, com baixo apelo visual.",
+                        2: "Paisagens agradáveis com destaque regional em registros fotográficos.",
+                        3: "Cenários marcantes, conhecidos dentro do estado e frequentemente fotografados e divulgados.",
+                        4: "Paisagens de forte apelo visual, amplamente compartilhadas em nível nacional.",
+                        5: "Cenários emblemáticos e altamente fotogênicos, reconhecidos internacionalmente."
+                    },
+                    'I3: Diversidade de Atividades': {
+                        1: "A área oferece poucas atividades, normalmente simples e de curta duração.",
+                        2: "Atividades básicas estão disponíveis, oferecendo variedade moderada de experiências.",
+                        3: "Boa variedade de atividades recreativas e interpretativas para diferentes perfis.",
+                        4: "Muitas atividades diferentes, ampliando o tempo de permanência e o público-alvo.",
+                        5: "Ampla oferta de atividades estruturadas e diversificadas, típica de destinos consolidados."
+                    },
+                    // 🛑 ALTERAÇÃO: CHAVE ATUALIZADA (Popularidade)
+                    'I4: Intensidade de Uso (Popularidade)': {
+                        1: "Isolamento: Pouca ocupação do espaço disponível (> 30m²/pessoa).",
+                        2: "Baixa Intensidade: Próximo ao padrão de baixo encontro (15 a 30m²/pessoa).",
+                        3: "Uso Moderado: Equilíbrio entre fluxo e espaço (8 a 15m²/pessoa).",
+                        4: "Uso Dinâmico: Próximo ao padrão de evitar aglomeração perceptível (4 a 8m²/pessoa).",
+                        5: "Aglomeração/Popularidade: Uso intensivo do atrativo principal (< 4m²/pessoa)."
+                    },
+                    'I5: Infraestrutura': {
+                        1: "Infraestrutura mínima ou inexistente, adequada apenas a visitação espontânea.",
+                        2: "Estruturas básicas presentes, permitindo visitação simples e de baixo impacto.",
+                        3: "Infraestrutura moderada, suportando fluxo regular com conforto básico.",
+                        4: "Boa infraestrutura, adequada a alta demanda e com controle de impactos.",
+                        5: "Infraestrutura completa, robusta e profissionalizada para grande volume de visitantes."
+                    },
+                    'I6: Serviços': {
+                        1: "Ausência ou quase ausência de serviços ao visitante.",
+                        2: "Alguns serviços básicos disponíveis, como guias locais ou pequenas vendas.",
+                        3: "Variedade relevante de serviços complementares ao visitante.",
+                        4: "Serviços consolidados e prestados por operadores estruturados.",
+                        5: "Serviços completos, especializados e de alto padrão, típicos de destinos internacionais."
+                    },
+                    'I7: Atrativos Regionais': {
+                        1: "A área geralmente está isolada, com poucas atrações no entorno ou sinergia regional.",
+                        2: "Existem algumas atrações próximas, mas a região ainda é pouco estruturada.",
+                        3: "A área integra um polo turístico estadual com várias atrações complementares.",
+                        4: "A área está em destino nacional consolidado, com múltiplos atrativos e boa conectividade.",
+                        5: "A área faz parte de destino internacional reconhecido, com ampla oferta turística."
+                    },
+                    'I8: Acesso Público': {
+                        1: "Acesso difícil, demorado ou pouco confiável; deslocamento é um desafio.",
+                        2: "Acesso razoável, porém com limitações de estrada, transporte ou sinalização.",
+                        3: "Acesso regular, feito por rotas consolidadas reconhecidas dentro do estado.",
+                        4: "Acesso fácil, com boas vias, serviços de transporte e proximidade de aeroportos nacionais.",
+                        5: "Acesso excelente, com presença ou proximidade de aeroportos internacionais e rotas modernas."
+                    },
+                    'I9: Contexto Socioeconômico': {
+                        1: "Região de muito baixa renda e infraestrutura geral limitada.",
+                        2: "Região de baixa renda e população reduzida, com capacidade moderada de suporte.",
+                        3: "População média com renda intermediária e serviços razoáveis.",
+                        4: "Região desenvolvida, com alta capacidade de serviços, infraestrutura e consumo.",
+                        5: "Região altamente desenvolvida, com padrões socioeconômicos internacionais."
+                    },
+                    'I10: Densidade Populacional': {
+                        1: "Não há mercado consumidor próximo.",
+                        2: "Pequenos municípios e baixa densidade, com mercado reduzido.",
+                        3: "População moderada e público estadual significativo.",
+                        4: "Alta densidade urbana no entorno e grande mercado consumidor.",
+                        5: "Grandes centros urbanos internacionais próximos, com enorme potencial de demanda."
+                    },
+                    'I11: Estabelecimentos de Hospitalidade': {
+                        1: "A região praticamente não possui hospedagem ou serviços turísticos.",
+                        2: "Oferta básica de hospedagem e alimentação, ainda limitada.",
+                        3: "Boa oferta de hospedagem e alimentação reconhecida no estado.",
+                        4: "Região consolidada, com ampla rede de serviços turísticos estruturados.",
+                        5: "Alta concentração de serviços turísticos de padrão internacional."
+                    }
+                };
+                if (s === 0) return "Pontuação Inválida";
+                // Verifica se o indicatorName (ex: 'I1: Variedade Natural/Cultural') existe no objeto descriptions
+                if (descriptions[indicatorName]) {
+                    return descriptions[indicatorName][s] || "Descrição não encontrada";
+                }
+                return "Descrição não encontrada (Indicador não mapeado)";
+            };
+            
+            // ===== INÍCIO DA MODIFICAÇÃO 1: Helper para criar HTML da caracterização =====
+            /**
+             * Helper para criar o HTML de um único bloco de caracterização de indicador.
+             */
+            const createIndicatorCharHTML = (ind) => {
+                const desc = getAttributeDescription(ind.name, ind.score);
+                const color = getColorByScore(ind.score);
+                return `
+                    <div class="char-indicator-detail">
+                        <strong>${ind.name}</strong>
+                        <p>${desc} <span class="score-char-label" style="background-color: ${color}99;">(${ind.score.toFixed(1)})</span></p>
+                    </div>
+                `;
+            };
+            // ===== FIM DA MODIFICAÇÃO 1 =====
+
+
+            // Função para pontuar o indicador (1 a 5)
+            const scoreIndicator = (indicatorNumber, value) => {
+                let score = 1; // Default score is 1 (minimum)
+                
+                // Ensure value is treated as a number and handle empty/NaN cases
+                if (value === undefined || value === null || isNaN(value)) {
+                    value = 0;
+                }
+
+                // Os limites de pontuação são baseados no documento PARAMETROS.RTF
+                switch (indicatorNumber) {
+                    case 1: // I1: Variedade Natural/Cultural
+                        if (value > 11) score = 5;
+                        else if (value >= 8) score = 4;
+                        else if (value >= 6) score = 3;
+                        else if (value >= 4) score = 2;
+                        else score = 1;
+                        break;
+                    case 2: // I2: Notoriedade Cênica
+                        if (value > 100000) score = 5;
+                        else if (value >= 10000) score = 4;
+                        else if (value >= 2000) score = 3;
+                        else if (value >= 500) score = 2;
+                        else score = 1;
+                        break;
+                    case 3: // I3: Diversidade de Atividades
+                        if (value > 16) score = 5;
+                        else if (value >= 10) score = 4;
+                        else if (value >= 5) score = 3;
+                        else if (value >= 4) score = 2;
+                        else score = 1;
+                        break;
+                    case 4: // I4: Intensidade de Uso (Aglomeração)
+                        // Se não houver dados (value=0), assume pontuação 1 (Isolamento/Baixa densidade por padrão ou falta de dados)
+                        if (value <= 0) {
+                             score = 1; 
+                        } else {
+                            if (value < 4) score = 5;       // < 4m2/pessoa (Populares/Aglomerado)
+                            else if (value <= 8) score = 4; // 4-8m2
+                            else if (value <= 15) score = 3;// 8-15m2
+                            else if (value <= 30) score = 2;// 15-30m2
+                            else score = 1;                // > 30m2 (Isolamento)
+                        }
+                        break;
+                    case 5: // I5: Infraestrutura
+                        if (value > 25) score = 5;
+                        else if (value >= 16) score = 4;
+                        else if (value >= 10) score = 3;
+                        else if (value >= 5) score = 2;
+                        else score = 1;
+                        break;
+                    case 6: // I6: Serviços
+                        if (value > 10) score = 5;
+                        else if (value >= 7) score = 4;
+                        else if (value >= 4) score = 3;
+                        else if (value >= 3) score = 2;
+                        else score = 1;
+                        break;
+                    case 7: // I7: Atrativos Regionais
+                        if (value > 100) score = 5;
+                        else if (value >= 50) score = 4;
+                        else if (value >= 10) score = 3;
+                        else if (value >= 3) score = 2;
+                        else score = 1;
+                        break;
+                    case 8: // I8: Acesso Público (Tempo) - Menor tempo = Maior Pontuação
+                        // Se o valor for 0 (não preenchido), assume pontuação 1 (Pior cenário/Difícil acesso por padrão)
+                        if (value <= 0) {
+                            score = 1;
+                        } else {
+                            if (value < 45) score = 5;
+                            else if (value <= 90) score = 4;
+                            else if (value <= 180) score = 3;
+                            else if (value <= 240) score = 2;
+                            else score = 1;
+                        }
+                        break;
+                    case 9: // I9: Contexto Socioeconômico (IDH)
+                        if (value > 0.760) score = 5;
+                        else if (value >= 0.700) score = 4;
+                        else if (value >= 0.650) score = 3;
+                        else if (value >= 0.600) score = 2;
+                        else score = 1;
+                        break;
+                    case 10: // I10: Densidade Populacional
+                        if (value > 10000000) score = 5;
+                        else if (value >= 3000000) score = 4;
+                        else if (value >= 1000000) score = 3;
+                        else if (value >= 300000) score = 2;
+                        else score = 1;
+                        break;
+                    case 11: // I11: Hospitalidade
+                        if (value > 10000) score = 5;
+                        else if (value >= 500) score = 4;
+                        else if (value >= 130) score = 3;
+                        else if (value >= 41) score = 2;
+                        else score = 1;
+                        break;
+                    default:
+                        score = 1; // Default to 1
+                }
+                return score;
+            };
+
+            // Variáveis globais para os gráficos
+            let radarChart = null;
+            let barChart = null;
+
+            // Função para gerar o GRÁFICO DE RADAR
+            const createRadarChart = (canvasId, intBio, intSoc, intMan, extBio, extSoc, extMan) => {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                
+                // Cores dinâmicas para o gráfico de radar
+                const colorInternal = getColorByScore((intBio + intSoc + intMan) / 3);
+                const colorExternal = getColorByScore((extBio + extSoc + extMan) / 3);
+                
+                if (radarChart) {
+                    radarChart.destroy();
+                } // Destrói o gráfico anterior se existir
+                
+                radarChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Biofísico', 'Sociocultural', 'Manejo'],
+                        datasets: [
+                            {
+                                label: 'Ambiente Interno (Área)', // Alterado
+                                data: [intBio, intSoc, intMan],
+                                backgroundColor: colorInternal + '4D', // Cor com 30% de opacidade
+                                borderColor: colorInternal,
+                                borderWidth: 2,
+                                pointBackgroundColor: colorInternal,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: colorInternal,
+                            },
+                            {
+                                label: 'Ambiente Externo (Região)', // Alterado
+                                data: [extBio, extSoc, extMan],
+                                backgroundColor: colorExternal + '4D', // Cor com 30% de opacidade
+                                borderColor: colorExternal,
+                                borderWidth: 2,
+                                pointBackgroundColor: colorExternal,
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: colorExternal,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        aspectRatio: 1.5,
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 5,
+                                ticks: {
+                                    stepSize: 1,
+                                    backdropColor: 'rgba(255, 255, 255, 0.8)'
+                                },
+                                pointLabels: {
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                            datalabels: {
+                                display: false, // Desliga os datalabels no gráfico de radar
+                            }
+                        }
+                    },
+                });
+            };
+
+            // Função para gerar o GRÁFICO DE BARRAS (Bilateral)
+            const createBarChart = (canvasId, intBio, intSoc, intMan, extBio, extSoc, extMan) => {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                
+                // CORREÇÃO: Cores individuais para cada atributo
+                const colorsInternal = [getColorByScore(intBio), getColorByScore(intSoc), getColorByScore(intMan)];
+                const colorsExternal = [getColorByScore(extBio), getColorByScore(extSoc), getColorByScore(extMan)];
+
+                if (barChart) {
+                    barChart.destroy();
+                } // Garante que o gráfico anterior seja destruído
+
+                barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Biofísico', 'Sociocultural', 'Manejo'],
+                        datasets: [
+                            // 🛑 ALTERAÇÃO AQUI: Ambiente Interno com valores NEGATIVOS para a ESQUERDA
+                            {
+                                label: 'Ambiente Interno (Área)',
+                                data: [-intBio, -intSoc, -intMan], 
+                                // CORREÇÃO: Usando lista de cores individuais
+                                backgroundColor: colorsInternal,
+                            },
+                            // 🛑 ALTERAÇÃO AQUI: Ambiente Externo com valores POSITIVOS para a DIREITA
+                            {
+                                label: 'Ambiente Externo (Região)', 
+                                data: [extBio, extSoc, extMan], 
+                                // CORREÇÃO: Usando lista de cores individuais
+                                backgroundColor: colorsExternal,
+                            }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y', // Barras horizontais
+                        responsive: true,
+                        aspectRatio: 1.5,
+                        scales: {
+                            x: {
+                                suggestedMin: -5,
+                                suggestedMax: 5,
+                                beginAtZero: false,
+                                position: 'bottom', // Coloca o eixo X na base (opcional)
+                                ticks: {
+                                    stepSize: 1,
+                                    // Formata o rótulo para remover o sinal negativo (mostrar valor absoluto)
+                                    callback: function(value) {
+                                        return Math.abs(value).toFixed(0);
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Média de Pontuação (1 a 5)'
+                                }
+                            },
+                            y: {
+                                stacked: false,
+                                grid: {
+                                    display: true,
+                                    drawBorder: true,
+                                    drawOnChartArea: true,
+                                    drawTicks: true,
+                                    // Desenha uma linha vertical no centro (zero)
+                                    zeroLineColor: 'rgba(0, 0, 0, 1)',
+                                    zeroLineWidth: 2
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true
+                            },
+                            datalabels: {
+                                color: 'black',
+                                font: {
+                                    weight: 'bold'
+                                },
+                                // Exibe o valor absoluto (score real 1.0 a 5.0)
+                                formatter: (value) => Math.abs(value).toFixed(1),
+                                padding: 6,
+                                // Posiciona o datalabel nas extremidades das barras
+                                anchor: function(context) {
+                                    return context.dataset.data[context.dataIndex] > 0 ? 'end' : 'start';
+                                },
+                                align: function(context) {
+                                    return context.dataset.data[context.dataIndex] > 0 ? 'end' : 'start';
+                                },
+                            }
+                        }
+                    }
+                });
+            };
+            
+            // ===== INÍCIO DA MODIFICAÇÃO 2: Helpers para tabela de recomendação =====
+            /**
+             * Helper para criar uma linha (TR) padrão de recomendação.
+             */
+            const createRecommendationRow = (indicator) => {
+                const scoreInt = Math.round(indicator.score);
+                const s = scoreInt > 0 ? (scoreInt > 5 ? 5 : scoreInt) : 1;
+                
+                if (RECOMMENDATIONS_DATA[indicator.name]) {
+                    const recommendationText = RECOMMENDATIONS_DATA[indicator.name][s] || "Recomendação não encontrada.";
+                    
+                    const row = document.createElement('tr');
+                    
+                    row.insertCell().textContent = indicator.name; // Célula 1: Nome
+                    
+                    const scoreCell = row.insertCell(); // Célula 2: Pontuação
+                    scoreCell.textContent = indicator.score.toFixed(1);
+                    scoreCell.className = 'rec-score-cell';
+                    scoreCell.style.backgroundColor = getColorByScore(indicator.score);
+                    
+                    row.insertCell().textContent = recommendationText; // Célula 3: Recomendação
+                    return row;
+                }
+                return null;
+            };
+
+            /**
+             * Helper para criar uma linha (TR) de cabeçalho de grupo.
+             */
+            const createGroupHeaderRow = (title) => {
+                const row = document.createElement('tr');
+                row.className = 'recommendation-group-header';
+                const cell = row.insertCell();
+                cell.colSpan = 3; // Make it span all 3 columns
+                cell.textContent = title;
+                return row;
+            };
+            // ===== FIM DA MODIFICAÇÃO 2 =====
+
+            // NOVO: Função para preencher a tabela de dados de entrada
+            // 🛑 ALTERAÇÃO AQUI: Adiciona os novos campos de Dados da Análise
+            const populateInputDataTable = () => {
+                const tableBody = document.getElementById('inputDataTableBody');
+                tableBody.innerHTML = '';
+                
+                // Novos campos de Dados da Análise (Informativos)
+                const analysisData = [
+                    { type: 'text', id: 'municipio_estado', name: 'Município e Estado', isCalculated: false },
+                    { type: 'text', id: 'coordenadas', name: 'Coordenadas Geográficas', isCalculated: false },
+                    
+                    // 🛑 ALTERAÇÃO: Trocado para Area da Propriedade (Hectares) e movido Area do Atrativo
+                    { type: 'numeric', id: 'area_propriedade', name: 'Área total da propriedade (hectares)', unit: 'hectares', isCalculated: false },
+                    
+                    { type: 'text', id: 'bioma_ambientes', name: 'Bioma e principais ambientes', isCalculated: false },
+                    { type: 'text', id: 'atr_conhecidos', name: 'Nomes dos Atrativos naturais/culturais mais conhecidos', isCalculated: false },
+                    { type: 'text', id: 'comunidades_proximas', name: 'Comunidades próximas', isCalculated: false },
+                    { type: 'text', id: 'eventos_saberes', name: 'Eventos ou saberes culturais locais', isCalculated: false },
+                    { type: 'text', id: 'projetos_pesquisas', name: 'Projetos, pesquisas ou informações estratégicas', isCalculated: false },
+                ];
+                
+                // Dados em ordem de I1 a I11
+                const indicatorData = [
+                    // I1: Variedade Natural/Cultural (Checkbox)
+                    { type: 'checkbox', name: 'I1: Atrativos Naturais (Contagem)', indicator: 'atr_naturais', isCalculated: true },
+                    { type: 'checkbox', name: 'I1: Atrativos Culturais (Contagem)', indicator: 'atr_culturais', isCalculated: true },
+                    
+                    // I2: Notoriedade Cênica (Numeric)
+                    { type: 'numeric', id: 'google_rating', name: 'I2: Média de Avaliação no Google (Rating)', unit: '', isCalculated: true },
+                    { type: 'numeric', id: 'google_reviews', name: 'I2: Número Total de Avaliações (Reviews)', unit: '', isCalculated: true },
+                    
+                    // I3: Diversidade de Atividades (Checkbox)
+                    { type: 'checkbox', name: 'I3: Atividades Oferecidas (Contagem)', indicator: 'atividades', isCalculated: true },
+                    
+                    // I4: Intensidade de Uso (Numeric)
+                    // 🛑 ALTERAÇÃO: Incluído Area do Atrativo aqui e NOME ATUALIZADO
+                    { type: 'numeric', id: 'area_uc', name: 'I4: Área do Atrativo Principal (m²)', unit: 'm²', isCalculated: true },
+                    { type: 'numeric', id: 'visitantes_anual', name: 'I4: Média de visitas por dia no local', unit: 'vis/dia', isCalculated: true },
+                    
+                    // I5: Infraestrutura (Checkbox)
+                    { type: 'checkbox', name: 'I5: Infraestruturas (Contagem)', indicator: 'infraestrutura', isCalculated: true },
+                    
+                    // I6: Serviços (Checkbox)
+                    { type: 'checkbox', name: 'I6: Serviços (Contagem)', indicator: 'servicos', isCalculated: true },
+                    
+                    // I7: Atrativos Regionais (Numeric)
+                    { type: 'numeric', id: 'atr_regionais', name: 'I7: Número de atrações turísticas regionais (TripAdvisor)', unit: '', isCalculated: true },
+                    
+                    // I8: Acesso Público (Numeric)
+                    { type: 'numeric', id: 'tempo_acesso', name: 'I8: Tempo de viagem do aeroporto mais próximo', unit: 'minutos', isCalculated: true },
+                    
+                    // I9: Contexto Socioeconômico (Numeric)
+                    { type: 'numeric', id: 'idh', name: 'I9: IDH médio no buffer de 100km', unit: '', isCalculated: true },
+                    
+                    // I10: Densidade Populacional (Numeric)
+                    { type: 'numeric', id: 'populacao', name: 'I10: População total num buffer de 100km', unit: '', isCalculated: true },
+                    
+                    // I11: Estabelecimentos de Hospitalidade (Numeric)
+                    { type: 'numeric', id: 'hospitalidade', name: 'I11: Hospedagem (TripAdvisor)', unit: '', isCalculated: true },
+                    { type: 'numeric', id: 'restaurantes', name: 'I11: Restaurantes (TripAdvisor)', unit: '', isCalculated: true },
+                ];
+                
+                // Combina os dados (Análise primeiro, depois Indicadores)
+                const allData = analysisData.concat(indicatorData);
+
+                allData.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = item.name;
+                    
+                    let valueCell = row.insertCell();
+                    let itemsCell = row.insertCell();
+
+                    if (item.type === 'numeric') {
+                        const value = document.getElementById(item.id).value;
+                        const numericValue = parseFloat(value);
+                        
+                        let displayValue = value;
+                        if (item.id === 'populacao' && !isNaN(numericValue)) {
+                            displayValue = formatNumber(numericValue);
+                        } else if (item.id === 'idh') {
+                            displayValue = value; // IDH já é decimal
+                        } else if (item.id === 'area_uc' || item.id === 'area_propriedade') {
+                             displayValue = (isNaN(numericValue) ? '' : numericValue.toFixed(2).replace('.', ','));
+                        } else if (item.id === 'google_rating') {
+                            displayValue = value; // Rating já é decimal
+                        } else if (item.id === 'tempo_acesso' || item.id === 'hospitalidade' || item.id === 'restaurantes' || item.id === 'atr_regionais' || item.id === 'google_reviews' || item.id === 'visitantes_anual') {
+                            displayValue = isNaN(parseInt(value)) ? value : parseInt(value).toLocaleString('pt-BR'); // Formata inteiros grandes
+                        }
+
+                        valueCell.textContent = (value !== '' && value !== null ? displayValue : 'Não preenchido') + (item.unit && value !== '' ? ' ' + item.unit : '');
+                        itemsCell.textContent = item.isCalculated ? 'N/A' : '-'; // Linhas que não são de cálculo usam '-'
+
+                    } else if (item.type === 'checkbox') {
+                        const count = countChecked(item.indicator);
+                        const items = getCheckboxValues(item.indicator);
+                        
+                        valueCell.textContent = `${count} tipos`;
+                        itemsCell.textContent = items.length > 0 ? (items.length > 200 ? items.substring(0, 200) + '...' : items) : 'Nenhum selecionado';
+                    } else if (item.type === 'text') {
+                        const value = document.getElementById(item.id).value;
+                        valueCell.textContent = value || 'Não preenchido';
+                        itemsCell.textContent = '-';
+                    }
+                });
+                
+            };
+
+            // --- LÓGICA PRINCIPAL (CALCULAR E MOSTRAR RESULTADOS) ---
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // ----------------------------------------------------
+                // 1. COLETA DE DADOS
+                // ----------------------------------------------------
+                const ucName = document.getElementById('uc_name').value;
+                const analystName = document.getElementById('analyst_name').value;
+                // Novos campos de Dados da Análise
+                const municipioEstado = document.getElementById('municipio_estado').value;
+                const coordenadas = document.getElementById('coordenadas').value;
+                const biomaAmbientes = document.getElementById('bioma_ambientes').value;
+                const atrConhecidos = document.getElementById('atr_conhecidos').value;
+                const comunidadesProximas = document.getElementById('comunidades_proximas').value;
+                const eventosSaberes = document.getElementById('eventos_saberes').value;
+                const projetosPesquisas = document.getElementById('projetos_pesquisas').value;
+
+
+                // Cálculo para I4: m2/visitante
+                const areaAtrativo = parseFloat(document.getElementById('area_uc').value) || 0;
+                const visitantesDia = parseFloat(document.getElementById('visitantes_anual').value) || 1; 
+                const m2PorPessoa = visitantesDia >= 1 ? areaAtrativo / visitantesDia : 0;
+                
+                // Indicadores Internos
+                const nAtrativosNaturais = countChecked('atr_naturais');
+                const nAtrativosCulturais = countChecked('atr_culturais');
+                const totalAtrativos = nAtrativosNaturais + nAtrativosCulturais;
+                
+                // I2: Média de Avaliação * Número de Avaliações (Rating x Reviews)
+                const googleRating = parseFloat(document.getElementById('google_rating').value) || 0;
+                const googleReviews = parseFloat(document.getElementById('google_reviews').value) || 0;
+                const metricI2 = googleRating * googleReviews; 
+                
+                const nAtividades = countChecked('atividades');
+
+                const nInfraestruturas = countChecked('infraestrutura');
+                const nServicos = countChecked('servicos'); 
+
+                // Indicadores Externos
+                const nAtrativosRegionais = parseFloat(document.getElementById('atr_regionais').value) || 0;
+                const tempoAcesso = parseFloat(document.getElementById('tempo_acesso').value) || 0;
+                const idh = parseFloat(document.getElementById('idh').value) || 0;
+                const populacao = parseFloat(document.getElementById('populacao').value) || 0;
+                const nHospedagem = parseFloat(document.getElementById('hospitalidade').value) || 0;
+                const nRestaurantes = parseFloat(document.getElementById('restaurantes').value) || 0;
+                const totalHospitalidade = nHospedagem + nRestaurantes;
+
+                // ----------------------------------------------------
+                // 2. PONTUAÇÃO DOS INDICADORES (1 a 5)
+                // ----------------------------------------------------
+                const I1_Score = scoreIndicator(1, totalAtrativos);
+                const I2_Score = scoreIndicator(2, metricI2);
+                const I3_Score = scoreIndicator(3, nAtividades);
+                const I4_Score = scoreIndicator(4, m2PorPessoa);
+                const I5_Score = scoreIndicator(5, nInfraestruturas);
+                const I6_Score = scoreIndicator(6, nServicos);
+                const I7_Score = scoreIndicator(7, nAtrativosRegionais);
+                const I8_Score = scoreIndicator(8, tempoAcesso);
+                const I9_Score = scoreIndicator(9, idh);
+                const I10_Score = scoreIndicator(10, populacao);
+                const I11_Score = scoreIndicator(11, totalHospitalidade);
+
+                // Sub-índices (Médias dos Atributos)
+                const intBio = (I1_Score + I2_Score) / 2;
+                const intSoc = (I3_Score + I4_Score) / 2;
+                const intMan = (I5_Score + I6_Score) / 2;
+                const extBio = (I7_Score + I8_Score) / 2;
+                const extSoc = (I9_Score + I10_Score) / 2;
+                const extMan = I11_Score; // I11 é um atributo por si só
+
+                // Índices de Ambiente (Média dos 3 Sub-índices)
+                const indiceInterno = (intBio + intSoc + intMan) / 3;
+                const indiceExterno = (extBio + extSoc + extMan) / 3;
+
+                // Índice Final (Média do Índice Interno e Externo)
+                const indiceFinal = (indiceInterno + indiceExterno) / 2;
+
+                // Lista de scores de Atributos para as tabelas
+                const internalScores = [
+                    { name: 'Biofísico (I1, I2)', score: intBio },
+                    { name: 'Sociocultural (I3, I4)', score: intSoc },
+                    { name: 'Manejo (I5, I6)', score: intMan },
+                ];
+                const externalScores = [
+                    { name: 'Biofísico (I7, I8)', score: extBio },
+                    { name: 'Sociocultural (I9, I10)', score: extSoc },
+                    { name: 'Manejo (I11)', score: extMan },
+                ];
+
+                // Caracterizações
+                const classificationInternal = getClassificationData(indiceInterno);
+                const classificationExternal = getClassificationData(indiceExterno);
+                const classificationFinal = getClassificationData(indiceFinal);
+
+                // Geração da Caracterização Agrupada (Existente)
+                
+                // Caracterização por Indicador Interno (AGRUPADA)
+                const indicatorsInternalMap = {
+                    'I1': { name: 'I1: Variedade Natural/Cultural', score: I1_Score },
+                    'I2': { name: 'I2: Notoriedade Cênica', score: I2_Score },
+                    'I3': { name: 'I3: Diversidade de Atividades', score: I3_Score },
+                    // 🛑 ALTERAÇÃO: CHAVE ATUALIZADA (Popularidade)
+                    'I4': { name: 'I4: Intensidade de Uso (Popularidade)', score: I4_Score },
+                    'I5': { name: 'I5: Infraestrutura', score: I5_Score },
+                    'I6': { name: 'I6: Serviços', score: I6_Score },
+                };
+
+                let indicatorCharsInternal = `
+                    <h4 class="checkbox-subtitle">Atributo Biofísico Interno (I1, I2)</h4>
+                    ${createIndicatorCharHTML(indicatorsInternalMap['I1'])}
+                    ${createIndicatorCharHTML(indicatorsInternalMap['I2'])}
+                    
+                    <h4 class="checkbox-subtitle">Atributo Sociocultural Interno (I3, I4)</h4>
+                    ${createIndicatorCharHTML(indicatorsInternalMap['I3'])}
+                    ${createIndicatorCharHTML(indicatorsInternalMap['I4'])}
+                    
+                    <h4 class="checkbox-subtitle">Atributo Manejo Interno (I5, I6)</h4>
+                    ${createIndicatorCharHTML(indicatorsInternalMap['I5'])}
+                    ${createIndicatorCharHTML(indicatorsInternalMap['I6'])}
+                `;
+
+                // Caracterização por Indicador Externo (AGRUPADA)
+                const indicatorsExternalMap = {
+                    'I7': { name: 'I7: Atrativos Regionais', score: I7_Score },
+                    'I8': { name: 'I8: Acesso Público', score: I8_Score },
+                    'I9': { name: 'I9: Contexto Socioeconômico', score: I9_Score },
+                    'I10': { name: 'I10: Densidade Populacional', score: I10_Score },
+                    'I11': { name: 'I11: Estabelecimentos de Hospitalidade', score: I11_Score },
+                };
+
+                let indicatorCharsExternal = `
+                    <h4 class="checkbox-subtitle">Atributo Biofísico Externo (I7, I8)</h4>
+                    ${createIndicatorCharHTML(indicatorsExternalMap['I7'])}
+                    ${createIndicatorCharHTML(indicatorsExternalMap['I8'])}
+                    
+                    <h4 class="checkbox-subtitle">Atributo Sociocultural Externo (I9, I10)</h4>
+                    ${createIndicatorCharHTML(indicatorsExternalMap['I9'])}
+                    ${createIndicatorCharHTML(indicatorsExternalMap['I10'])}
+                    
+                    <h4 class="checkbox-subtitle">Atributo Manejo Externo (I11)</h4>
+                    ${createIndicatorCharHTML(indicatorsExternalMap['I11'])}
+                `;
+
+
+                // ----------------------------------------------------
+                // 3. ATUALIZAÇÃO DA INTERFACE (RESULTS)
+                // ----------------------------------------------------
+
+                // Dados Iniciais e Caracterização por Indicador
+                document.getElementById('ucNameResult').textContent = ucName || 'Não preenchido';
+                document.getElementById('analystNameResult').textContent = analystName || 'Não preenchido';
+                document.getElementById('dateResult').textContent = new Date().toLocaleDateString('pt-BR');
+                // Novos campos
+                document.getElementById('municipioEstadoResult').textContent = municipioEstado || 'Não preenchido';
+                document.getElementById('coordenadasResult').textContent = coordenadas || 'Não preenchido';
+                // 🛑 ALTERAÇÃO: Trocado para Area da Propriedade (Hectares) e movido Area do Atrativo
+                document.getElementById('areaUcResult').textContent = areaAtrativo > 0 ? areaAtrativo.toFixed(2).replace('.', ',') + ' m²' : 'Não preenchido';
+                
+                document.getElementById('biomaAmbientesResult').textContent = biomaAmbientes || 'Não preenchido';
+                document.getElementById('atrConhecidosResult').textContent = atrConhecidos || 'Não preenchido';
+                document.getElementById('comunidadesProximasResult').textContent = comunidadesProximas || 'Não preenchido';
+                document.getElementById('eventosSaberesResult').textContent = eventosSaberes || 'Não preenchido';
+                document.getElementById('projetosPesquisasResult').textContent = projetosPesquisas || 'Não preenchido';
+
+
+                document.getElementById('internalIndicatorCharacterization').innerHTML = indicatorCharsInternal;
+                document.getElementById('externalIndicatorCharacterization').innerHTML = indicatorCharsExternal;
+
+                // NOVO: Preenche a tabela de dados de entrada
+                populateInputDataTable();
+
+                // Médias Finais (Aplicando Cores de Fundo)
+                document.getElementById('indiceFinalValue').textContent = indiceFinal.toFixed(1);
+                document.getElementById('indiceInternoValue').textContent = indiceInterno.toFixed(1);
+                document.getElementById('indiceExternoValue').textContent = indiceExterno.toFixed(1);
+                document.getElementById('finalClass').textContent = classificationFinal.title;
+
+                // Cor de fundo dos blocos de média
+                document.getElementById('blockInterno').style.backgroundColor = classificationInternal.color;
+                document.getElementById('blockExterno').style.backgroundColor = classificationExternal.color;
+                document.querySelector('.result-block.final-index').style.backgroundColor = classificationFinal.color;
+
+                document.getElementById('classificacaoInterna').textContent = classificationInternal.title;
+                document.getElementById('classificacaoExterna').textContent = classificationExternal.title;
+
+
+                // Popula as tabelas de Pontuações por Atributo
+                const populateAttributeScoreTable = (data, bodyId, footerId, averageScore, averageColor) => {
+                    const body = document.getElementById(bodyId);
+                    body.innerHTML = '';
+                    data.forEach(item => {
+                        const row = body.insertRow();
+                        row.insertCell().textContent = item.name.split('(')[0].trim(); // Nome do Atributo
+                        const scoreCell = row.insertCell();
+                        scoreCell.className = 'score-cell';
+                        scoreCell.textContent = item.score.toFixed(1); // 1 casa decimal
+                        scoreCell.style.backgroundColor = getColorByScore(item.score); // Cor por score
+
+                    });
+                    // Linha de Média (Footer)
+                    const footer = document.getElementById(footerId);
+                    footer.innerHTML = '';
+                    const avgRow = footer.insertRow();
+                    avgRow.className = 'table-average-row';
+                    avgRow.insertCell().textContent = 'MÉDIA';
+                    const avgCell = avgRow.insertCell();
+                    avgCell.textContent = averageScore.toFixed(1);
+                    avgCell.style.backgroundColor = averageColor;
+                };
+
+                populateAttributeScoreTable(internalScores, 'internalScoreBody', 'internalScoreFooter', indiceInterno, classificationInternal.color);
+                populateAttributeScoreTable(externalScores, 'externalScoreBody', 'externalScoreFooter', indiceExterno, classificationExternal.color);
+
+
+                // Caracterização Geral (Usa os novos textos)
+                document.getElementById('classInternaTitle').textContent = classificationInternal.title;
+                document.getElementById('internalCharacterizationText').textContent = CHARACTERIZATIONS[classificationInternal.key];
+                document.getElementById('internalCharacterizationText').style.borderLeftColor = classificationInternal.color;
+                document.getElementById('internalCharacterizationText').style.backgroundColor = classificationInternal.color + '1A';
+
+                document.getElementById('classExternaTitle').textContent = classificationExternal.title;
+                document.getElementById('externalCharacterizationText').textContent = CHARACTERIZATIONS[classificationExternal.key + '-Ext'];
+                document.getElementById('externalCharacterizationText').style.borderLeftColor = classificationExternal.color;
+                document.getElementById('externalCharacterizationText').style.backgroundColor = classificationExternal.color + '1A';
+
+
+                // Lógica da Tabela de Recomendações
+                const recommendationsTableBody = document.getElementById('recommendationsTableBody');
+                recommendationsTableBody.innerHTML = ''; // Limpa a tabela
+
+                // Define os indicadores em seus grupos
+                const indicatorGroups = [
+                    { 
+                        title: 'Ambiente Interno: Atributo Biofísico',
+                        indicators: [
+                            { name: 'I1: Variedade Natural/Cultural', score: I1_Score },
+                            { name: 'I2: Notoriedade Cênica', score: I2_Score }
+                        ]
+                    },
+                    { 
+                        title: 'Ambiente Interno: Atributo Sociocultural',
+                        // 🛑 ALTERAÇÃO: ORDEM ALTERADA (I3 PRIMEIRO) E NOME DE I4 ATUALIZADO
+                        indicators: [
+                            { name: 'I3: Diversidade de Atividades', score: I3_Score },
+                            { name: 'I4: Intensidade de Uso (Popularidade)', score: I4_Score }
+                        ]
+                    },
+                    { 
+                        title: 'Ambiente Interno: Atributo Manejo',
+                        indicators: [
+                            { name: 'I5: Infraestrutura', score: I5_Score },
+                            { name: 'I6: Serviços', score: I6_Score }
+                        ]
+                    },
+                    { 
+                        title: 'Ambiente Externo: Atributo Biofísico',
+                        indicators: [
+                            { name: 'I7: Atrativos Regionais', score: I7_Score },
+                            { name: 'I8: Acesso Público', score: I8_Score }
+                        ]
+                    },
+                    { 
+                        title: 'Ambiente Externo: Atributo Sociocultural',
+                        indicators: [
+                            { name: 'I9: Contexto Socioeconômico', score: I9_Score },
+                            { name: 'I10: Densidade Populacional', score: I10_Score }
+                        ]
+                    },
+                    { 
+                        title: 'Ambiente Externo: Atributo Manejo',
+                        indicators: [
+                            { name: 'I11: Estabelecimentos de Hospitalidade', score: I11_Score }
+                        ]
+                    }
+                ];
+
+                // Constrói a tabela
+                indicatorGroups.forEach(group => {
+                    // Adiciona a linha de cabeçalho do grupo
+                    recommendationsTableBody.appendChild(createGroupHeaderRow(group.title));
+                    
+                    // Adiciona as linhas de indicadores
+                    group.indicators.forEach(ind => {
+                        const row = createRecommendationRow(ind);
+                        if (row) {
+                            recommendationsTableBody.appendChild(row);
+                        }
+                    });
+                });
+
+
+                // Geração dos Gráficos
+                createRadarChart('chartRadar', intBio, intSoc, intMan, extBio, extSoc, extMan);
+                createBarChart('chartBar', intBio, intSoc, intMan, extBio, extSoc, extMan);
+
+
+                // Exibir a seção de resultados
+                resultsSection.classList.remove('hidden');
+
+                // Rolar para os resultados
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+                
+                console.log("Relatório gerado com sucesso! Tabela de Dados de Entrada e Recomendações atualizadas.");
+            });
+            
+            // CORREÇÃO: Adiciona o listener para o botão de download
+            const downloadButton = document.getElementById('downloadButton');
+            if (downloadButton) {
+                downloadButton.addEventListener('click', () => {
+                    window.print();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
