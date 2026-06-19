@@ -80,8 +80,8 @@ h1{font-family:'Fraunces',Georgia,serif;font-size:1.8rem;font-weight:700;color:#
   // Limpa localStorage após capturar
   localStorage.removeItem('iat_variant');
 
-  // Pixel Purchase
-  try{fbq('track','Purchase',{value:49,currency:'BRL',variant:variant});}catch(e){}
+  // Purchase é disparado nativamente pela integração Hotmart -> Meta (server-side).
+  // Não duplicar aqui (mesmo problema corrigido em seu-acesso/).
 
   // Supabase
   fetch(SUPA+'/rest/v1/ab_events',{
