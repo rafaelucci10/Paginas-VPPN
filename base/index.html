@@ -519,6 +519,9 @@ tr:hover td{background:rgba(0,0,0,.012)}
               <button class="fb" onclick="filterTasks(this,'VPPN')">VPPN</button>
               <button class="fb" onclick="filterTasks(this,'IAT')">IAT</button>
               <button class="fb" onclick="filterTasks(this,'Geral')">Geral</button>
+              <div class="fsep" id="owner-fsep" style="display:none"></div>
+              <button class="fb" id="owner-all" onclick="filterOwner(this,'all')" style="display:none">Todas</button>
+              <button class="fb" id="owner-mine" onclick="filterOwner(this,'mine')" style="display:none">Minhas</button>
             </div>
             <button onclick="openModal()" style="background:var(--dk);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700">+ Nova Tarefa</button>
           </div>
@@ -771,9 +774,10 @@ tr:hover td{background:rgba(0,0,0,.012)}
       <div class="mf"><label>Prioridade</label><select id="t-pri"><option value="media">Média</option><option value="alta">Alta</option><option value="baixa">Baixa</option></select></div>
     </div>
     <div class="mf-row">
-      <div class="mf"><label>Responsável</label><select id="t-ass"><option value="">Ninguém</option><option>Thiago</option><option>Rafael</option><option>João</option><option>Marina</option><option>Editor</option><option>Designer</option></select></div>
+      <div class="mf"><label>Responsável</label><select id="t-ass"><option value="">Ninguém</option></select></div>
       <div class="mf"><label>Data limite</label><input type="date" id="t-date"></div>
     </div>
+    <div class="mf"><label>Projeto (opcional)</label><input type="text" id="t-proj" placeholder="Ex: Pico Pago, Mandala de Tráfego..."></div>
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
       <button class="btn-save" onclick="saveTask()">Salvar</button>
@@ -791,7 +795,7 @@ const TITLES={home:'Início',equipe:'Equipe',cultura:'Cultura',projetos:'Projeto
 const ADMIN_ONLY=['dashboard','metas','senhas','admin'];
 const EDITOR_ROLES=['admin','editor'];
 
-let currentUser=null,currentRole='editor',allTasks=[],taskFilter='all',draggedId=null;
+let currentUser=null,currentRole='editor',allTasks=[],taskFilter='all',ownerFilter='all',draggedId=null,allUsers=[];
 
 document.getElementById('li-e').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 document.getElementById('li-p').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
@@ -821,8 +825,19 @@ async function initApp(user){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='flex';
   setDate();
+  await loadAssigneeOptions();
   await loadTasks();
-  if(currentRole==='admin') loadUsers();
+  if(currentRole==='admin'){
+    loadUsers();
+    ['owner-fsep','owner-all','owner-mine'].forEach(id=>document.getElementById(id).style.display=id==='owner-fsep'?'block':'inline-block');
+  }
+}
+
+async function loadAssigneeOptions(){
+  const{data}=await sb.from('rn_profiles').select('id,name,email').order('name');
+  allUsers=data||[];
+  const sel=document.getElementById('t-ass');
+  sel.innerHTML='<option value="">Ninguém</option>'+allUsers.map(u=>`<option value="${u.id}">${esc(u.name||u.email)}</option>`).join('');
 }
 
 (async()=>{
@@ -861,7 +876,8 @@ async function loadTasks(){
 
 function renderTasks(){
   const cols=['backlog','andamento','revisao','concluido'];
-  const f=taskFilter==='all'?allTasks:allTasks.filter(t=>t.product===taskFilter);
+  let f=taskFilter==='all'?allTasks:allTasks.filter(t=>t.product===taskFilter);
+  if(ownerFilter==='mine')f=f.filter(t=>t.assignee_id===currentUser?.id);
   cols.forEach(col=>{
     const el=document.getElementById('cards-'+col);
     const cnt=document.getElementById('cnt-'+col);
@@ -871,13 +887,15 @@ function renderTasks(){
       const pc={VPPN:'b-g',IAT:'b-o',Geral:'b-gr'}[t.product]||'b-gr';
       const rc={alta:'b-r',media:'b-o',baixa:'b-g'}[t.priority]||'b-gr';
       const del=currentRole==='admin'?`<span onclick="delTask('${t.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Excluir">✕</span>`:'';
+      const assigneeName=allUsers.find(u=>u.id===t.assignee_id)?.name||t.assignee||'';
       return`<div class="k-card" draggable="true" data-id="${t.id}">
         <div class="k-card-t">${esc(t.title)}${del}</div>
         ${t.description?`<div class="k-card-d">${esc(t.description)}</div>`:''}
         <div class="k-card-m">
           ${t.product?`<span class="b ${pc}">${t.product}</span>`:''}
+          ${t.project?`<span class="b b-gr">📁 ${esc(t.project)}</span>`:''}
           <span class="b ${rc}">${t.priority||'média'}</span>
-          ${t.assignee?`<span class="b b-gr">👤 ${esc(t.assignee)}</span>`:''}
+          ${assigneeName?`<span class="b b-gr">👤 ${esc(assigneeName)}</span>`:''}
           ${t.due_date?`<span class="k-card-dt">📅 ${t.due_date.slice(8,10)}/${t.due_date.slice(5,7)}</span>`:''}
         </div>
       </div>`;
@@ -902,14 +920,20 @@ function filterTasks(btn,prod){
   document.querySelectorAll('[onclick^="filterTasks"]').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');taskFilter=prod;renderTasks();
 }
+function filterOwner(btn,owner){
+  document.querySelectorAll('[onclick^="filterOwner"]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');ownerFilter=owner;renderTasks();
+}
 function openModal(){document.getElementById('task-modal').classList.add('open')}
 function closeModal(){document.getElementById('task-modal').classList.remove('open')}
 async function saveTask(){
   const title=document.getElementById('t-title').value.trim();
   if(!title)return alert('Título é obrigatório');
-  await sb.from('rn_tasks').insert({title,description:document.getElementById('t-desc').value.trim(),product:document.getElementById('t-prod').value,priority:document.getElementById('t-pri').value,assignee:document.getElementById('t-ass').value,due_date:document.getElementById('t-date').value||null,status:'backlog',created_by:currentUser?.email||''});
+  const assId=document.getElementById('t-ass').value||null;
+  const assName=allUsers.find(u=>u.id===assId)?.name||'';
+  await sb.from('rn_tasks').insert({title,description:document.getElementById('t-desc').value.trim(),product:document.getElementById('t-prod').value,project:document.getElementById('t-proj').value.trim()||null,priority:document.getElementById('t-pri').value,assignee_id:assId,assignee:assName,due_date:document.getElementById('t-date').value||null,status:'backlog',created_by:currentUser?.email||''});
   closeModal();
-  document.getElementById('t-title').value='';document.getElementById('t-desc').value='';document.getElementById('t-date').value='';
+  document.getElementById('t-title').value='';document.getElementById('t-desc').value='';document.getElementById('t-date').value='';document.getElementById('t-proj').value='';
   await loadTasks();
 }
 async function delTask(id){if(!confirm('Excluir?'))return;await sb.from('rn_tasks').delete().eq('id',id);await loadTasks();}
