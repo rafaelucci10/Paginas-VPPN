@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Base Operacional — Reconexão Natural</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preload" href="../fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="../fonts/fonts.css"></noscript>
+<style>
+:root{
+  --sb:#0d1f14;--sb-h:#162d1e;--sb-a:#1e3d28;
+  --tx:rgba(244,239,230,.58);--tx-on:#f4efe6;
+  --ac:#c8a84b;--ac2:#e4cc82;
+  --bg:#f3efe8;--card:#fff;
+  --dk:#152e20;--mid:#3a5e48;--mu:#7a9b85;
+  --br:#e4ddd3;--ok:#4a8c63;
+  --dept-traf:#1a4a6b;--dept-com:#2d6a2d;--dept-sup:#6b3a1a;--dept-prod:#4a1a6b;
+  --font-s:'Fraunces',Georgia,serif;--font-b:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:var(--font-b);background:var(--bg)}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font-b);cursor:pointer;border:none}
+
+/* ── LOGIN ── */
+#login-screen{position:fixed;inset:0;background:var(--sb);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:28px}
+.l-logo{font-family:var(--font-s);font-size:22px;color:var(--tx-on);text-align:center}
+.l-logo strong{color:var(--ac)}
+.l-sub{font-size:12px;color:rgba(244,239,230,.35);text-align:center}
+.l-box{background:#fff;border-radius:16px;padding:36px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.l-box h2{font-family:var(--font-s);font-size:18px;color:var(--dk);margin-bottom:20px}
+.lf{margin-bottom:13px}
+.lf label{display:block;font-size:11px;font-weight:700;color:var(--mu);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.lf input{width:100%;border:1px solid var(--br);border-radius:8px;padding:10px 13px;font-size:14px;font-family:var(--font-b);outline:none;color:var(--dk);transition:border .15s}
+.lf input:focus{border-color:var(--ok)}
+.l-btn{width:100%;background:var(--dk);color:var(--ac);border-radius:8px;padding:12px;font-size:13px;font-weight:800;letter-spacing:.06em;margin-top:6px;transition:opacity .15s}
+.l-btn:hover{opacity:.88}
+.l-err{font-size:12px;color:#c0392b;margin-top:10px;text-align:center;display:none}
+
+/* ── LAYOUT ── */
+.layout{display:flex;height:100vh}
+#app{display:none}
+
+/* ── SIDEBAR ── */
+.sb{width:224px;min-width:224px;background:var(--sb);display:flex;flex-direction:column;overflow-y:auto}
+.sb-top{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-logo{font-family:var(--font-s);font-size:14px;color:var(--tx-on);margin-top:8px;line-height:1.3}
+.sb-logo strong{color:var(--ac)}
+.sb-sub{font-size:10px;color:var(--tx);margin-top:2px}
+.sb-user{padding:10px 14px 10px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px}
+.sb-av{width:30px;height:30px;background:var(--sb-a);border-radius:8px;color:var(--ac);font-family:var(--font-s);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-un{font-size:12px;color:var(--tx-on);font-weight:600;line-height:1.2}
+.sb-ur{font-size:10px;color:var(--tx);text-transform:capitalize}
+.sb-nav{flex:1;padding:6px 0}
+.sb-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,239,230,.25);padding:14px 14px 4px}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 14px;color:var(--tx);font-size:13px;font-weight:500;cursor:pointer;border-left:3px solid transparent;transition:all .12s}
+.ni:hover{background:var(--sb-h);color:var(--tx-on)}
+.ni.active{background:var(--sb-a);color:var(--tx-on);border-left-color:var(--ac)}
+.ni-ic{width:16px;text-align:center;font-size:13px;flex-shrink:0}
+.sb-foot{padding:12px 14px;border-top:1px solid rgba(255,255,255,.06)}
+.sb-out{font-size:12px;color:rgba(244,239,230,.28);cursor:pointer;transition:color .12s}
+.sb-out:hover{color:#e57373}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:50px;background:var(--card);border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.tb-l{display:flex;align-items:center;gap:8px}
+.tb-t{font-size:14px;font-weight:700;color:var(--dk)}
+.tb-b{font-size:11px;padding:2px 8px;border-radius:20px;background:rgba(200,168,75,.12);color:#7a5a1a;font-weight:600}
+.tb-d{font-size:12px;color:var(--mu)}
+.content{flex:1;overflow-y:auto;background:var(--bg)}
+
+/* ── PAGES ── */
+.page{display:none;padding:0}
+.page.active{display:block}
+.page-inner{padding:32px 36px;max-width:1100px}
+.ph{margin-bottom:28px}
+.ph h1{font-family:var(--font-s);font-size:26px;color:var(--dk);margin-bottom:4px}
+.ph p{font-size:13px;color:var(--mu);line-height:1.6}
+
+/* ── CARDS ── */
+.card{background:var(--card);border-radius:10px;padding:24px;border:1px solid var(--br);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.ct{font-family:var(--font-s);font-size:15px;font-weight:700;color:var(--dk);margin-bottom:4px}
+.cs{font-size:12px;color:var(--mu);margin-bottom:16px}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:960px){.g3,.g4{grid-template-columns:1fr 1fr}}
+
+/* ── BADGES ── */
+.b{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+.b-g{background:rgba(74,140,99,.12);color:#2a5c40}
+.b-o{background:rgba(200,168,75,.12);color:#7a5a1a}
+.b-r{background:rgba(229,115,115,.12);color:#b03030}
+.b-b{background:rgba(66,139,202,.12);color:#2060a0}
+.b-gr{background:rgba(0,0,0,.06);color:#666}
+.b-p{background:rgba(142,68,173,.12);color:#6c3483}
+
+/* ── DIV ── */
+.div{height:1px;background:var(--br);margin:22px 0}
+.sec-t{font-family:var(--font-s);font-size:15px;font-weight:700;color:var(--dk);margin-bottom:14px}
+
+/* ── HOME HERO ── */
+.home-hero{background:var(--dk);padding:48px 36px;position:relative;overflow:hidden}
+.home-hero::before{content:'';position:absolute;inset:0;background:url('../vppn/images/M1_apa_serra_da_mantiqueira_Acervo_ICMBio-768x512.webp') center/cover;opacity:.12}
+.home-hero-inner{position:relative;z-index:1;max-width:700px}
+.home-tag{display:inline-block;background:rgba(200,168,75,.18);border:1px solid rgba(200,168,75,.3);color:var(--ac2);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:16px}
+.home-hero h1{font-family:var(--font-s);font-size:clamp(24px,3.5vw,40px);color:var(--tx-on);font-weight:700;line-height:1.25;margin-bottom:12px}
+.home-hero h1 em{font-style:normal;color:var(--ac)}
+.home-hero p{font-size:15px;color:rgba(244,239,230,.72);line-height:1.75;max-width:580px}
+
+/* ── HOME QUICK ACCESS ── */
+.qa-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:28px 36px 0}
+.qa-c{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-radius:10px;background:var(--card);border:1px solid var(--br);transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.qa-c:hover{border-color:var(--ac);transform:translateY(-1px)}
+.qa-i{font-size:18px;width:36px;height:36px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qa-l{font-weight:700;font-size:13px;color:var(--dk)}
+.qa-d{font-size:11px;color:var(--mu);margin-top:1px}
+
+/* ── VALORES HOME ── */
+.mvv-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--br);margin-top:28px}
+.mvv-item{padding:24px 28px;border-right:1px solid var(--br)}
+.mvv-item:last-child{border-right:none}
+.mvv-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--ac);margin-bottom:8px}
+.mvv-txt{font-family:var(--font-s);font-size:14px;color:var(--dk);line-height:1.55;font-style:italic}
+
+/* ── ORGANOGRAM ── */
+.oc-wrap{overflow-x:auto;padding:20px 0 10px}
+.oc-ceo-row{display:flex;justify-content:center;margin-bottom:0}
+.oc-ceo-box{background:var(--dk);border-radius:12px;padding:14px 32px;text-align:center;min-width:210px}
+.oc-ceo-name{font-family:var(--font-s);font-size:15px;font-weight:700;color:var(--tx-on)}
+.oc-ceo-role{font-size:11px;color:rgba(244,239,230,.55);margin-top:3px}
+.oc-ceo-b{display:inline-block;background:rgba(200,168,75,.2);color:var(--ac);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 8px;border-radius:10px;margin-top:5px}
+.oc-v{width:2px;height:24px;background:var(--br);margin:0 auto}
+.oc-dept-row{display:flex;gap:10px;min-width:max-content;padding:0 2px 4px}
+.oc-dept{flex-shrink:0}
+.oc-dept-head{color:#fff;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;padding:7px 14px;border-radius:8px 8px 0 0;white-space:nowrap;text-align:center}
+.oc-dept-body{border:1px solid var(--br);border-top:none;border-radius:0 0 10px 10px;background:rgba(0,0,0,.02);padding:8px;display:flex;flex-direction:column;gap:6px;min-width:148px}
+.oc-setor{background:#fff;border-radius:7px;padding:9px 12px;border:1px solid var(--br)}
+.oc-setor.vaga{opacity:.5;border-style:dashed}
+.oc-setor-name{font-size:12px;font-weight:700;color:var(--dk);margin-bottom:4px;line-height:1.3}
+.oc-setor-person{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mu)}
+.oc-setor-av{width:18px;height:18px;border-radius:4px;background:var(--dk);color:var(--ac);font-family:var(--font-s);font-weight:700;font-size:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.oc-setor.vaga .oc-setor-av{background:var(--bg);color:var(--mu)}
+.oc-setor.vaga .oc-setor-person{color:rgba(0,0,0,.25);font-style:italic}
+
+/* ── VALORES FULL ── */
+.valor-card{padding:24px}
+.valor-ic{font-size:26px;margin-bottom:10px}
+.valor-t{font-family:var(--font-s);font-size:16px;font-weight:700;color:var(--dk);margin-bottom:8px}
+.valor-d{font-size:13px;color:var(--mu);line-height:1.7}
+
+/* ── MANIFESTO ── */
+.manifesto{background:var(--dk);border-radius:12px;padding:36px;margin-bottom:20px;position:relative;overflow:hidden}
+.manifesto::before{content:'"';position:absolute;top:-20px;left:20px;font-family:var(--font-s);font-size:160px;color:rgba(200,168,75,.08);line-height:1}
+.manifesto-text{font-family:var(--font-s);font-size:clamp(15px,2vw,20px);color:var(--tx-on);line-height:1.75;font-style:italic;position:relative;z-index:1}
+.manifesto-text strong{color:var(--ac);font-style:normal}
+
+/* ── KANBAN ── */
+.k-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start}
+@media(max-width:1000px){.kanban{grid-template-columns:1fr 1fr}}
+.k-col{background:rgba(0,0,0,.03);border-radius:10px;padding:12px;border:1px solid var(--br);min-height:160px;transition:background .15s}
+.k-col.drag-over{background:rgba(200,168,75,.08);border-color:var(--ac)}
+.k-col-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.k-col-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu)}
+.k-cnt{font-size:11px;color:var(--mu);background:rgba(0,0,0,.06);border-radius:10px;padding:1px 7px;font-weight:700}
+.k-cards{display:flex;flex-direction:column;gap:8px;min-height:40px}
+.k-card{background:var(--card);border-radius:8px;padding:12px 13px;border:1px solid var(--br);cursor:grab;box-shadow:0 1px 3px rgba(0,0,0,.05);transition:box-shadow .12s;user-select:none}
+.k-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.k-card:active{cursor:grabbing}
+.k-card-t{font-size:13px;font-weight:700;color:var(--dk);margin-bottom:6px;line-height:1.3}
+.k-card-d{font-size:11px;color:var(--mu);margin-bottom:8px;line-height:1.5}
+.k-card-m{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.k-card-dt{font-size:10px;color:var(--mu);margin-left:auto}
+.k-add{width:100%;margin-top:8px;padding:7px;background:transparent;border:1px dashed var(--br);border-radius:7px;color:var(--mu);font-size:12px;font-weight:600;transition:all .12s}
+.k-add:hover{background:rgba(0,0,0,.04);color:var(--dk)}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);border-radius:14px;padding:28px;width:460px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{font-family:var(--font-s);font-size:18px;color:var(--dk);margin-bottom:20px}
+.mf{margin-bottom:13px}
+.mf label{display:block;font-size:11px;font-weight:700;color:var(--mu);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.mf input,.mf select,.mf textarea{width:100%;border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:13px;font-family:var(--font-b);outline:none;color:var(--dk);resize:none}
+.mf input:focus,.mf select:focus,.mf textarea:focus{border-color:var(--ok)}
+.mf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.btn-cancel{padding:9px 18px;border-radius:8px;border:1px solid var(--br);background:transparent;color:var(--mu);font-size:13px;font-weight:600}
+.btn-save{padding:9px 18px;border-radius:8px;background:var(--dk);color:var(--ac);font-size:13px;font-weight:700}
+
+/* ── TABLE ── */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 13px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);border-bottom:2px solid var(--br);white-space:nowrap}
+td{padding:10px 13px;border-bottom:1px solid var(--br);color:var(--dk);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(0,0,0,.012)}
+.td-code{font-family:'Courier New',monospace;font-size:12px;font-weight:700;background:rgba(21,46,32,.06);padding:3px 7px;border-radius:4px}
+
+/* ── FILTER ── */
+.fbar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.fb{padding:5px 11px;font-size:12px;font-weight:600;border:1px solid var(--br);border-radius:6px;background:var(--card);cursor:pointer;color:var(--mu);transition:all .12s;font-family:var(--font-b)}
+.fb:hover{color:var(--dk)}
+.fb.active{background:var(--dk);color:#fff;border-color:var(--dk)}
+.fsep{width:1px;height:18px;background:var(--br);margin:0 3px}
+
+/* ── MATERIAIS ── */
+.mat-card{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;transition:all .15s;text-decoration:none;background:var(--card);border-radius:10px;border:1px solid var(--br);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.mat-card:hover{border-color:var(--ac);box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px)}
+.mat-ic{font-size:22px;width:42px;height:42px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mat-t{font-weight:700;font-size:13px;color:var(--dk)}
+.mat-s{font-size:11px;color:var(--mu);margin-top:2px}
+.mat-arr{margin-left:auto;color:var(--mu);font-size:16px}
+
+/* ── POPs ── */
+.pop{border:1px solid var(--br);border-radius:10px;overflow:hidden;background:var(--card);margin-bottom:10px}
+.pop-h{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer}
+.pop-h:hover{background:rgba(0,0,0,.02)}
+.pop-hl{display:flex;align-items:center;gap:10px}
+.pop-num{width:32px;height:32px;border-radius:8px;background:var(--dk);color:var(--ac);font-family:var(--font-s);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pop-title{font-weight:700;font-size:14px;color:var(--dk)}
+.pop-sub{font-size:11px;color:var(--mu);margin-top:1px}
+.pop-chev{color:var(--mu);font-size:16px;transition:transform .2s}
+.pop.open .pop-chev{transform:rotate(180deg)}
+.pop-body{display:none;padding:0 18px 18px;border-top:1px solid var(--br)}
+.pop.open .pop-body{display:block}
+.pop-sec{margin-top:14px}
+.pop-sec-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);margin-bottom:6px}
+.pop-sec-v{font-size:13px;color:var(--dk);line-height:1.65}
+.steps-t{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.steps-t th{background:var(--bg);padding:7px 10px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);border-bottom:1px solid var(--br)}
+.steps-t td{padding:9px 10px;border-bottom:1px solid var(--br);vertical-align:top}
+.steps-t tr:last-child td{border-bottom:none}
+.sn{width:24px;height:24px;background:var(--ac);color:var(--dk);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:10px}
+
+/* ── DASHBOARD (admin) ── */
+.stat{text-align:center;padding:20px}
+.stat-ic{font-size:26px;margin-bottom:8px}
+.stat-v{font-family:var(--font-s);font-size:32px;font-weight:700;color:var(--dk)}
+.stat-l{font-size:12px;color:var(--mu);margin-top:2px}
+.mrow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--br);font-size:13px}
+.mrow:last-child{border-bottom:none}
+.ml{color:var(--mu);font-size:12px}
+.mv{font-weight:700;color:var(--dk)}
+.mv.gold{color:var(--ac)}
+
+/* ── ADMIN ── */
+.usr-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--br)}
+.usr-row:last-child{border-bottom:none}
+.usr-info{display:flex;align-items:center;gap:10px}
+.usr-av{width:34px;height:34px;background:var(--dk);color:var(--ac);border-radius:8px;font-family:var(--font-s);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+.usr-name{font-weight:700;font-size:13px;color:var(--dk)}
+.usr-email{font-size:11px;color:var(--mu);margin-top:1px}
+.role-sel{border:1px solid var(--br);border-radius:6px;padding:5px 8px;font-size:12px;font-family:var(--font-b);color:var(--dk);background:var(--card);cursor:pointer;outline:none}
+
+/* ── CODE ── */
+.code{background:var(--dk);color:var(--ac);padding:12px 16px;border-radius:8px;font-family:'Courier New',monospace;font-size:13px;font-weight:700;margin:10px 0;letter-spacing:.04em}
+
+/* ── ALERT ── */
+.alert{padding:11px 15px;border-radius:8px;font-size:13px;line-height:1.6}
+.a-gold{background:rgba(200,168,75,.1);border-left:3px solid var(--ac);color:#7a5a1a}
+.a-green{background:rgba(74,140,99,.1);border-left:3px solid var(--ok);color:#2a5c40}
+
+.loading{text-align:center;padding:40px;color:var(--mu);font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div>
+    <div class="l-logo">🌿 Reconexão <strong>Natural</strong></div>
+    <div class="l-sub">Base Operacional Interna</div>
+  </div>
+  <div class="l-box">
+    <h2>Entrar</h2>
+    <div class="lf"><label>E-mail</label><input type="email" id="li-e" placeholder="seu@email.com"></div>
+    <div class="lf"><label>Senha</label><input type="password" id="li-p" placeholder="••••••••"></div>
+    <button class="l-btn" onclick="doLogin()">ENTRAR</button>
+    <div class="l-err" id="li-err">E-mail ou senha incorretos.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="layout" id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sb">
+    <div class="sb-top">
+      <span style="font-size:20px">🌿</span>
+      <div class="sb-logo">Reconexão <strong>Natural</strong></div>
+      <div class="sb-sub">Base Operacional</div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-av" id="sb-av">?</div>
+      <div><div class="sb-un" id="sb-name">—</div><div class="sb-ur" id="sb-role">—</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="ni active" data-page="home" onclick="nav(this)"><span class="ni-ic">🌿</span><span>Início</span></div>
+
+      <div class="sb-lbl">Empresa</div>
+      <div class="ni" data-page="equipe" onclick="nav(this)"><span class="ni-ic">👥</span><span>Equipe</span></div>
+      <div class="ni" data-page="cultura" onclick="nav(this)"><span class="ni-ic">💚</span><span>Cultura</span></div>
+
+      <div class="sb-lbl">Operação</div>
+      <div class="ni" data-page="projetos" onclick="nav(this)"><span class="ni-ic">📋</span><span>Projetos</span></div>
+      <div class="ni" data-page="processos" onclick="nav(this)"><span class="ni-ic">⚙️</span><span>Processos</span></div>
+      <div class="ni" data-page="criacao" onclick="nav(this)" data-roles="admin,editor"><span class="ni-ic">🎨</span><span>Criação</span></div>
+      <div class="ni" data-page="materiais" onclick="nav(this)"><span class="ni-ic">📁</span><span>Materiais</span></div>
+
+      <div class="sb-lbl">Gestão</div>
+      <div class="ni" data-page="dashboard" onclick="nav(this)" data-roles="admin"><span class="ni-ic">📊</span><span>Dashboard</span></div>
+      <div class="ni" data-page="metas" onclick="nav(this)" data-roles="admin"><span class="ni-ic">🎯</span><span>Metas</span></div>
+      <div class="ni" data-page="senhas" onclick="nav(this)" data-roles="admin"><span class="ni-ic">🔑</span><span>Senhas</span></div>
+      <div class="ni" data-page="admin" onclick="nav(this)" data-roles="admin"><span class="ni-ic">👤</span><span>Administração</span></div>
+    </nav>
+    <div class="sb-foot"><span class="sb-out" onclick="doLogout()">← Sair</span></div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <div class="tb-l">
+        <span class="tb-t" id="tb-title">Início</span>
+        <span class="tb-b" id="tb-badge">Reconexão Natural</span>
+      </div>
+      <span class="tb-d" id="tb-date"></span>
+    </header>
+
+    <div class="content">
+
+      <!-- ══ HOME ══ -->
+      <div class="page active" id="page-home">
+        <div class="home-hero">
+          <div class="home-hero-inner">
+            <span class="home-tag">Reconexão Natural · Base Operacional</span>
+            <h1>Transformar áreas naturais em operações de ecoturismo que <em>preservam, encantam e geram renda.</em></h1>
+            <p>Este é o espaço de trabalho do time. Aqui você encontra tudo o que precisa para operar, criar e crescer junto com a empresa.</p>
+          </div>
+        </div>
+
+        <div class="qa-grid" style="padding:28px 36px 0">
+          <div class="qa-c" onclick="goTo('equipe')"><div class="qa-i">👥</div><div><div class="qa-l">Equipe</div><div class="qa-d">Organograma e funções</div></div></div>
+          <div class="qa-c" onclick="goTo('projetos')"><div class="qa-i">📋</div><div><div class="qa-l">Projetos</div><div class="qa-d">Kanban do time</div></div></div>
+          <div class="qa-c" onclick="goTo('processos')"><div class="qa-i">⚙️</div><div><div class="qa-l">Processos</div><div class="qa-d">POPs e fluxos</div></div></div>
+          <div class="qa-c" onclick="goTo('cultura')"><div class="qa-i">💚</div><div><div class="qa-l">Cultura</div><div class="qa-d">Valores e manifesto</div></div></div>
+          <div class="qa-c" onclick="goTo('criacao')"><div class="qa-i">🎨</div><div><div class="qa-l">Criação</div><div class="qa-d">Criativos e anúncios</div></div></div>
+          <div class="qa-c" onclick="goTo('materiais')"><div class="qa-i">📁</div><div><div class="qa-l">Materiais</div><div class="qa-d">Drive e recursos</div></div></div>
+        </div>
+
+        <div style="padding:0 36px">
+          <div class="mvv-strip">
+            <div class="mvv-item">
+              <div class="mvv-lbl">Missão</div>
+              <div class="mvv-txt">Transformar áreas naturais em operações de ecoturismo sustentáveis que preservam, encantam e geram renda.</div>
+            </div>
+            <div class="mvv-item">
+              <div class="mvv-lbl">Visão</div>
+              <div class="mvv-txt">Ser a referência em método e ferramentas para o ecoturismo privado no Brasil e na América Latina.</div>
+            </div>
+            <div class="mvv-item">
+              <div class="mvv-lbl">Propósito</div>
+              <div class="mvv-txt">Provar que é possível prosperar economicamente preservando a natureza — e que essas duas coisas são a mesma coisa.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ EQUIPE ══ -->
+      <div class="page" id="page-equipe">
+        <div class="page-inner">
+          <div class="ph"><h1>Equipe</h1><p>Estrutura da Reconexão Natural por departamento.</p></div>
+
+          <div class="card" style="margin-bottom:20px;padding:20px">
+            <div class="oc-wrap">
+              <div class="oc-ceo-row">
+                <div class="oc-ceo-box">
+                  <div style="font-size:18px;margin-bottom:6px">🌿</div>
+                  <div class="oc-ceo-name">Thiago Beraldo</div>
+                  <div class="oc-ceo-role">Fundador · Especialista em Ecoturismo</div>
+                  <div class="oc-ceo-b">CEO</div>
+                </div>
+              </div>
+              <div class="oc-v"></div>
+              <div style="height:2px;background:var(--br);max-width:90%;margin:0 auto"></div>
+              <div class="oc-dept-row">
+
+                <div class="oc-dept">
+                  <div class="oc-v"></div>
+                  <div class="oc-dept-head" style="background:#1a4a6b">Marketing Pago</div>
+                  <div class="oc-dept-body">
+                    <div class="oc-setor"><div class="oc-setor-name">Gestão de Tráfego</div><div class="oc-setor-person"><div class="oc-setor-av">R</div>Rafael</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Copywriting</div><div class="oc-setor-person"><div class="oc-setor-av">R</div>Rafael</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Criativos (Design + Vídeo)</div><div class="oc-setor-person"><div class="oc-setor-av">R</div>Rafael</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Landing Pages</div><div class="oc-setor-person"><div class="oc-setor-av">R</div>Rafael</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Automações</div><div class="oc-setor-person"><div class="oc-setor-av">R</div>Rafael</div></div>
+                  </div>
+                </div>
+
+                <div class="oc-dept">
+                  <div class="oc-v"></div>
+                  <div class="oc-dept-head" style="background:#2a6b4a">Conteúdo Orgânico</div>
+                  <div class="oc-dept-body">
+                    <div class="oc-setor"><div class="oc-setor-name">Conteúdo Orgânico</div><div class="oc-setor-person"><div class="oc-setor-av">Mn</div>Manu</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Design Orgânico</div><div class="oc-setor-person"><div class="oc-setor-av">Mn</div>Manu</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Edição de Vídeo</div><div class="oc-setor-person"><div class="oc-setor-av">Mn</div>Manu</div></div>
+                  </div>
+                </div>
+
+                <div class="oc-dept">
+                  <div class="oc-v"></div>
+                  <div class="oc-dept-head" style="background:#2d6a2d">Vendas</div>
+                  <div class="oc-dept-body">
+                    <div class="oc-setor"><div class="oc-setor-name">Vendas 1:1</div><div class="oc-setor-person"><div class="oc-setor-av">J</div>João</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Recuperação de Vendas</div><div class="oc-setor-person"><div class="oc-setor-av">J</div>João</div></div>
+                  </div>
+                </div>
+
+                <div class="oc-dept">
+                  <div class="oc-v"></div>
+                  <div class="oc-dept-head" style="background:#6b3a1a">Suporte ao Cliente</div>
+                  <div class="oc-dept-body">
+                    <div class="oc-setor"><div class="oc-setor-name">Atendimento / SAC</div><div class="oc-setor-person"><div class="oc-setor-av">Ma</div>Marina</div></div>
+                    <div class="oc-setor vaga"><div class="oc-setor-name">Comunidade & Alunos</div><div class="oc-setor-person"><div class="oc-setor-av">+</div>Vaga</div></div>
+                  </div>
+                </div>
+
+                <div class="oc-dept">
+                  <div class="oc-v"></div>
+                  <div class="oc-dept-head" style="background:#4a1a6b">Produto</div>
+                  <div class="oc-dept-body">
+                    <div class="oc-setor"><div class="oc-setor-name">Método VPPN</div><div class="oc-setor-person"><div class="oc-setor-av">T</div>Thiago</div></div>
+                    <div class="oc-setor"><div class="oc-setor-name">Calculadora IAT</div><div class="oc-setor-person"><div class="oc-setor-av">T</div>Thiago</div></div>
+                    <div class="oc-setor vaga"><div class="oc-setor-name">Novos Produtos</div><div class="oc-setor-person"><div class="oc-setor-av">+</div>A definir</div></div>
+                  </div>
+                </div>
+
+                <div class="oc-dept">
+                  <div class="oc-v"></div>
+                  <div class="oc-dept-head" style="background:#4a4a2a">Projetos</div>
+                  <div class="oc-dept-body">
+                    <div class="oc-setor"><div class="oc-setor-name">Gestão de Projetos</div><div class="oc-setor-person"><div class="oc-setor-av">R</div>Rafael</div></div>
+                  </div>
+                </div>
+
+                <div class="oc-dept">
+                  <div class="oc-v"></div>
+                  <div class="oc-dept-head" style="background:#2d2d2d">Administrativo</div>
+                  <div class="oc-dept-body">
+                    <div class="oc-setor vaga"><div class="oc-setor-name">Financeiro</div><div class="oc-setor-person"><div class="oc-setor-av">+</div>Vaga</div></div>
+                    <div class="oc-setor vaga"><div class="oc-setor-name">Jurídico</div><div class="oc-setor-person"><div class="oc-setor-av">+</div>Vaga</div></div>
+                    <div class="oc-setor vaga"><div class="oc-setor-name">RH</div><div class="oc-setor-person"><div class="oc-setor-av">+</div>Vaga</div></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="alert a-gold">👥 Setores em vaga serão preenchidos conforme o crescimento. Acesse Administração para gerenciar acessos.</div>
+        </div>
+      </div>
+
+      <!-- ══ CULTURA ══ -->
+      <div class="page" id="page-cultura">
+        <div class="page-inner">
+          <div class="ph"><h1>Cultura</h1><p>Quem somos, como pensamos e o que nos move.</p></div>
+
+          <div class="manifesto">
+            <div class="manifesto-text">
+              Acreditamos que <strong>preservar e prosperar não são opostos</strong> — são a mesma escolha feita com método.<br><br>
+              Um criativo que não performou é dado, não fracasso. Uma área natural sem visitantes é uma oportunidade, não um problema.<br><br>
+              Construímos com <strong>consistência</strong>, decidimos com <strong>dados</strong> e entregamos com <strong>propósito</strong>.
+            </div>
+          </div>
+
+          <div class="sec-t">Valores</div>
+          <div class="g3" style="margin-bottom:20px">
+            <div class="card valor-card"><div class="valor-ic">🌿</div><div class="valor-t">Preservação como estratégia</div><div class="valor-d">Não abrimos mão do cuidado com o meio ambiente — ele é o produto.</div></div>
+            <div class="card valor-card"><div class="valor-ic">📐</div><div class="valor-t">Método antes de improviso</div><div class="valor-d">Decisões são tomadas com base em dados, critérios técnicos e planejamento.</div></div>
+            <div class="card valor-card"><div class="valor-ic">🎯</div><div class="valor-t">Resultado para o aluno</div><div class="valor-d">O sucesso do aluno é o nosso resultado. Não apenas entregar — transformar.</div></div>
+            <div class="card valor-card"><div class="valor-ic">🤝</div><div class="valor-t">Clareza e honestidade</div><div class="valor-d">Comunicação direta, sem rodeios. Problemas são falados e resolvidos rápido.</div></div>
+            <div class="card valor-card"><div class="valor-ic">🚀</div><div class="valor-t">Consistência acima de perfeição</div><div class="valor-d">Volume com qualidade consistente vale mais do que uma obra prima por mês.</div></div>
+            <div class="card valor-card"><div class="valor-ic">🧠</div><div class="valor-t">Testar, aprender, repetir</div><div class="valor-d">Resultado ruim é dado. Quem aprende a ler número como informação, escala.</div></div>
+          </div>
+
+          <div class="div"></div>
+          <div class="sec-t">Identidade Visual</div>
+          <div class="card">
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:36px;height:36px;border-radius:8px;background:#152e20"></div><div><div style="font-size:11px;font-weight:700;color:var(--dk)">Verde escuro</div><div style="font-size:10px;color:var(--mu)">#152e20</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:36px;height:36px;border-radius:8px;background:#1e4530"></div><div><div style="font-size:11px;font-weight:700;color:var(--dk)">Verde médio</div><div style="font-size:10px;color:var(--mu)">#1e4530</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:36px;height:36px;border-radius:8px;background:#4a8c63"></div><div><div style="font-size:11px;font-weight:700;color:var(--dk)">Verde acento</div><div style="font-size:10px;color:var(--mu)">#4a8c63</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:36px;height:36px;border-radius:8px;background:#c8a84b"></div><div><div style="font-size:11px;font-weight:700;color:var(--dk)">Dourado</div><div style="font-size:10px;color:var(--mu)">#c8a84b</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:36px;height:36px;border-radius:8px;background:#f4efe6;border:1px solid var(--br)"></div><div><div style="font-size:11px;font-weight:700;color:var(--dk)">Creme</div><div style="font-size:10px;color:var(--mu)">#f4efe6</div></div></div>
+            </div>
+            <div style="font-size:12px;color:var(--mu);line-height:1.8">
+              <strong style="color:var(--dk)">Títulos:</strong> Fraunces (serif) &nbsp;·&nbsp;
+              <strong style="color:var(--dk)">Corpo:</strong> Plus Jakarta Sans &nbsp;·&nbsp;
+              <strong style="color:var(--dk)">Branding Book completo:</strong> <a onclick="goTo('materiais')" style="color:var(--ok);cursor:pointer;font-weight:600">ver Materiais →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PROJETOS / KANBAN ══ -->
+      <div class="page" id="page-projetos">
+        <div class="page-inner">
+          <div class="ph"><h1>Projetos</h1><p>Arraste os cards entre colunas para atualizar o status.</p></div>
+          <div class="k-toolbar">
+            <div class="fbar" style="margin-bottom:0">
+              <button class="fb active" onclick="filterTasks(this,'all')">Todos</button>
+              <div class="fsep"></div>
+              <button class="fb" onclick="filterTasks(this,'VPPN')">VPPN</button>
+              <button class="fb" onclick="filterTasks(this,'IAT')">IAT</button>
+              <button class="fb" onclick="filterTasks(this,'Geral')">Geral</button>
+            </div>
+            <button onclick="openModal()" style="background:var(--dk);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700">+ Nova Tarefa</button>
+          </div>
+          <div class="kanban">
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'backlog')">
+              <div class="k-col-h"><span class="k-col-t">📋 Backlog</span><span class="k-cnt" id="cnt-backlog">0</span></div>
+              <div class="k-cards" id="cards-backlog"></div>
+            </div>
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'andamento')">
+              <div class="k-col-h"><span class="k-col-t">⚡ Em Andamento</span><span class="k-cnt" id="cnt-andamento">0</span></div>
+              <div class="k-cards" id="cards-andamento"></div>
+            </div>
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'revisao')">
+              <div class="k-col-h"><span class="k-col-t">🔍 Revisão</span><span class="k-cnt" id="cnt-revisao">0</span></div>
+              <div class="k-cards" id="cards-revisao"></div>
+            </div>
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'concluido')">
+              <div class="k-col-h"><span class="k-col-t">✅ Concluído</span><span class="k-cnt" id="cnt-concluido">0</span></div>
+              <div class="k-cards" id="cards-concluido"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PROCESSOS ══ -->
+      <div class="page" id="page-processos">
+        <div class="page-inner">
+          <div class="ph"><h1>Processos</h1><p>Procedimentos Operacionais Padrão. Clique para expandir.</p></div>
+          <div class="alert a-gold" style="margin-bottom:18px">📋 Estrutura: Objetivo · Responsáveis · Etapas com Input/Output · Prazos · Instruções</div>
+
+          <div class="pop">
+            <div class="pop-h" onclick="togglePop(this)">
+              <div class="pop-hl"><div class="pop-num">01</div><div><div class="pop-title">Criação de Criativos</div><div class="pop-sub">Do briefing à publicação</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><span class="b b-b">Em construção</span><span class="pop-chev">▾</span></div>
+            </div>
+            <div class="pop-body">
+              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Padronizar o fluxo de produção de criativos — do briefing à publicação — garantindo nomenclatura correta e qualidade consistente.</div></div>
+              <div class="pop-sec"><div class="pop-sec-l">Responsáveis</div><div class="pop-sec-v"><strong>Executa:</strong> Designer / Editor &nbsp;|&nbsp; <strong>Aprova:</strong> Rafael &nbsp;|&nbsp; <strong>Valida:</strong> Thiago</div></div>
+              <div class="pop-sec"><div class="pop-sec-l">Etapas</div>
+                <table class="steps-t"><thead><tr><th>#</th><th>Etapa</th><th>Input</th><th>Output</th><th>Prazo</th></tr></thead><tbody>
+                  <tr><td><span class="sn">1</span></td><td><strong>Briefing</strong></td><td>Demanda da campanha</td><td>Doc de briefing preenchido</td><td>1 dia</td></tr>
+                  <tr><td><span class="sn">2</span></td><td><strong>Copy</strong></td><td>Briefing aprovado</td><td>Copy escrita + ângulo</td><td>1 dia</td></tr>
+                  <tr><td><span class="sn">3</span></td><td><strong>Produção</strong></td><td>Copy + referência</td><td>Arquivo Canva / Drive</td><td>2 dias</td></tr>
+                  <tr><td><span class="sn">4</span></td><td><strong>Revisão</strong></td><td>Arquivo finalizado</td><td>Aprovação ou feedback</td><td>1 dia</td></tr>
+                  <tr><td><span class="sn">5</span></td><td><strong>Nome + Subida</strong></td><td>Criativo aprovado</td><td>Ad no ar + registro</td><td>Mesmo dia</td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+
+          <div class="pop">
+            <div class="pop-h" onclick="togglePop(this)">
+              <div class="pop-hl"><div class="pop-num">02</div><div><div class="pop-title">Análise Semanal de Campanhas</div><div class="pop-sub">Toda segunda-feira</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><span class="b b-r">A detalhar</span><span class="pop-chev">▾</span></div>
+            </div>
+            <div class="pop-body">
+              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Garantir análise regular para decisões rápidas. Nenhuma campanha roda mais de 7 dias sem revisão.</div></div>
+              <div class="pop-sec"><div class="pop-sec-l">Responsáveis</div><div class="pop-sec-v"><strong>Executa:</strong> Rafael &nbsp;|&nbsp; <strong>Alinha:</strong> Thiago</div></div>
+              <div class="pop-sec"><div class="pop-sec-l">Etapas</div>
+                <table class="steps-t"><thead><tr><th>#</th><th>Etapa</th><th>Input</th><th>Output</th><th>Prazo</th></tr></thead><tbody>
+                  <tr><td><span class="sn">1</span></td><td><strong>Coleta</strong></td><td>Gerenciador Meta</td><td>Planilha preenchida</td><td>Segunda-feira</td></tr>
+                  <tr><td><span class="sn">2</span></td><td><strong>Análise</strong></td><td>Planilha preenchida</td><td>Lista de ações</td><td>Mesmo dia</td></tr>
+                  <tr><td><span class="sn">3</span></td><td><strong>Execução</strong></td><td>Lista de ações</td><td>Pausar / Escalar / Testar</td><td>Mesmo dia</td></tr>
+                  <tr><td><span class="sn">4</span></td><td><strong>Resumo</strong></td><td>Decisões tomadas</td><td>Mensagem no WhatsApp</td><td>Mesmo dia</td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+
+          <div class="pop">
+            <div class="pop-h" onclick="togglePop(this)">
+              <div class="pop-hl"><div class="pop-num">03</div><div><div class="pop-title">Atendimento ao Cliente</div><div class="pop-sub">WhatsApp — leads, alunos e suporte</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><span class="b b-r">A detalhar</span><span class="pop-chev">▾</span></div>
+            </div>
+            <div class="pop-body">
+              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Padronizar atendimento via WhatsApp com resposta rápida, qualificação correta e encaminhamento.</div></div>
+              <div class="pop-sec"><div class="pop-sec-l">Responsáveis</div><div class="pop-sec-v"><strong>Executa:</strong> Marina (SAC) / João (leads quentes) &nbsp;|&nbsp; <strong>Escala:</strong> Thiago</div></div>
+              <div class="pop-sec"><div class="pop-sec-l">Instruções</div><div class="pop-sec-v" style="color:var(--mu)">A detalhar — scripts de resposta, SLA, protocolo de reembolso.</div></div>
+            </div>
+          </div>
+
+          <div class="pop">
+            <div class="pop-h" onclick="togglePop(this)">
+              <div class="pop-hl"><div class="pop-num">04</div><div><div class="pop-title">Onboarding de Colaboradores</div><div class="pop-sub">Integração ao time</div></div></div>
+              <div style="display:flex;align-items:center;gap:8px"><span class="b b-r">A detalhar</span><span class="pop-chev">▾</span></div>
+            </div>
+            <div class="pop-body">
+              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Integrar novos colaboradores à cultura, processos e ferramentas em até 7 dias.</div></div>
+              <div class="pop-sec"><div class="pop-sec-l">Checklist</div><div class="pop-sec-v" style="color:var(--mu)">A detalhar — acesso ao portal, leitura dos POPs, apresentação do time, acesso às ferramentas.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ CRIAÇÃO ══ -->
+      <div class="page" id="page-criacao">
+        <div class="page-inner">
+          <div class="ph"><h1>Criação</h1><p>Banco de criativos e sistema de nomenclatura. Acesso para admin e editores.</p></div>
+
+          <div class="card" style="margin-bottom:20px">
+            <div class="ct">Sistema de Nomenclatura</div>
+            <div class="cs">Padrão obrigatório para todos os criativos no gerenciador e no Drive</div>
+            <div class="code">PRODUTO-FMT-AD##</div>
+            <div class="code" style="opacity:.6">PRODUTO-FMT-AD##-HK##  ← apenas quando variar o hook</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;font-size:12px">
+              <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);margin-bottom:6px">Produtos</div><div style="display:flex;flex-direction:column;gap:4px"><div><code style="font-weight:700">VPPN</code> — Método VPPN</div><div><code style="font-weight:700">IAT</code> — Calculadora IAT</div></div></div>
+              <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);margin-bottom:6px">Formatos</div><div style="display:flex;flex-direction:column;gap:4px"><div><code style="font-weight:700">VID</code> Vídeo &nbsp;<code style="font-weight:700">CAR</code> Carrossel &nbsp;<code style="font-weight:700">CARD</code> Card</div><div><code style="font-weight:700">NAT</code> Native &nbsp;<code style="font-weight:700">STR</code> Story</div></div></div>
+            </div>
+            <div class="div" style="margin:14px 0"></div>
+            <div class="alert a-gold">📌 Copy nova = AD novo. HK só quando variar o hook do mesmo criativo. Sem data no nome.</div>
+          </div>
+
+          <div class="card">
+            <div class="ct" style="margin-bottom:4px">Banco de Criativos</div>
+            <div class="cs">Dados nas planilhas do Google Sheets. Clique para abrir e editar.</div>
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+              <a href="https://docs.google.com/spreadsheets/d/1qKSzRgCGrC5o9umlWIvGiyKh5SP_etmTm_70CfJFPfU/edit" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:700;background:#188038;color:#fff">📊 Banco IAT</a>
+              <a href="#" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:700;background:#1a73e8;color:#fff">📊 Banco VPPN</a>
+            </div>
+            <div class="tw">
+              <table>
+                <thead><tr><th>Nome</th><th>Produto</th><th>Formato</th><th>Resumo / Hook</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="td-code">IAT-CARD-AD01</span></td><td><span class="b b-o">IAT</span></td><td><span class="b b-gr">Card</span></td><td style="color:var(--mu);font-size:12px">Ref. Caju — calculadora flat + CTA direto</td><td><span class="b b-b">Em produção</span></td></tr>
+                  <tr><td><span class="td-code">IAT-CARD-AD01-HK02</span></td><td><span class="b b-o">IAT</span></td><td><span class="b b-gr">Card</span></td><td style="color:var(--mu);font-size:12px">Ancoragem de preço (R$2k vs R$49)</td><td><span class="b b-b">Em produção</span></td></tr>
+                  <tr><td><span class="td-code">IAT-STR-AD01</span></td><td><span class="b b-o">IAT</span></td><td><span class="b b-gr">Story</span></td><td style="color:var(--mu);font-size:12px">Vertical 9:16 — Ref. Caju</td><td><span class="b b-b">Em produção</span></td></tr>
+                  <tr><td><span class="td-code">IAT-NAT-AD01</span></td><td><span class="b b-o">IAT</span></td><td><span class="b b-gr">Native</span></td><td style="color:var(--mu);font-size:12px">Editorial — proprietário à direita na área</td><td><span class="b b-b">Em produção</span></td></tr>
+                  <tr><td><span class="td-code">IAT-NAT-AD01-HK02</span></td><td><span class="b b-o">IAT</span></td><td><span class="b b-gr">Native</span></td><td style="color:var(--mu);font-size:12px">Mesmo native — headline depoimento</td><td><span class="b b-b">Em produção</span></td></tr>
+                  <tr><td><span class="td-code">IAT-NAT-AD01-HK03</span></td><td><span class="b b-o">IAT</span></td><td><span class="b b-gr">Native</span></td><td style="color:var(--mu);font-size:12px">Mesmo native — crescimento 15%/ano</td><td><span class="b b-b">Em produção</span></td></tr>
+                  <tr><td><span class="td-code">IAT-CAR-AD01</span></td><td><span class="b b-o">IAT</span></td><td><span class="b b-gr">Carrossel</span></td><td style="color:var(--mu);font-size:12px">Ref. Ceisc — 5 slides</td><td><span class="b b-b">Em produção</span></td></tr>
+                  <tr><td><span class="td-code">VPPN-VID-AD01</span></td><td><span class="b b-g">VPPN</span></td><td><span class="b b-gr">Vídeo</span></td><td style="color:var(--mu);font-size:12px">VSL principal</td><td><span class="b b-g">Ativo</span></td></tr>
+                  <tr><td><span class="td-code">VPPN-CARD-AD01</span></td><td><span class="b b-g">VPPN</span></td><td><span class="b b-gr">Card</span></td><td style="color:var(--mu);font-size:12px">—</td><td><span class="b b-b">Em produção</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MATERIAIS ══ -->
+      <div class="page" id="page-materiais">
+        <div class="page-inner">
+          <div class="ph"><h1>Materiais</h1><p>Recursos, templates e documentos da operação. Clique para abrir no Drive.</p></div>
+          <div class="alert a-gold" style="margin-bottom:20px">📁 Para adicionar links: me envie o link de cada pasta do Drive e eu atualizo os botões.</div>
+
+          <div class="sec-t">Marca</div>
+          <div class="g2" style="margin-bottom:20px">
+            <a href="#" target="_blank" class="mat-card"><div class="mat-ic">📖</div><div><div class="mat-t">Branding Book</div><div class="mat-s">Logotipo, cores, tipografia, guia de uso</div></div><span class="mat-arr">↗</span></a>
+            <a href="#" target="_blank" class="mat-card"><div class="mat-ic">🎨</div><div><div class="mat-t">Templates de Criativos</div><div class="mat-s">Canva · Cards, natives, stories, carrosseis</div></div><span class="mat-arr">↗</span></a>
+          </div>
+
+          <div class="sec-t">Produtos</div>
+          <div class="g2" style="margin-bottom:20px">
+            <a href="#" target="_blank" class="mat-card"><div class="mat-ic">🌿</div><div><div class="mat-t">Materiais VPPN</div><div class="mat-s">Scripts, apresentações, depoimentos</div></div><span class="mat-arr">↗</span></a>
+            <a href="#" target="_blank" class="mat-card"><div class="mat-ic">🧮</div><div><div class="mat-t">Materiais IAT</div><div class="mat-s">Calculadora, relatórios de exemplo, referências</div></div><span class="mat-arr">↗</span></a>
+          </div>
+
+          <div class="sec-t">Operação</div>
+          <div class="g2">
+            <a href="#" target="_blank" class="mat-card"><div class="mat-ic">📝</div><div><div class="mat-t">Scripts de Atendimento</div><div class="mat-s">WhatsApp · SAC e vendas</div></div><span class="mat-arr">↗</span></a>
+            <a href="#" target="_blank" class="mat-card"><div class="mat-ic">🎓</div><div><div class="mat-t">Treinamentos</div><div class="mat-s">Onboarding e tutoriais de ferramentas</div></div><span class="mat-arr">↗</span></a>
+            <a href="https://docs.google.com/spreadsheets/d/1qKSzRgCGrC5o9umlWIvGiyKh5SP_etmTm_70CfJFPfU/edit" target="_blank" class="mat-card"><div class="mat-ic">📊</div><div><div class="mat-t">Banco de Criativos IAT</div><div class="mat-s">Google Sheets · Nomenclatura e status</div></div><span class="mat-arr">↗</span></a>
+            <a href="#" target="_blank" class="mat-card"><div class="mat-ic">📊</div><div><div class="mat-t">Banco de Criativos VPPN</div><div class="mat-s">Google Sheets · Nomenclatura e status</div></div><span class="mat-arr">↗</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DASHBOARD (admin) ══ -->
+      <div class="page" id="page-dashboard">
+        <div class="page-inner">
+          <div class="ph"><h1>Dashboard</h1><p>Visão geral da operação. Visível apenas para administradores.</p></div>
+          <div class="g4" style="margin-bottom:20px">
+            <div class="card stat"><div class="stat-ic">📦</div><div class="stat-v">2</div><div class="stat-l">Produtos ativos</div></div>
+            <div class="card stat"><div class="stat-ic">👥</div><div class="stat-v" id="dash-team">—</div><div class="stat-l">Pessoas no time</div></div>
+            <div class="card stat"><div class="stat-ic">📋</div><div class="stat-v" id="dash-tasks">—</div><div class="stat-l">Tarefas abertas</div></div>
+            <div class="card stat"><div class="stat-ic">🎨</div><div class="stat-v">9</div><div class="stat-l">Criativos mapeados</div></div>
+          </div>
+          <div class="g2">
+            <div class="card"><div class="ct">VPPN — Benchmarks</div><div class="cs">Referência: Black Friday 2024</div>
+              <div class="mrow"><span class="ml">CPA meta</span><span class="mv">R$ 390</span></div>
+              <div class="mrow"><span class="ml">CPL meta</span><span class="mv">R$ 20 – R$ 40</span></div>
+              <div class="mrow"><span class="ml">ROAS mínimo</span><span class="mv">2,31x</span></div>
+              <div class="mrow"><span class="ml">Conversão lead → venda</span><span class="mv">10%–15%</span></div>
+              <div class="mrow"><span class="ml">Mínimo aceitável</span><span class="mv gold">5%</span></div>
+            </div>
+            <div class="card"><div class="ct">IAT — Benchmarks</div><div class="cs">Produto de R$49</div>
+              <div class="mrow"><span class="ml">Ticket</span><span class="mv">R$ 49</span></div>
+              <div class="mrow"><span class="ml">CPA máximo</span><span class="mv">~R$ 25</span></div>
+              <div class="mrow"><span class="ml">ROAS mínimo</span><span class="mv">2x</span></div>
+              <div class="mrow"><span class="ml">CTR meta</span><span class="mv gold">A calibrar</span></div>
+              <div class="mrow"><span class="ml">Conv. LP meta</span><span class="mv gold">A calibrar</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ METAS (admin) ══ -->
+      <div class="page" id="page-metas">
+        <div class="page-inner">
+          <div class="ph"><h1>Metas</h1><p>OKRs e metas por trimestre. Visível apenas para administradores.</p></div>
+          <div class="alert a-gold">🎯 Adicione as metas do trimestre aqui. Sugiro: faturamento mensal, CPA por produto, volume de criativos testados.</div>
+          <div class="g2" style="margin-top:16px">
+            <div class="card"><div class="ct">Q2 2026 — VPPN</div><div class="cs">Abril · Maio · Junho</div><div style="color:var(--mu);font-size:13px;line-height:1.8">A preencher com Thiago e Rafael.</div></div>
+            <div class="card"><div class="ct">Q2 2026 — IAT</div><div class="cs">Abril · Maio · Junho</div><div style="color:var(--mu);font-size:13px;line-height:1.8">A preencher com Thiago e Rafael.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SENHAS (admin) ══ -->
+      <div class="page" id="page-senhas">
+        <div class="page-inner">
+          <div class="ph"><h1>Senhas & Acessos</h1><p>Localização dos acessos. Não armazene senhas aqui — use um gerenciador.</p></div>
+          <div class="alert a-gold" style="margin-bottom:16px">⚠️ Use Bitwarden ou 1Password. Aqui ficam apenas referências de onde encontrar cada acesso.</div>
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--br)"><div style="font-weight:700;font-size:13px;color:var(--dk)">☁️ Cloudflare Pages</div><div style="font-size:12px;color:var(--mu)">API Token — CLAUDE.md do projeto</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--br)"><div style="font-weight:700;font-size:13px;color:var(--dk)">🛒 Hotmart</div><div style="font-size:12px;color:var(--mu)">Conta do Thiago — VPPN e IAT</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--br)"><div style="font-weight:700;font-size:13px;color:var(--dk)">📘 Meta Ads</div><div style="font-size:12px;color:var(--mu)">Pixel: 1358655868587428</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--br)"><div style="font-weight:700;font-size:13px;color:var(--dk)">🗄️ Supabase</div><div style="font-size:12px;color:var(--mu)">sdjlnjqtgnodnifkbykq — base operacional</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0"><div style="font-weight:700;font-size:13px;color:var(--dk)">🐙 GitHub</div><div style="font-size:12px;color:var(--mu)">rafaelucci10/Paginas-VPPN</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ ADMIN ══ -->
+      <div class="page" id="page-admin">
+        <div class="page-inner">
+          <div class="ph"><h1>Administração</h1><p>Gerenciamento de usuários e roles.</p></div>
+          <div class="card">
+            <div class="ct" style="margin-bottom:4px">Usuários</div>
+            <div class="cs">Altere o role de cada usuário conforme necessário.</div>
+            <div id="user-list"><div class="loading">Carregando...</div></div>
+          </div>
+          <div class="div"></div>
+          <div class="alert a-green">✅ Para criar novos usuários: Supabase → Authentication → Users → Add user<br>Após criar, rode: <code>insert into rn_profiles (id,name,role,email) values ('UUID','Nome','role','email');</code></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOVA TAREFA -->
+<div class="modal-bg" id="task-modal">
+  <div class="modal">
+    <h3>Nova Tarefa</h3>
+    <div class="mf"><label>Título *</label><input type="text" id="t-title" placeholder="Descreva a tarefa..."></div>
+    <div class="mf"><label>Descrição</label><textarea id="t-desc" rows="2" placeholder="Detalhes opcionais..."></textarea></div>
+    <div class="mf-row">
+      <div class="mf"><label>Produto</label><select id="t-prod"><option>Geral</option><option>VPPN</option><option>IAT</option></select></div>
+      <div class="mf"><label>Prioridade</label><select id="t-pri"><option value="media">Média</option><option value="alta">Alta</option><option value="baixa">Baixa</option></select></div>
+    </div>
+    <div class="mf-row">
+      <div class="mf"><label>Responsável</label><select id="t-ass"><option value="">Ninguém</option><option>Thiago</option><option>Rafael</option><option>João</option><option>Marina</option><option>Editor</option><option>Designer</option></select></div>
+      <div class="mf"><label>Data limite</label><input type="date" id="t-date"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveTask()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SURL='https://sdjlnjqtgnodnifkbykq.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamxuanF0Z25vZG5pZmtieWtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTkwMjQsImV4cCI6MjA5NDk3NTAyNH0.Zf-54wX26NjM2bagxqQv8A0ZfHWywYIE9uOldc4vz2g';
+const sb=supabase.createClient(SURL,SKEY);
+
+const BADGES={home:'Reconexão Natural',equipe:'Organograma por departamento',cultura:'Valores e manifesto',projetos:'Kanban do time',processos:'POPs e fluxos',criacao:'Banco + nomenclatura',materiais:'Recursos & Drive',dashboard:'Visão admin',metas:'OKRs',senhas:'Acessos internos',admin:'Gerenciar usuários'};
+const TITLES={home:'Início',equipe:'Equipe',cultura:'Cultura',projetos:'Projetos',processos:'Processos',criacao:'Criação',materiais:'Materiais',dashboard:'Dashboard',metas:'Metas',senhas:'Senhas',admin:'Administração'};
+const ADMIN_ONLY=['dashboard','metas','senhas','admin'];
+const EDITOR_ROLES=['admin','editor'];
+
+let currentUser=null,currentRole='editor',allTasks=[],taskFilter='all',draggedId=null;
+
+document.getElementById('li-e').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('li-p').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+async function doLogin(){
+  document.getElementById('li-err').style.display='none';
+  const {data,error}=await sb.auth.signInWithPassword({email:document.getElementById('li-e').value.trim(),password:document.getElementById('li-p').value});
+  if(error){document.getElementById('li-err').style.display='block';return;}
+  await initApp(data.user);
+}
+async function doLogout(){await sb.auth.signOut();location.reload();}
+
+async function initApp(user){
+  currentUser=user;
+  const {data:prof}=await sb.from('rn_profiles').select('*').eq('id',user.id).single();
+  currentRole=prof?.role||'editor';
+  const name=prof?.name||user.email.split('@')[0];
+  document.getElementById('sb-av').textContent=name.charAt(0).toUpperCase();
+  document.getElementById('sb-name').textContent=name;
+  document.getElementById('sb-role').textContent=currentRole;
+
+  document.querySelectorAll('.ni[data-roles]').forEach(ni=>{
+    const roles=ni.getAttribute('data-roles').split(',');
+    ni.style.display=roles.includes(currentRole)?'flex':'none';
+  });
+
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  setDate();
+  await loadTasks();
+  if(currentRole==='admin') loadUsers();
+}
+
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session?.user) await initApp(session.user);
+  else document.getElementById('login-screen').style.display='flex';
+})();
+
+function nav(el){
+  const pg=el.getAttribute('data-page');
+  if(ADMIN_ONLY.includes(pg)&&currentRole!=='admin')return;
+  if(pg==='criacao'&&!EDITOR_ROLES.includes(currentRole))return;
+  document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+pg).classList.add('active');
+  document.getElementById('tb-title').textContent=TITLES[pg]||pg;
+  document.getElementById('tb-badge').textContent=BADGES[pg]||'';
+}
+function goTo(pg){const el=document.querySelector('[data-page="'+pg+'"]');if(el)nav(el);}
+
+function setDate(){
+  const d=new Date();
+  const dias=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const mes=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  document.getElementById('tb-date').textContent=dias[d.getDay()]+', '+d.getDate()+' '+mes[d.getMonth()]+' '+d.getFullYear();
+}
+
+async function loadTasks(){
+  const{data}=await sb.from('rn_tasks').select('*').order('created_at',{ascending:true});
+  allTasks=data||[];
+  renderTasks();
+  const open=allTasks.filter(t=>t.status!=='concluido').length;
+  document.getElementById('dash-tasks').textContent=open;
+}
+
+function renderTasks(){
+  const cols=['backlog','andamento','revisao','concluido'];
+  const f=taskFilter==='all'?allTasks:allTasks.filter(t=>t.product===taskFilter);
+  cols.forEach(col=>{
+    const el=document.getElementById('cards-'+col);
+    const cnt=document.getElementById('cnt-'+col);
+    const tasks=f.filter(t=>t.status===col);
+    cnt.textContent=tasks.length;
+    el.innerHTML=tasks.map(t=>{
+      const pc={VPPN:'b-g',IAT:'b-o',Geral:'b-gr'}[t.product]||'b-gr';
+      const rc={alta:'b-r',media:'b-o',baixa:'b-g'}[t.priority]||'b-gr';
+      const del=currentRole==='admin'?`<span onclick="delTask('${t.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Excluir">✕</span>`:'';
+      return`<div class="k-card" draggable="true" data-id="${t.id}">
+        <div class="k-card-t">${esc(t.title)}${del}</div>
+        ${t.description?`<div class="k-card-d">${esc(t.description)}</div>`:''}
+        <div class="k-card-m">
+          ${t.product?`<span class="b ${pc}">${t.product}</span>`:''}
+          <span class="b ${rc}">${t.priority||'média'}</span>
+          ${t.assignee?`<span class="b b-gr">👤 ${esc(t.assignee)}</span>`:''}
+          ${t.due_date?`<span class="k-card-dt">📅 ${t.due_date.slice(8,10)}/${t.due_date.slice(5,7)}</span>`:''}
+        </div>
+      </div>`;
+    }).join('');
+    el.querySelectorAll('.k-card').forEach(c=>{
+      c.addEventListener('dragstart',e=>{draggedId=c.getAttribute('data-id');e.dataTransfer.effectAllowed='move';setTimeout(()=>c.style.opacity='0.4',0);});
+      c.addEventListener('dragend',()=>{c.style.opacity='1';});
+    });
+  });
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function onDragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over')}
+function onDragLeave(e){e.currentTarget.classList.remove('drag-over')}
+async function onDrop(e,status){
+  e.preventDefault();e.currentTarget.classList.remove('drag-over');
+  if(!draggedId)return;
+  await sb.from('rn_tasks').update({status}).eq('id',draggedId);
+  draggedId=null;await loadTasks();
+}
+function filterTasks(btn,prod){
+  document.querySelectorAll('[onclick^="filterTasks"]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');taskFilter=prod;renderTasks();
+}
+function openModal(){document.getElementById('task-modal').classList.add('open')}
+function closeModal(){document.getElementById('task-modal').classList.remove('open')}
+async function saveTask(){
+  const title=document.getElementById('t-title').value.trim();
+  if(!title)return alert('Título é obrigatório');
+  await sb.from('rn_tasks').insert({title,description:document.getElementById('t-desc').value.trim(),product:document.getElementById('t-prod').value,priority:document.getElementById('t-pri').value,assignee:document.getElementById('t-ass').value,due_date:document.getElementById('t-date').value||null,status:'backlog',created_by:currentUser?.email||''});
+  closeModal();
+  document.getElementById('t-title').value='';document.getElementById('t-desc').value='';document.getElementById('t-date').value='';
+  await loadTasks();
+}
+async function delTask(id){if(!confirm('Excluir?'))return;await sb.from('rn_tasks').delete().eq('id',id);await loadTasks();}
+
+function togglePop(el){el.closest('.pop').classList.toggle('open')}
+
+async function loadUsers(){
+  const{data}=await sb.from('rn_profiles').select('*').order('created_at');
+  const el=document.getElementById('user-list');
+  if(!data||!data.length){el.innerHTML='<div class="loading">Nenhum usuário.</div>';return;}
+  document.getElementById('dash-team').textContent=data.length;
+  el.innerHTML=data.map(u=>`<div class="usr-row"><div class="usr-info"><div class="usr-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="usr-name">${esc(u.name)}</div><div class="usr-email">${esc(u.email||'')}</div></div></div><select class="role-sel" onchange="changeRole('${u.id}',this.value)">${['admin','editor','vendas','suporte'].map(r=>`<option ${u.role===r?'selected':''}>${r}</option>`).join('')}</select></div>`).join('');
+}
+async function changeRole(uid,role){await sb.from('rn_profiles').update({role}).eq('id',uid);}
+</script>
+</body>
+</html>

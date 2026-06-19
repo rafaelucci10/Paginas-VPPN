@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thiago Beraldo</title>
+<link rel="icon" href="/favicon.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --f1:#152e20;
+  --gold:#C8A84B;
+  --cream:#F4EFE6;
+  --green-mid:#1e4230;
+}
+
+body{
+  background:var(--f1);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  padding:40px 20px;
+}
+
+.card{
+  width:100%;
+  max-width:420px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  border:3px solid var(--gold);
+  overflow:hidden;
+  margin-bottom:4px;
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.name{
+  font-size:1.2rem;
+  font-weight:700;
+  color:var(--cream);
+  letter-spacing:-.01em;
+}
+
+.bio{
+  font-size:.82rem;
+  color:rgba(244,239,230,.6);
+  text-align:center;
+  line-height:1.6;
+  max-width:320px;
+  margin-bottom:4px;
+}
+
+.links{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:8px;
+}
+
+.link-btn{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:100%;
+  padding:15px 20px;
+  background:rgba(244,239,230,.06);
+  border:1px solid rgba(244,239,230,.12);
+  border-radius:14px;
+  color:var(--cream);
+  text-decoration:none;
+  transition:background .18s,border-color .18s,transform .12s;
+  cursor:pointer;
+}
+
+.link-btn:hover{
+  background:rgba(244,239,230,.11);
+  border-color:rgba(200,168,75,.4);
+  transform:translateY(-1px);
+}
+
+.link-btn--gold{
+  background:rgba(200,168,75,.12);
+  border-color:rgba(200,168,75,.35);
+}
+
+.link-btn--gold:hover{
+  background:rgba(200,168,75,.2);
+  border-color:var(--gold);
+}
+
+.link-btn--expedicao{
+  background:linear-gradient(135deg,rgba(200,168,75,.18),rgba(200,168,75,.08));
+  border-color:var(--gold);
+  position:relative;
+  overflow:hidden;
+}
+
+.link-btn--expedicao:hover{
+  background:linear-gradient(135deg,rgba(200,168,75,.28),rgba(200,168,75,.14));
+  border-color:#e8c97a;
+}
+
+.expedicao-badge{
+  position:absolute;
+  top:10px;
+  right:14px;
+  background:var(--gold);
+  color:#0a1205;
+  font-size:.58rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:2px 8px;
+  border-radius:100px;
+}
+
+.btn-icon{
+  font-size:1.2rem;
+  flex-shrink:0;
+}
+
+.btn-text{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+}
+
+.btn-label{
+  font-size:.88rem;
+  font-weight:700;
+  color:var(--cream);
+}
+
+.btn-sub{
+  font-size:.72rem;
+  color:rgba(244,239,230,.5);
+  font-weight:400;
+}
+
+.footer{
+  margin-top:20px;
+  font-size:.7rem;
+  color:rgba(244,239,230,.25);
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="avatar">
+    <img src="../vppn/images/EDU09385-scaled-rjak5fil9kffp9sv2cpekshlfvoq9df9uksn37vgao.webp" alt="Thiago Beraldo">
+  </div>
+
+  <div class="name">Thiago Beraldo</div>
+  <div class="bio">Presidente do Grupo de Especialistas em Turismo da Comissão Mundial de Áreas Protegidas da ONU e criador do Método VPPN</div>
+
+  <div class="links">
+
+    <a class="link-btn link-btn--expedicao" href="https://thiagoberaldo.com/expedicao/">
+      <span class="expedicao-badge">12 vagas</span>
+      <span class="btn-icon">🏕️</span>
+      <div class="btn-text">
+        <span class="btn-label">1ª Expedição VPPN</span>
+        <span class="btn-sub">Imersão presencial · 4 dias · 13–16 ago · RJ</span>
+      </div>
+    </a>
+
+    <a class="link-btn link-btn--gold" href="https://thiagoberaldo.com/vppn/">
+      <span class="btn-icon">🌿</span>
+      <div class="btn-text">
+        <span class="btn-label">Método VPPN</span>
+        <span class="btn-sub">Transforme sua área natural em negócio</span>
+      </div>
+    </a>
+
+    <a class="link-btn" href="https://thiagoberaldo.com/calculadora-iat/">
+      <span class="btn-icon">📊</span>
+      <div class="btn-text">
+        <span class="btn-label">Calculadora IAT</span>
+        <span class="btn-sub">Avalie o potencial turístico da sua área</span>
+      </div>
+    </a>
+
+    <a class="link-btn" href="https://thiagoberaldo.com/reconexaonatural/">
+      <span class="btn-icon">🍃</span>
+      <div class="btn-text">
+        <span class="btn-label">Reconexão Natural</span>
+        <span class="btn-sub">Portfólio</span>
+      </div>
+    </a>
+
+    <a class="link-btn" href="https://thiagoberaldo.com/">
+      <span class="btn-icon">📄</span>
+      <div class="btn-text">
+        <span class="btn-label">Thiago Beraldo — Currículo</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="footer">thiagoberaldo.com</div>
+
+</div>
+
+</body>
+</html>

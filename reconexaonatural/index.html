@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Reconexão Natural — Thiago Beraldo | Ecoturismo e Desenvolvimento Sustentável</title>
+<meta name="description" content="Consultoria especializada em planejamento de ecoturismo e desenvolvimento sustentável. Dr. Thiago Beraldo — 24+ anos de experiência, 6 países de atuação, Método VPPN."/>
+
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1358655868587428');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1358655868587428&ev=PageView&noscript=1"/></noscript>
+
+<link rel="icon" type="image/png" href="../favicon.png"/>
+<link rel="apple-touch-icon" href="../favicon.png"/>
+<link rel="preload" href="../fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="../fonts/fonts.css"/></noscript>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --f1:#152e20;--f2:#1e4530;--f3:#2e6644;--f4:#4a8c63;
+  --gold:#c8a84b;--gold2:#e4cc82;--el:#c4a67a;
+  --cr:#f4efe6;--cd:#e8e1d2;--w:#fff;
+  --tx:#1a1a1a;--tm:#5e5e5e;
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--tx);background:#fff;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(21,46,32,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(200,168,75,.15);transition:background .3s}
+.nav__inner{max-width:1120px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:68px}
+.nav__logo img{height:32px;filter:brightness(0) invert(1);opacity:.9}
+.nav__links{display:flex;gap:32px}
+.nav__links a{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,239,230,.65);transition:color .2s}
+.nav__links a:hover{color:var(--gold)}
+.nav__cta{background:var(--gold);color:var(--f1);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:9px 20px;border-radius:6px;transition:background .2s}
+.nav__cta:hover{background:var(--gold2)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:var(--f1);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 32px 80px;position:relative;overflow:hidden;background-image:url('images/hero-bg.jpeg');background-size:cover;background-position:center}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(21,46,32,.82) 0%,rgba(21,46,32,.72) 60%,rgba(21,46,32,.88) 100%)}
+.hero__leaf{position:absolute;font-size:400px;opacity:.03;top:-60px;right:-80px;line-height:1;user-select:none}
+.hero__tag{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.hero__tag::before,.hero__tag::after{content:'';width:30px;height:1px;background:var(--gold);opacity:.5}
+.hero__h1{font-family:var(--disp);font-size:clamp(42px,7vw,80px);color:var(--cr);line-height:1.08;margin-bottom:12px;font-weight:400;position:relative;z-index:1}
+.hero__h1 em{color:var(--gold2);font-style:italic}
+.hero__sub{font-size:clamp(15px,2vw,19px);color:rgba(244,239,230,.6);font-weight:300;max-width:560px;line-height:1.65;margin-bottom:44px;position:relative;z-index:1}
+.hero__btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.btn-primary{background:linear-gradient(135deg,var(--gold),#b8942e);color:var(--f1);font-weight:700;font-size:13px;letter-spacing:.06em;padding:14px 32px;border-radius:7px;transition:opacity .2s}
+.btn-primary:hover{opacity:.88}
+.btn-ghost{border:1.5px solid rgba(244,239,230,.3);color:var(--cr);font-weight:600;font-size:13px;padding:13px 30px;border-radius:7px;transition:border-color .2s,color .2s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.hero__scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.35}
+.hero__scroll span{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--cr)}
+.hero__scroll svg{width:16px;height:16px;stroke:var(--cr);animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ── SEÇÃO PADRÃO ── */
+section{padding:96px 32px}
+.container{max-width:1120px;margin:0 auto}
+.section-tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
+.section-h2{font-family:var(--disp);font-size:clamp(28px,4vw,44px);line-height:1.12;margin-bottom:16px}
+.gold-bar{width:40px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:28px}
+
+/* ── QUEM SOMOS ── */
+.about{background:var(--cr)}
+.about-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:72px;align-items:center}
+.about-photo{position:relative}
+.about-photo img{border-radius:16px;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top}
+.about-photo__badge{position:absolute;bottom:-20px;right:-20px;background:var(--gold);border-radius:12px;padding:16px 20px;text-align:center;box-shadow:0 8px 28px rgba(200,168,75,.35)}
+.about-photo__badge strong{display:block;font-family:var(--disp);font-size:28px;color:var(--f1);line-height:1}
+.about-photo__badge span{font-size:10px;font-weight:700;color:var(--f1);opacity:.7;text-transform:uppercase;letter-spacing:1px}
+.about-content .section-h2{color:var(--f1)}
+.about-lead{font-size:15px;color:var(--tm);line-height:1.8;margin-bottom:12px}
+
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--f1);border-radius:12px;overflow:hidden;margin:32px 0}
+.stat{padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.stat:last-child{border-right:none}
+.stat__num{font-family:var(--disp);font-size:28px;color:var(--gold2);font-weight:700;line-height:1}
+.stat__label{font-size:10px;color:rgba(244,239,230,.55);margin-top:5px;text-transform:uppercase;letter-spacing:.5px;line-height:1.4}
+
+.pilares{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pilar{border:1.5px solid var(--cd);border-radius:10px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+.pilar__icon{width:38px;height:38px;border-radius:8px;background:var(--f1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pilar__icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round}
+.pilar__title{font-size:12px;font-weight:700;color:var(--f1);margin-bottom:4px}
+.pilar__desc{font-size:11px;color:var(--tm);line-height:1.6}
+
+/* ── METODOLOGIA ── */
+.metodologia{background:var(--f1)}
+.metodologia .section-h2{color:var(--cr);text-align:center}
+.metodologia .section-tag{color:var(--gold);text-align:center;display:block}
+.metodologia .gold-bar{margin:14px auto 32px}
+.metod-subtitle{font-size:16px;color:rgba(244,239,230,.6);text-align:center;margin-top:-20px;margin-bottom:28px}
+.metod-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:12px}
+.metod-body p{font-size:14px;color:rgba(244,239,230,.72);line-height:1.8;margin-bottom:16px}
+.metod-steps{display:flex;flex-direction:column;gap:20px;margin-top:8px}
+.metod-step{display:flex;gap:16px;align-items:flex-start}
+.metod-step__num{width:36px;height:36px;border-radius:50%;background:var(--f3);color:var(--cr);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.metod-step__title{font-size:13px;font-weight:700;color:var(--gold2);margin-bottom:4px}
+.metod-step__desc{font-size:12px;color:rgba(244,239,230,.65);line-height:1.7}
+.metod-img{border-radius:14px;overflow:hidden;aspect-ratio:4/5}
+.metod-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+@media(max-width:768px){.metod-grid{grid-template-columns:1fr}.metod-img{aspect-ratio:4/3;width:100%}}
+
+/* ── PROJETOS ── */
+.projetos{background:var(--cd)}
+.projetos .section-h2{color:var(--f1)}
+.projetos-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px}
+.projeto-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.projeto-card__img{aspect-ratio:16/9;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.projeto-card__img-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.projeto-card__img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(21,46,32,.85) 0%,transparent 55%)}
+.projeto-card__badges{position:relative;z-index:1;padding:14px 16px;display:flex;gap:7px;flex-wrap:wrap}
+.badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;border-radius:4px}
+.badge--gold{background:var(--gold);color:var(--f1)}
+.badge--green{background:rgba(244,239,230,.15);color:var(--cr);border:1px solid rgba(244,239,230,.25)}
+.projeto-card__body{padding:20px 22px;flex:1;display:flex;flex-direction:column}
+.projeto-card__title{font-family:var(--disp);font-size:17px;color:var(--f1);margin-bottom:8px;line-height:1.3}
+.projeto-card__desc{font-size:12px;color:var(--tm);line-height:1.7;flex:1}
+.projeto-results{list-style:none;margin:12px 0 4px;display:flex;flex-direction:column;gap:6px}
+.projeto-results li{font-size:11px;color:var(--f3);line-height:1.55;padding-left:14px;position:relative}
+.projeto-results li::before{content:'✓';position:absolute;left:0;color:var(--f4);font-weight:700;font-size:10px}
+.projeto-card__footer{margin-top:16px;padding-top:14px;border-top:1px solid var(--cd);display:flex;gap:16px;flex-wrap:wrap}
+.projeto-meta{font-size:10px;color:var(--tm);display:flex;gap:5px;align-items:center}
+.projeto-meta strong{color:var(--f1)}
+
+/* ── EXPERIÊNCIA ── */
+.experiencia{background:var(--f2)}
+.experiencia .section-h2{color:var(--cr)}
+.experiencia .section-tag,.experiencia .gold-bar{--gold:#c8a84b}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:8px}
+.exp-block{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:24px 26px}
+.exp-block__title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(200,168,75,.2)}
+.exp-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.exp-list li{font-size:12px;color:rgba(244,239,230,.78);line-height:1.6;padding-left:16px;position:relative}
+.exp-list li::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:11px}
+.exp-list li strong{color:var(--gold2);display:block;font-size:11.5px;margin-bottom:1px}
+
+.premios{display:flex;gap:16px;margin-top:28px}
+.premio{background:linear-gradient(135deg,rgba(200,168,75,.15),rgba(200,168,75,.05));border:1px solid rgba(200,168,75,.3);border-radius:12px;padding:20px 22px;flex:1}
+.premio__icon{font-size:28px;margin-bottom:8px}
+.premio__title{font-size:13px;font-weight:700;color:var(--gold2);margin-bottom:4px}
+.premio__desc{font-size:11px;color:rgba(244,239,230,.6);line-height:1.5}
+
+.quote-box{background:var(--f1);border-radius:14px;padding:32px 36px;margin-top:28px;position:relative}
+.quote-box::before{content:'"';font-family:var(--disp);font-size:80px;color:rgba(200,168,75,.2);position:absolute;top:8px;left:24px;line-height:1}
+.quote-box p{font-family:var(--disp);font-size:17px;color:var(--cr);font-style:italic;line-height:1.65;position:relative;z-index:1}
+.quote-box cite{display:block;margin-top:14px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+
+/* ── CONTATO ── */
+.contato{background:var(--f1)}
+.contato .section-h2{color:var(--cr);text-align:center}
+.contato .section-tag{color:var(--gold);text-align:center;display:block}
+.contato .gold-bar{margin:14px auto 28px}
+.contato-sub{font-size:15px;color:rgba(244,239,230,.6);max-width:600px;line-height:1.75;margin:0 auto 48px;text-align:center}
+.contato-info{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.info-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+.info-card__icon{width:38px;height:38px;border-radius:8px;background:rgba(200,168,75,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.info-card__icon svg{width:17px;height:17px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round}
+.info-card__label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.info-card__value{font-size:13px;color:var(--cr);font-weight:500}
+.info-card__sub{font-size:11px;color:rgba(244,239,230,.45);margin-top:2px}
+
+.btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;background:#25d366;color:#fff;font-weight:700;font-size:14px;padding:16px 28px;border-radius:8px;margin:16px auto 0;transition:background .2s;width:100%;max-width:360px;grid-column:1/-1}
+.btn-whatsapp:hover{background:#1db954}
+.btn-whatsapp svg{width:20px;height:20px;fill:#fff}
+
+.contato-form{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:32px}
+.form-group{margin-bottom:16px}
+.form-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(244,239,230,.55);display:block;margin-bottom:7px}
+.form-input,.form-select,.form-textarea{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:11px 14px;font-family:var(--sans);font-size:13px;color:var(--cr);outline:none;transition:border-color .2s}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(244,239,230,.3)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:rgba(200,168,75,.5)}
+.form-select{color:rgba(244,239,230,.55)}
+.form-select option{background:var(--f1);color:var(--cr)}
+.form-textarea{min-height:110px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-form{width:100%;background:linear-gradient(135deg,var(--gold),#b8942e);color:var(--f1);font-weight:700;font-size:13px;letter-spacing:.06em;padding:14px;border-radius:7px;border:none;cursor:pointer;transition:opacity .2s;font-family:var(--sans)}
+.btn-form:hover{opacity:.88}
+
+/* ── FOOTER ── */
+footer{background:#0a0a0a;padding:40px 32px}
+.footer-inner{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo img{height:28px;filter:brightness(0) invert(1);opacity:.5}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.35);font-weight:500;transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,.7)}
+.footer-legal{font-size:10px;color:rgba(255,255,255,.2);text-align:right;line-height:1.7}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  nav{display:none}
+  section{padding:64px 20px}
+  .about-grid,.contato-info,.exp-grid,.metod-grid,.projetos-grid{grid-template-columns:1fr}
+  .btn-whatsapp{max-width:100%}
+  .stats-bar{grid-template-columns:1fr 1fr}
+  .pilares{grid-template-columns:1fr}
+  .premios{flex-direction:column}
+  .form-row{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;text-align:center}
+  .footer-legal{text-align:center}
+  .metod-vppn{flex-direction:column;text-align:center}
+}
+</style>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","wpzrfhi69z");</script>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav__inner">
+    <a href="#inicio" class="nav__logo">
+      <img src="images/logo.png" alt="Reconexão Natural"/>
+    </a>
+    <div class="nav__links">
+      <a href="#sobre">Sobre</a>
+      <a href="#metodologia">Metodologia</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#experiencia">Experiência</a>
+      <a href="#contato">Contato</a>
+    </div>
+    <a href="#contato" class="nav__cta">Fale Conosco</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="inicio">
+  <div class="hero__leaf">🌿</div>
+  <span class="hero__tag">Portfólio Profissional</span>
+  <h1 class="hero__h1">Reconexão<br><em>Natural</em></h1>
+  <p class="hero__sub">Planejamento em Ecoturismo e Desenvolvimento Sustentável — transformando áreas naturais em destinos de excelência.</p>
+  <div class="hero__btns">
+    <a href="#projetos" class="btn-primary">Conheça nossos projetos</a>
+    <a href="#contato" class="btn-ghost">Entre em contato</a>
+  </div>
+  <div class="hero__scroll">
+    <span>Role</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ══ QUEM SOMOS ══ -->
+<section class="about" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-photo">
+        <img src="images/thiago.jpg" alt="Dr. Thiago Beraldo" loading="lazy"/>
+        <div class="about-photo__badge">
+          <strong>24+</strong>
+          <span>anos de experiência</span>
+        </div>
+      </div>
+      <div class="about-content">
+        <span class="section-tag">Quem Somos</span>
+        <h2 class="section-h2" style="color:var(--f1)">Reconexão Natural</h2>
+        <div class="gold-bar"></div>
+        <p class="about-lead">Consultoria especializada em planejamento de ecoturismo e desenvolvimento sustentável, liderada pelo Dr. Thiago Beraldo — 24+ anos dedicados a transformar áreas naturais em destinos estruturados, rentáveis e conservacionistas.</p>
+        <p class="about-lead">Atuamos em áreas protegidas, RPPNs e propriedades privadas em todo o Brasil e exterior, integrando rigor técnico, experiência de campo e visão estratégica de longo prazo.</p>
+
+        <div class="stats-bar">
+          <div class="stat"><div class="stat__num">+24</div><div class="stat__label">Anos de Experiência</div></div>
+          <div class="stat"><div class="stat__num">+6</div><div class="stat__label">Países de Atuação</div></div>
+          <div class="stat"><div class="stat__num">+12</div><div class="stat__label">Projetos Realizados</div></div>
+          <div class="stat"><div class="stat__num">2×</div><div class="stat__label">Prêmio Nacional do Turismo</div></div>
+        </div>
+
+        <div class="pilares">
+          <div class="pilar">
+            <div class="pilar__icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div><div class="pilar__title">Experiência Internacional Comprovada</div><div class="pilar__desc">Atuação em projetos de grande relevância em mais de 10 países, com consultorias para Banco Mundial, UNDP, UN Tourism, IUCN, GEF e Banco Asiático de Desenvolvimento.</div></div>
+          </div>
+          <div class="pilar">
+            <div class="pilar__icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div><div class="pilar__title">Metodologia Inovadora – Método VPPN</div><div class="pilar__desc">Aplicação do Método VPPN – Visitação Padrão Parques Nacionais, metodologia própria que estrutura a visitação de forma planejada, segura e sustentável.</div></div>
+          </div>
+          <div class="pilar">
+            <div class="pilar__icon">
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div><div class="pilar__title">Visão Integrada e Regenerativa</div><div class="pilar__desc">Foco na integração entre conservação ambiental, desenvolvimento comunitário, viabilidade econômica e segurança operacional, alinhado às tendências do turismo regenerativo.</div></div>
+          </div>
+          <div class="pilar">
+            <div class="pilar__icon">
+              <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div><div class="pilar__title">Expertise em PPP e Concessões</div><div class="pilar__desc">Sólida experiência em estruturação de parcerias público-privadas, análise de viabilidade de concessões turísticas e modelos de investimento em áreas protegidas.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ METODOLOGIA ══ -->
+<section class="metodologia" id="metodologia">
+  <div class="container">
+    <span class="section-tag">Metodologia</span>
+    <h2 class="section-h2">Método VPPN</h2>
+    <p class="metod-subtitle">Visitação Padrão Parques Nacionais</p>
+    <div class="gold-bar"></div>
+
+    <div class="metod-grid">
+      <div class="metod-body">
+        <p>O Método VPPN é uma metodologia inovadora desenvolvida pelo Dr. Thiago Beraldo para orientar o planejamento e a gestão da visitação em áreas naturais. Inspirado nas melhores práticas dos Parques Nacionais brasileiros e internacionais, o método foi adaptado para a realidade de áreas privadas, unidades de conservação estaduais e municipais, RPPNs e propriedades com potencial ecoturístico.</p>
+        <p>O método garante que o desenvolvimento do ecoturismo seja realizado de forma estruturada, minimizando impactos negativos, maximizando os benefícios para a conservação e gerando valor econômico de forma responsável e duradoura.</p>
+
+        <div class="metod-steps">
+          <div class="metod-step">
+            <div class="metod-step__num">1</div>
+            <div>
+              <div class="metod-step__title">Perfil do Gestor</div>
+              <div class="metod-step__desc">Alinhamento dos objetivos, expectativas e capacidades do proprietário ou gestor, garantindo que o projeto seja viável e sustentável no longo prazo.</div>
+            </div>
+          </div>
+          <div class="metod-step">
+            <div class="metod-step__num">2</div>
+            <div>
+              <div class="metod-step__title">Perfil da Área</div>
+              <div class="metod-step__desc">Diagnóstico abrangente do potencial e das limitações da área para a visitação, incluindo análise de atributos biofísicos, socioculturais e de infraestrutura.</div>
+            </div>
+          </div>
+          <div class="metod-step">
+            <div class="metod-step__num">3</div>
+            <div>
+              <div class="metod-step__title">Perfil do Visitante</div>
+              <div class="metod-step__desc">Definição clara dos públicos-alvo, suas expectativas e os tipos de experiências mais compatíveis com o território e os objetivos do projeto.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metod-img">
+        <img src="images/mirante.jpeg" alt="Experiência de visitação em área natural" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJETOS ══ -->
+<section class="projetos" id="projetos">
+  <div class="container">
+    <span class="section-tag">Portfólio</span>
+    <h2 class="section-h2">Projetos em Destaque</h2>
+    <div class="gold-bar"></div>
+    <p style="font-size:14px;color:var(--tm);margin-bottom:36px;max-width:540px;line-height:1.7">Soluções aplicadas em contextos reais, com resultados comprovados em campo.</p>
+
+    <div class="projetos-grid">
+
+      <!-- Projeto 1 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/chapada.jpeg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">MAR–OUT 2025</span>
+            <span class="badge badge--green">400 horas</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">Chapada dos Veadeiros — Fortalecimento de RPPNs</h3>
+          <p class="projeto-card__desc">Elaboração de 8 Planos de Ecoturismo para RPPNs da região, incluindo ordenamento do uso público e diretrizes de conservação. Financiado pelo Critical Ecosystem Partnership Fund (CEPF).</p>
+          <ul class="projeto-results">
+            <li>8 Planos de Ecoturismo completos para RPPNs em 4 municípios do Cerrado goiano</li>
+            <li>Diagnóstico, diretrizes de manejo, experiências de visitação e artigo técnico</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Método:</strong>&nbsp;VPPN RPPNs</div>
+            <div class="projeto-meta"><strong>Local:</strong>&nbsp;Goiás, Brasil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projeto 2 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/ibiapaba.jpeg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">FEV 25 / FEV 26</span>
+            <span class="badge badge--green">R$ 1,1M</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">Trilha Caminhos da Ibiapaba</h3>
+          <p class="projeto-card__desc">Coordenação técnica de trilha de longo percurso (164 km) conectando os Parques Nacionais Sete Cidades e Ubajara. Estruturação de governança, plano de negócios e capacitação comunitária. Execução: MMA, ICMBio, IBAM, FUNBio.</p>
+          <ul class="projeto-results">
+            <li>Trilha de 164 km estruturada e comercializada com governança, plano de negócios e marketing</li>
+            <li>Formação e Capacitação da Comissão Organizadora e das Comunidades ao longo da trilha</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Tipo:</strong>&nbsp;Trilha Longo Percurso</div>
+            <div class="projeto-meta"><strong>Local:</strong>&nbsp;Ceará, Brasil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projeto 3 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/paraty.jpg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">JAN 2021 – DEZ 2025</span>
+            <span class="badge badge--green">4.000+ atletas</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">Paraty Brazil by UTMB — Diretor de Sustentabilidade</h3>
+          <p class="projeto-card__desc">Direção de Sustentabilidade do maior evento de corrida de trilha do Brasil, no Parque Nacional Serra da Bocaina. Certificação GSTC, Lixo Zero (1,5T reciclados), manejo de 4km de trilhas, compensação de carbono e capacitação de 30+ pessoas.</p>
+          <ul class="projeto-results">
+            <li>Implementação e manejo de 4k+ em trilhas e capacitação de 30+ pessoas em manejo, doação de 10+ placas e banners, 3 tendas, equipamentos ao ICMBio</li>
+            <li>Lixo Zero na área (1,5T de resíduos reciclados), aquisição de alimentação da agricultura familiar, compensação de carbono dos atletas</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Escala:</strong>&nbsp;24–110 km</div>
+            <div class="projeto-meta"><strong>Local:</strong>&nbsp;Paraty, RJ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projeto 4 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/turismo-uc.jpeg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">NOV 2025 – MAI 2026</span>
+            <span class="badge badge--green">Banco Mundial</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">Contribuições Econômicas do Turismo em UCs Federais</h3>
+          <p class="projeto-card__desc">Estudo nacional de revisão dos impactos econômicos do turismo em 334 áreas protegidas do ICMBio — análise de renda, emprego local, impostos e PPPs. Desenvolvido em parceria com o Banco Mundial para subsidiar decisões de financiamento sustentável.</p>
+          <ul class="projeto-results">
+            <li>Revisão nacional de estudos econômicos para as 334 áreas protegidas federais do ICMBio</li>
+            <li>Suporte a decisões de PPPs e modelos de financiamento sustentável para conservação e turismo</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Escopo:</strong>&nbsp;334 UCs</div>
+            <div class="projeto-meta"><strong>Cliente:</strong>&nbsp;Banco Mundial</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Projeto 5 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/bio-canto.jpeg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">FEV 2026 – PRESENTE</span>
+            <span class="badge badge--green">312+ aves</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">Fazenda Bio Canto — Implementação de Ecoturismo</h3>
+          <p class="projeto-card__desc">Elaboração do Plano de Desenvolvimento do Ecoturismo (PDE) e implementação da Fazenda Bio Canto, em Cascavel/PR — operação que integra ecoturismo (Trilhas &amp; Cantos), pecuária sustentável e água mineral (Fontana Oro). Soft opening previsto para agosto de 2026.</p>
+          <ul class="projeto-results">
+            <li>PDE completo e Plano de Trabalho da Fase 1 (sprint de 90 dias) com zoneamento, núcleos operacionais e análise de viabilidade</li>
+            <li>312+ espécies de aves (gavião-de-penacho como espécie-bandeira), 51% de Mata Atlântica preservada e ~12 km de trilhas</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Método:</strong>&nbsp;VPPN Propriedade Privada</div>
+            <div class="projeto-meta"><strong>Local:</strong>&nbsp;Cascavel, PR</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projeto 6 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/vicosa.jpeg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">ABR–JUN 2026</span>
+            <span class="badge badge--green">Travessia + Município</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">Viçosa do Ceará — Plano e Implementação do Ecoturismo</h3>
+          <p class="projeto-card__desc">Diagnóstico técnico (Etapa 1 do Método VPPN — IAT 3.0/Estadual) e proposta de implementação do ecoturismo municipal para a Prefeitura de Viçosa do Ceará, estruturando a Travessia de Viçosa — trecho municipal da trilha de longo curso Caminhos da Ibiapaba — e um Programa Municipal de Ecoturismo.</p>
+          <ul class="projeto-results">
+            <li>Diagnóstico VPPN, apresentação estratégica e pacote de propostas (Travessia em 12 meses; Programa completo em 32 meses)</li>
+            <li>Circuito de trilhas, capacitação de condutores, incubação de proprietários e estruturação da governança do turismo</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Método:</strong>&nbsp;VPPN Municipal</div>
+            <div class="projeto-meta"><strong>Local:</strong>&nbsp;Viçosa do Ceará, CE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projeto 7 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/paulo-afonso.jpeg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">MAI 2026 – PRESENTE</span>
+            <span class="badge badge--green">5 Rotas</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">Paulo Afonso — Plano Municipal de Ecoturismo</h3>
+          <p class="projeto-card__desc">Elaboração do Plano Municipal de Ecoturismo de Paulo Afonso/BA, em parceria com a Secretaria de Turismo, posicionando o município como hub regional do turismo de natureza no entorno do MONA do Rio São Francisco. Pesquisa de campo, oficina de validação e plano estruturado pelo Método VPPN.</p>
+          <ul class="projeto-results">
+            <li>Cinco rotas estruturantes: Caminho do Cangaço, Trilha dos Cânions, Serra do Umbuzeiro, Cidade das Pedras e Raso da Catarina</li>
+            <li>Posicionamento nos três Cs — Cangaço, Cânions e Caatinga — com meta de evolução do IAT de Extensiva para Intensiva em 5 anos</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Método:</strong>&nbsp;VPPN Municipal</div>
+            <div class="projeto-meta"><strong>Local:</strong>&nbsp;Paulo Afonso, BA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projeto 8 -->
+      <div class="projeto-card">
+        <div class="projeto-card__img">
+          <div class="projeto-card__img-bg" style="background-image:url('images/rppn-flor-cerrado.jpeg');background-size:cover;background-position:center"></div>
+          <div class="projeto-card__img-overlay"></div>
+          <div class="projeto-card__badges">
+            <span class="badge badge--gold">MAI 2026 – PRESENTE</span>
+            <span class="badge badge--green">1.551 ha</span>
+          </div>
+        </div>
+        <div class="projeto-card__body">
+          <h3 class="projeto-card__title">RPPN Flor do Cerrado — Ecoturismo e Potencial Econômico</h3>
+          <p class="projeto-card__desc">Elaboração do PDE/Plano de Uso Público, Plano de Ação Operacional e estudo de potencial econômico da RPPN Flor do Cerrado (1.551 ha), em Alto Paraíso de Goiás/GO, no corredor da Chapada dos Veadeiros. A Cachoeira Cabeça dos Dragões é o atrativo principal da estruturação.</p>
+          <ul class="projeto-results">
+            <li>PDE/PUP completo (IAT 2.4 Regional → 2.9 Estadual), cinco programas de manejo e três fases de desenvolvimento</li>
+            <li>Plano de Ação da Fase 1 para a alta temporada de julho/2026 (day-use + camping) e Termo de Aceitação de Risco</li>
+          </ul>
+          <div class="projeto-card__footer">
+            <div class="projeto-meta"><strong>Método:</strong>&nbsp;VPPN RPPN</div>
+            <div class="projeto-meta"><strong>Local:</strong>&nbsp;Alto Paraíso de Goiás, GO</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPERIÊNCIA ══ -->
+<section class="experiencia" id="experiencia">
+  <div class="container">
+    <span class="section-tag">Experiência</span>
+    <h2 class="section-h2" style="color:var(--cr)">Formação e Credenciais</h2>
+    <div class="gold-bar"></div>
+
+    <div class="exp-grid">
+      <div class="exp-block">
+        <div class="exp-block__title">Formação Acadêmica</div>
+        <ul class="exp-list">
+          <li><strong>Doutor em Ecologia Interdisciplinar</strong>University of Florida, 2016</li>
+          <li><strong>Profissional em Ecoturismo</strong>Universidade Federal de Lavras, 2005</li>
+          <li><strong>Formação Internacional</strong>U.S. National Park Service e U.S. Forest Service</li>
+          <li><strong>20+ publicações</strong>Em periódicos científicos internacionais</li>
+        </ul>
+      </div>
+      <div class="exp-block">
+        <div class="exp-block__title">Liderança Institucional</div>
+        <ul class="exp-list">
+          <li><strong>18 anos no ICMBio (2002–2020)</strong>Gestor público e planejador de áreas protegidas</li>
+          <li><strong>Chair — TAPAS IUCN WCPA</strong>Tourism & Protected Areas Specialist Group (desde 2023)</li>
+          <li><strong>Conselho — Sports for Nature IUCN</strong>Membro desde 2024</li>
+          <li><strong>Criador do Método VPPN</strong>Metodologia referência no Brasil</li>
+        </ul>
+      </div>
+      <div class="exp-block">
+        <div class="exp-block__title">Publicações em Destaque</div>
+        <ul class="exp-list">
+          <li><strong>"Visitors Count!"</strong>UNESCO / IUCN, 2021</li>
+          <li><strong>Journal of Sustainable Tourism</strong>Artigos internacionais publicados</li>
+          <li><strong>PARKS Journal (IUCN)</strong>Referência em gestão de áreas protegidas</li>
+        </ul>
+      </div>
+      <div class="exp-block">
+        <div class="exp-block__title">Parcerias Internacionais</div>
+        <ul class="exp-list">
+          <li>Banco Mundial</li>
+          <li>UNDP — Programa das Nações Unidas para o Desenvolvimento</li>
+          <li>UN Tourism (OMT)</li>
+          <li>IUCN — União Internacional para a Conservação da Natureza</li>
+          <li>GEF — Global Environment Facility</li>
+          <li>CEPF — Critical Ecosystem Partnership Fund</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="premios">
+      <div class="premio">
+        <div class="premio__icon">🏆</div>
+        <div class="premio__title">Prêmio Nacional do Turismo 2019</div>
+        <div class="premio__desc">Gestor Público do Ano — reconhecimento pela excelência na gestão de ecoturismo em áreas protegidas.</div>
+      </div>
+      <div class="premio">
+        <div class="premio__icon">🥈</div>
+        <div class="premio__title">Prêmio Nacional do Turismo 2018</div>
+        <div class="premio__desc">2º lugar na categoria Monitoramento e Avaliação do Turismo em Unidades de Conservação.</div>
+      </div>
+    </div>
+
+    <div class="quote-box">
+      <p>"Transformando áreas naturais em destinos de ecoturismo de excelência, com base técnica sólida, segurança e visão de longo prazo."</p>
+      <cite>— Dr. Thiago Beraldo</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTATO ══ -->
+<section class="contato" id="contato">
+  <div class="container">
+    <span class="section-tag">Contato</span>
+    <h2 class="section-h2">Fale Conosco</h2>
+    <div class="gold-bar"></div>
+    <p class="contato-sub">Estamos prontos para transformar o potencial da sua área natural em um destino de ecoturismo de excelência. Entre em contato e vamos conversar.</p>
+
+    <div class="contato-info">
+      <div class="info-card">
+        <div class="info-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="info-card__label">E-mail</div>
+          <div class="info-card__value">thiago.beraldo@reconexaonatural.com</div>
+          <div class="info-card__sub">Resposta em até 48h</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div>
+          <div class="info-card__label">Telefone / WhatsApp</div>
+          <div class="info-card__value">+55 61 9 9686-0377</div>
+          <div class="info-card__sub">Brasil</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card__icon">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="info-card__label">Localização</div>
+          <div class="info-card__value">Brasília, DF — Brasil</div>
+          <div class="info-card__sub">Atendimento presencial e remoto</div>
+        </div>
+      </div>
+      <a href="https://wa.me/+5561995679336?text=Olá%20Thiago!%20Gostaria%20de%20conversar%20sobre%20um%20projeto%20de%20ecoturismo." class="btn-whatsapp" style="margin-top:8px" onclick="fbq('track','Contact')">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        Conversar pelo WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <a href="#inicio" class="footer-logo">
+      <img src="images/logo.png" alt="Reconexão Natural"/>
+    </a>
+    <div class="footer-links">
+      <a href="#sobre">Sobre</a>
+      <a href="#metodologia">Metodologia</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#experiencia">Experiência</a>
+      <a href="#contato">Contato</a>
+    </div>
+    <div class="footer-legal">
+      CNPJ 58.357.654/0001-57<br>
+      © 2026 Reconexão Natural — Thiago Beraldo
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+window.addEventListener('scroll',()=>{
+  const nav = document.querySelector('nav');
+  nav.style.background = window.scrollY > 40
+    ? 'rgba(21,46,32,.99)'
+    : 'rgba(21,46,32,.97)';
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target){
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+
+// Form submit → WhatsApp redirect
+function handleForm(e){
+  e.preventDefault();
+  fbq('track','Lead');
+  const nome = e.target.querySelector('input[type=text]').value;
+  const msg = encodeURIComponent(`Olá Thiago! Me chamo ${nome} e gostaria de conversar sobre um projeto de ecoturismo.`);
+  window.open(`https://wa.me/+5561995679336?text=${msg}`,'_blank');
+}
+</script>
+</body>
+</html>
