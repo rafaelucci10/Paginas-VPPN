@@ -34,6 +34,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   const transaction = purchase.transaction || crypto.randomUUID();
+  const product     = body.data?.product || {};
 
   await fetch(`${SUPABASE_URL}/rest/v1/ab_events`, {
     method: 'POST',
@@ -48,6 +49,27 @@ export async function onRequestPost({ request, env }) {
       variant,
       event_type: 'purchase',
       email:      buyer.email || '',
+    }),
+  });
+
+  // Venda completa (valor, produto) para o dashboard de gestão
+  await fetch(`${SUPABASE_URL}/rest/v1/vendas`, {
+    method: 'POST',
+    headers: {
+      'apikey':        env.SUPABASE_KEY,
+      'Authorization': 'Bearer ' + env.SUPABASE_KEY,
+      'Content-Type':  'application/json',
+      'Prefer':        'return=minimal,resolution=ignore-duplicates',
+    },
+    body: JSON.stringify({
+      transaction_id:   transaction,
+      produto_id:       product.id || '',
+      produto_nome:     product.name || '',
+      valor:            purchase.price?.value ?? null,
+      moeda:            purchase.price?.currency_value || 'BRL',
+      variante:         variant,
+      comprador_email:  buyer.email || '',
+      comprador_nome:   buyer.name || '',
     }),
   });
 
