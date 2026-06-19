@@ -1,10 +1,11 @@
 # Site VPPN — Contexto técnico detalhado
 
-## Status
-- **LIVE** em thiagoberaldo.com/vppn/
-- Arquivo principal: `vppn/index.html`
+## Status — atualizado 18/jun
+- **LIVE** em thiagoberaldo.com/vppn/, mas desde meados de junho `vppn/index.html` virou um **router de A/B test**: sorteia variante (`localStorage.ab_vppn`, 50/50) e redireciona via `window.location.replace` para `/vppn-3/` ou `/vppn-4/`. Não serve mais o conteúdo da LP diretamente.
+- O conteúdo descrito neste arquivo (seções, vídeos, carrosseis, etc.) corresponde à estrutura herdada pela LP — hoje vive em `vppn-3/index.html` e `vppn-4/index.html`, não em `vppn/index.html`. Ao editar a LP, confira em qual das duas variantes (ou em ambas) a mudança deve entrar.
+- `vppn-2/` é uma variante candidata anterior, fora do split atual.
 - Hosting: Cloudflare Pages (project: paginas-vppn)
-- GitHub: rafaelucci10/Paginas-VPPN (branch main)
+- GitHub: rafaelucci10/Paginas-VPPN (branch main) — todo o trabalho de junho (variantes A/B, quiz, base operacional, etc.) foi commitado em 18/jun depois de ~1 mês fora do git
 
 ---
 
