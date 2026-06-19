@@ -522,6 +522,10 @@ tr:hover td{background:rgba(0,0,0,.012)}
               <div class="fsep" id="owner-fsep" style="display:none"></div>
               <button class="fb" id="owner-all" onclick="filterOwner(this,'all')" style="display:none">Todas</button>
               <button class="fb" id="owner-mine" onclick="filterOwner(this,'mine')" style="display:none">Minhas</button>
+              <div class="fsep"></div>
+              <select id="proj-filter" onchange="projFilter=this.value;renderTasks()" style="border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff">
+                <option value="all">Todos os projetos</option>
+              </select>
             </div>
             <button onclick="openModal()" style="background:var(--dk);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700">+ Nova Tarefa</button>
           </div>
@@ -795,7 +799,7 @@ const TITLES={home:'Início',equipe:'Equipe',cultura:'Cultura',projetos:'Projeto
 const ADMIN_ONLY=['dashboard','metas','senhas','admin'];
 const EDITOR_ROLES=['admin','editor'];
 
-let currentUser=null,currentRole='editor',allTasks=[],taskFilter='all',ownerFilter='all',draggedId=null,allUsers=[];
+let currentUser=null,currentRole='editor',allTasks=[],taskFilter='all',ownerFilter='all',projFilter='all',draggedId=null,allUsers=[];
 
 document.getElementById('li-e').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 document.getElementById('li-p').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
@@ -869,15 +873,25 @@ function setDate(){
 async function loadTasks(){
   const{data}=await sb.from('rn_tasks').select('*').order('created_at',{ascending:true});
   allTasks=data||[];
+  updateProjectOptions();
   renderTasks();
   const open=allTasks.filter(t=>t.status!=='concluido').length;
   document.getElementById('dash-tasks').textContent=open;
+}
+
+function updateProjectOptions(){
+  const sel=document.getElementById('proj-filter');
+  const projects=[...new Set(allTasks.map(t=>t.project).filter(Boolean))].sort();
+  const current=sel.value;
+  sel.innerHTML='<option value="all">Todos os projetos</option>'+projects.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
+  if(projects.includes(current))sel.value=current;
 }
 
 function renderTasks(){
   const cols=['backlog','andamento','revisao','concluido'];
   let f=taskFilter==='all'?allTasks:allTasks.filter(t=>t.product===taskFilter);
   if(ownerFilter==='mine')f=f.filter(t=>t.assignee_id===currentUser?.id);
+  if(projFilter!=='all')f=f.filter(t=>t.project===projFilter);
   cols.forEach(col=>{
     const el=document.getElementById('cards-'+col);
     const cnt=document.getElementById('cnt-'+col);
