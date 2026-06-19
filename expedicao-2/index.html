@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1ª Expedição VPPN — Ecoturismo na Prática | Fazenda Colomi, RJ</title>
+  <meta name="description" content="12 vagas exclusivas. Imersão presencial de 4 dias na Mata Atlântica. Serra dos Órgãos + APA Guapimirim. 13 a 16 de agosto.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    /* ──────────────────────────────────────────
+       TOKENS
+    ────────────────────────────────────────── */
+    :root {
+      --bg:        #05100A;
+      --green-dark: #0A1F0E;
+      --green-mid:  #1A3D20;
+      --green-lite: #2D6A3F;
+      --gold:       #C9A85C;
+      --gold-lite:  #E8C97A;
+      --cream:      #F5EDD8;
+      --muted:      rgba(245,237,216,.60);
+      --border:     rgba(201,168,92,.20);
+      --card-bg:    rgba(10,31,14,.75);
+      --glass:      rgba(255,255,255,.04);
+      --radius:     16px;
+      --radius-sm:  8px;
+      --fw-head:    'Playfair Display', serif;
+      --fw-body:    'Inter', sans-serif;
+    }
+
+    /* ──────────────────────────────────────────
+       RESET & BASE
+    ────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--fw-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ──────────────────────────────────────────
+       UTILITIES
+    ────────────────────────────────────────── */
+    .container { width: min(1180px, 92%); margin-inline: auto; }
+    .text-gold  { color: var(--gold); }
+    .text-cream { color: var(--cream); }
+    .text-muted { color: var(--muted); }
+    .text-center { text-align: center; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 40px;
+      border-radius: 100px;
+      font-family: var(--fw-body);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      cursor: pointer;
+      border: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
+      color: #050D06;
+      box-shadow: 0 8px 32px rgba(201,168,92,.35);
+    }
+    .btn-primary:hover { box-shadow: 0 12px 48px rgba(201,168,92,.55); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 2px solid var(--gold);
+    }
+    .btn-outline:hover { background: rgba(201,168,92,.08); }
+
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: #fff;
+      font-size: 1.1rem;
+      padding: 20px 48px;
+      box-shadow: 0 8px 40px rgba(37,211,102,.30);
+    }
+    .btn-whatsapp:hover { box-shadow: 0 14px 56px rgba(37,211,102,.50); }
+
+    /* fade-in-up animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    .stagger-1 { transition-delay: .1s; }
+    .stagger-2 { transition-delay: .2s; }
+    .stagger-3 { transition-delay: .3s; }
+    .stagger-4 { transition-delay: .4s; }
+    .stagger-5 { transition-delay: .5s; }
+
+    /* section padding */
+    .section { padding: 100px 0; }
+    .section-sm { padding: 60px 0; }
+
+    /* section label */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    /* section title */
+    .section-title {
+      font-family: var(--fw-head);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    .section-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 600px;
+    }
+
+    /* divider */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin-block: 24px;
+    }
+
+    /* ──────────────────────────────────────────
+       URGENCY BAR
+    ────────────────────────────────────────── */
+    .urgency-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(90deg, #0A1F0E, #1A3D20, #0A1F0E);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+    .urgency-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .urgency-flame {
+      font-size: 1.2rem;
+    }
+    .urgency-text {
+      font-size: .85rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      color: var(--cream);
+    }
+    .urgency-badge {
+      background: var(--gold);
+      color: #050D06;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+    .urgency-countdown {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .uc-unit {
+      text-align: center;
+      background: rgba(201,168,92,.12);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      min-width: 44px;
+    }
+    .uc-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .uc-label {
+      font-size: .55rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .uc-sep {
+      color: var(--gold);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    /* ──────────────────────────────────────────
+       HERO
+    ────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+    }
+    .hero-bg-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/slide-03.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(5,16,10,.30) 0%,
+        rgba(5,16,10,.55) 50%,
+        rgba(5,16,10,.90) 100%
+      );
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      padding: 120px 0 80px;
+    }
+    .hero-content {
+      /* coluna esquerda */
+    }
+    .hero-video-wrap {
+      aspect-ratio: 16/9;
+      border-radius: var(--radius);
+      background: #000;
+      box-shadow: 0 32px 100px rgba(0,0,0,.80);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(201,168,92,.15);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+    }
+    .hero-eyebrow .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.4); }
+    }
+
+    .hero-title {
+      font-family: var(--fw-head);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .hero-title .highlight {
+      color: var(--gold);
+      font-style: italic;
+    }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(245,237,216,.80);
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .9rem;
+      color: var(--cream);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(8px);
+      border-radius: 100px;
+      padding: 8px 18px;
+    }
+    .hero-meta-item .icon { font-size: 1rem; }
+
+    .hero-scarcity {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(220,50,50,.15);
+      border: 1px solid rgba(220,50,50,.40);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #ff8080;
+      letter-spacing: .05em;
+      margin-bottom: 32px;
+      backdrop-filter: blur(8px);
+    }
+    .hero-scarcity .pulse {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #ff4444;
+      animation: pulse-red 1.5s infinite;
+    }
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 0 0 0 rgba(255,68,68,.6); }
+      50% { box-shadow: 0 0 0 8px rgba(255,68,68,0); }
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      animation: bounce 2.5s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    /* ──────────────────────────────────────────
+       STATS BAR
+    ────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--green-dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 20px 24px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: .8rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    /* ──────────────────────────────────────────
+       ABOUT SECTION
+    ────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-image-wrap {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .about-image-wrap img {
+      width: 100%;
+      height: 560px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      transition: transform .6s ease;
+    }
+    .about-image-wrap:hover img { transform: scale(1.04); }
+    .about-image-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .about-image-badge .badge-icon { font-size: 2rem; }
+    .about-image-badge .badge-text-top {
+      font-size: .7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .about-image-badge .badge-text-bot {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .about-text .body-text {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .about-text .body-text strong { color: var(--cream); font-weight: 600; }
+
+    /* ──────────────────────────────────────────
+       INCLUSO
+    ────────────────────────────────────────── */
+    .incluso {
+      background: linear-gradient(180deg, var(--bg) 0%, #081808 100%);
+    }
+    .incluso-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 60px;
+    }
+    .incluso-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      transition: background .3s, border-color .3s, transform .3s;
+    }
+    .incluso-card:hover {
+      background: rgba(201,168,92,.06);
+      border-color: rgba(201,168,92,.40);
+      transform: translateY(-4px);
+    }
+    .incluso-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(201,168,92,.10);
+      border-radius: 12px;
+    }
+    .incluso-card-title {
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+      font-size: .95rem;
+    }
+    .incluso-card-text {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ──────────────────────────────────────────
+       PROGRAMAÇÃO
+    ────────────────────────────────────────── */
+    .programacao {
+      background: var(--green-dark);
+      position: relative;
+      overflow: hidden;
+    }
+    .programacao::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('images/slide-06.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: .05;
+    }
+
+    .dias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 60px;
+    }
+    .dia-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .dia-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.40);
+    }
+    .dia-card-header {
+      background: linear-gradient(135deg, var(--green-mid), var(--green-dark));
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .dia-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .dia-date {
+      text-align: right;
+    }
+    .dia-weekday {
+      font-size: .75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .dia-ddmm {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--cream);
+    }
+    .dia-card-body { padding: 24px; }
+    .dia-atividade {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .dia-atividade:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .dia-hora {
+      font-size: .75rem;
+      color: var(--gold);
+      font-weight: 600;
+      min-width: 36px;
+      padding-top: 2px;
+    }
+    .dia-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .dia-desc strong { color: var(--cream); display: block; margin-bottom: 2px; }
+
+    /* ──────────────────────────────────────────
+       GALERIA
+    ────────────────────────────────────────── */
+    .galeria { background: var(--bg); }
+    .galeria-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 12px;
+      margin-top: 60px;
+    }
+    .g-item {
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .g-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .g-item:hover img { transform: scale(1.06); }
+
+    .g-1 { grid-column: span 7; grid-row: span 2; height: 440px; }
+    .g-2 { grid-column: span 5; height: 214px; }
+    .g-3 { grid-column: span 5; height: 214px; }
+    .g-4 { grid-column: span 4; height: 240px; }
+    .g-5 { grid-column: span 4; height: 240px; }
+    .g-6 { grid-column: span 4; height: 240px; }
+
+    /* ──────────────────────────────────────────
+       PREÇOS
+    ────────────────────────────────────────── */
+    .precos {
+      background: linear-gradient(180deg, #081808 0%, var(--bg) 100%);
+      position: relative;
+    }
+
+    .preco-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 860px;
+      margin: 60px auto 0;
+    }
+    .preco-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s;
+    }
+    .preco-card:hover { transform: translateY(-4px); }
+
+    .preco-card-regular {
+      background: var(--glass);
+    }
+    .preco-card-destaque {
+      background: linear-gradient(145deg, rgba(201,168,92,.10), rgba(201,168,92,.04));
+      border-color: rgba(201,168,92,.50);
+      box-shadow: 0 0 60px rgba(201,168,92,.08);
+    }
+    .preco-best-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--gold);
+      color: #050D06;
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+    .preco-card-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .preco-card-name {
+      font-family: var(--fw-head);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--cream);
+    }
+    .preco-valor {
+      margin-bottom: 8px;
+    }
+    .preco-de {
+      font-size: .9rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+    .preco-por {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .preco-cifra {
+      font-size: 1.2rem;
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .preco-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .preco-parce {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .preco-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-block: 24px;
+    }
+    .preco-bonus {
+      background: rgba(201,168,92,.08);
+      border: 1px solid rgba(201,168,92,.20);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .preco-bonus-label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .preco-bonus-text {
+      font-size: .9rem;
+      color: var(--cream);
+      font-weight: 600;
+    }
+    .preco-bonus-value {
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    /* ──────────────────────────────────────────
+       DAY-PASS (sem pernoite)
+    ────────────────────────────────────────── */
+    .daypass-box {
+      max-width: 860px;
+      margin: 56px auto 0;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--glass);
+      padding: 36px;
+    }
+    .daypass-box-label {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .daypass-box-title {
+      font-family: var(--fw-head);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 28px;
+    }
+    .daypass-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .daypass-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      background: rgba(255,255,255,.02);
+    }
+    .daypass-item-name {
+      font-size: .92rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+    .daypass-item-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .daypass-item-desc {
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    @media (max-width: 640px) {
+      .daypass-grid { grid-template-columns: 1fr; }
+      .daypass-box { padding: 28px 22px; }
+    }
+    .preco-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+    .preco-features li {
+      display: flex;
+      gap: 10px;
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .preco-features li .check { color: var(--gold); flex-shrink: 0; }
+    .preco-prazo {
+      font-size: .8rem;
+      text-align: center;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    .garantia-box {
+      max-width: 560px;
+      margin: 48px auto 0;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .garantia-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .garantia-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--cream);
+    }
+    .garantia-text { font-size: .9rem; color: var(--muted); }
+
+    /* ──────────────────────────────────────────
+       CTA FINAL
+    ────────────────────────────────────────── */
+    .cta-final {
+      position: relative;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .cta-final-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/slide-08.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .cta-final-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(5,16,10,.92) 0%,
+        rgba(10,31,14,.80) 100%
+      );
+    }
+    .cta-final-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+    }
+    .cta-final-title {
+      font-family: var(--fw-head);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.2;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+    .cta-final-title em { color: var(--gold); font-style: italic; }
+    .cta-final-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 40px;
+      max-width: 540px;
+      margin-inline: auto;
+    }
+    .vagas-restantes {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(220,50,50,.15);
+      border: 1px solid rgba(220,50,50,.35);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #ff9999;
+      margin-bottom: 32px;
+    }
+
+    /* ──────────────────────────────────────────
+       FOOTER
+    ────────────────────────────────────────── */
+    footer {
+      background: #020A04;
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: var(--fw-head);
+      font-size: 1.4rem;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .footer-text {
+      font-size: .82rem;
+      color: var(--muted);
+    }
+
+    /* ──────────────────────────────────────────
+       LIGHTBOX
+    ────────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,.92);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 40px 120px rgba(0,0,0,.8);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      font-size: 2rem;
+      color: var(--cream);
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* ──────────────────────────────────────────
+       RESPONSIVE
+    ────────────────────────────────────────── */
+    /* ──────────────────────────────────────────
+       VIDEO TEASER
+    ────────────────────────────────────────── */
+    .video-teaser { background: var(--green-dark); }
+    .video-wrap {
+      max-width: 860px;
+      margin-inline: auto;
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      background: #000;
+      box-shadow: 0 24px 80px rgba(0,0,0,.60);
+    }
+
+    /* ──────────────────────────────────────────
+       RESPONSIVE
+    ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 32px; padding: 100px 0 60px; }
+      .hero-scroll { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-image-wrap img { height: 360px; }
+      .preco-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+      .section { padding: 70px 0; }
+      .galeria-grid { grid-template-columns: 1fr 1fr; }
+      .g-1,.g-2,.g-3,.g-4,.g-5,.g-6 { grid-column: span 1; height: 200px; }
+      .g-1 { grid-row: span 1; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-inner { padding: 80px 0 48px; gap: 24px; }
+      .section { padding: 56px 0; }
+      .section-sm { padding: 40px 0; }
+      .urgency-bar-inner { gap: 8px; }
+      .urgency-text { font-size: .7rem; }
+      .urgency-badge { display: none; }
+      .stat-item { padding: 16px 12px; border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(5) { grid-column: 1 / -1; }
+      .dias-grid { grid-template-columns: 1fr; }
+      .galeria-grid { grid-template-columns: 1fr; }
+      .g-1,.g-2,.g-3,.g-4,.g-5,.g-6 { height: 240px; }
+      .hero-cta-group { flex-direction: column; align-items: stretch; }
+      .hero-cta-group .btn { justify-content: center; }
+      .garantia-box { flex-direction: column; align-items: center; text-align: center; padding: 22px 18px; }
+      .about-image-wrap { border-radius: 0; }
+      .about-image-wrap img { height: 320px; border-radius: 0; }
+      .about-image-badge { display: none; }
+      .incluso-grid { grid-template-columns: 1fr; }
+      .preco-grid { max-width: 100%; }
+      .preco-card { padding: 28px 22px; }
+      .preco-best-badge { position: static; display: inline-block; margin-bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     URGENCY BAR
+════════════════════════════════════════════ -->
+<div class="urgency-bar">
+  <div class="container">
+    <div class="urgency-bar-inner">
+      <span class="urgency-flame">🔥</span>
+      <span class="urgency-badge">LOTE 1 ATIVO</span>
+      <span class="urgency-text">R$ 4.000 + 1 ano de VPPN</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg-wrap">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+  </div>
+
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-content">
+
+        <div class="hero-eyebrow fade-up">
+          <span class="dot"></span>
+          I Encontro VPPN · Ecoturismo na Prática
+        </div>
+
+        <h1 class="hero-title fade-up stagger-1">
+          1ª Expedição<br>
+          <span class="highlight">VPPN</span>
+        </h1>
+
+        <p class="hero-subtitle fade-up stagger-2">
+          Uma imersão profunda de aprendizado, networking e vivência prática<br>
+          na Mata Atlântica — Fazenda Colomi, Guapimirim / RJ
+        </p>
+
+        <div class="hero-meta fade-up stagger-3">
+          <div class="hero-meta-item">
+            <span class="icon">📅</span>
+            13 a 16 de Agosto · 4 dias
+          </div>
+          <div class="hero-meta-item">
+            <span class="icon">📍</span>
+            Fazenda Colomi — Guapimirim, RJ
+          </div>
+          <div class="hero-meta-item">
+            <span class="icon">🌿</span>
+            Serra dos Órgãos · APA Guapimirim
+          </div>
+        </div>
+
+        <div class="hero-scarcity fade-up stagger-4">
+          <span class="pulse"></span>
+          APENAS 12 VAGAS DISPONÍVEIS
+        </div>
+
+        <div class="hero-cta-group fade-up stagger-5">
+          <a href="https://wa.me/5592993252938?text=QUERO+IR+%7C+1a+Expedi%C3%A7%C3%A3o+VPPN" target="_blank" class="btn btn-whatsapp">
+            Garantir minha vaga agora
+          </a>
+          <a href="#precos" class="btn btn-outline">Ver investimento</a>
+        </div>
+
+      </div>
+
+      <div class="hero-video-col fade-up stagger-2">
+        <div class="hero-video-wrap">
+          <vturb-smartplayer id="vid-6a2b1d58b2504a7201538324" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer>
+          <script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/3557a022-cd7d-4f0d-a446-8306d693def2/players/6a2b1d58b2504a7201538324/v4/player.js",s.async=!0,document.head.appendChild(s);</script>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="hero-scroll">Rolar</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     STATS BAR
+════════════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-up">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Vagas exclusivas</div>
+      </div>
+      <div class="stat-item fade-up stagger-1">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Dias de imersão</div>
+      </div>
+      <div class="stat-item fade-up stagger-2">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Parques visitados</div>
+      </div>
+      <div class="stat-item fade-up stagger-3">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Noites hospedagem</div>
+      </div>
+      <div class="stat-item fade-up stagger-4">
+        <div class="stat-num">+5</div>
+        <div class="stat-label">Especialistas</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════════ -->
+<section class="section" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="about-image-wrap fade-up">
+        <img src="images/slide-13.jpg" alt="Fazenda Colomi — Seu lugar de paz">
+        <div class="about-image-badge">
+          <div class="badge-icon">🌿</div>
+          <div>
+            <div class="badge-text-top">Local</div>
+            <div class="badge-text-bot">Fazenda Colomi, RJ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <div class="section-label fade-up">Sobre a Expedição</div>
+        <h2 class="section-title fade-up stagger-1">
+          Muito mais do que<br>uma <em>viagem</em>
+        </h2>
+        <div class="divider fade-up stagger-2"></div>
+
+        <p class="body-text fade-up stagger-2">
+          Se você busca <strong>insights práticos para acelerar seus resultados</strong> e quer entender como funciona o ecoturismo de alto impacto na vida real, este convite é para você.
+        </p>
+        <p class="body-text fade-up stagger-3">
+          Ficaremos hospedados na charmosa <strong>Fazenda Colomi, em Guapimirim/RJ</strong>, e vamos entender de perto a operação do <strong>Parque Nacional Serra dos Órgãos</strong> e da <strong>APA Guapimirim</strong> — dois dos ecossistemas mais ricos da Mata Atlântica.
+        </p>
+        <p class="body-text fade-up stagger-4">
+          São <strong>4 dias de imersão completa</strong>: trilhas interpretativas, monitoramento ambiental, birdwatching internacional, rodas de conversa com gestores do ICMBio, visita ao projeto de conservação do boto cinza — e momentos dedicados para <strong>avaliar e acelerar o seu projeto</strong>.
+        </p>
+
+        <div class="fade-up stagger-5" style="margin-top:32px;">
+          <a href="#precos" class="btn btn-primary">Ver condições especiais →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     INCLUSO
+════════════════════════════════════════════ -->
+<section class="section incluso" id="incluso">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label" style="justify-content:center;">O que está incluso</div>
+      <h2 class="section-title">Seu pacote <em>completo</em></h2>
+      <p class="section-sub" style="margin-inline:auto;">
+        Tudo cuidado para você focar 100% no aprendizado e na vivência.
+      </p>
+    </div>
+
+    <div class="incluso-grid">
+
+      <div class="incluso-card fade-up">
+        <div class="incluso-icon">🏔️</div>
+        <div>
+          <div class="incluso-card-title">Parque Nacional Serra dos Órgãos</div>
+          <div class="incluso-card-text">Entrada + trilhas interpretativas com observação de fauna, flora e ecossistemas. Workshop de gestão com experiências práticas.</div>
+        </div>
+      </div>
+
+      <div class="incluso-card fade-up stagger-1">
+        <div class="incluso-icon">🌊</div>
+        <div>
+          <div class="incluso-card-title">APA de Guapimirim</div>
+          <div class="incluso-card-text">Monitoramento ambiental, técnicas de observação e interpretação da biodiversidade e visita ao projeto de recuperação do boto cinza.</div>
+        </div>
+      </div>
+
+      <div class="incluso-card fade-up stagger-2">
+        <div class="incluso-icon">🐬</div>
+        <div>
+          <div class="incluso-card-title">Passeio de Barco com Botos</div>
+          <div class="incluso-card-text">Experiência única de observação de botos e fauna aquática na baía de Guanabara com equipe do ICMBio.</div>
+        </div>
+      </div>
+
+      <div class="incluso-card fade-up stagger-3">
+        <div class="incluso-icon">🦜</div>
+        <div>
+          <div class="incluso-card-title">Birdwatching Internacional</div>
+          <div class="incluso-card-text">Passeio guiado com os renomados Irmãos Mello — guias internacionais de observação de aves da Mata Atlântica.</div>
+        </div>
+      </div>
+
+      <div class="incluso-card fade-up">
+        <div class="incluso-icon">🚌</div>
+        <div>
+          <div class="incluso-card-title">Transfer Aeroporto → Fazenda</div>
+          <div class="incluso-card-text">Saída coletiva do Aeroporto do Galeão na quinta às 11h. Retorno no domingo após o encerramento.</div>
+        </div>
+      </div>
+
+      <div class="incluso-card fade-up stagger-1">
+        <div class="incluso-icon">🍽️</div>
+        <div>
+          <div class="incluso-card-title">Alimentação Completa</div>
+          <div class="incluso-card-text">Do almoço de quinta-feira ao almoço de domingo. Café da manhã, almoço, lanche e jantar inclusos.</div>
+        </div>
+      </div>
+
+      <div class="incluso-card fade-up stagger-2">
+        <div class="incluso-icon">🛏️</div>
+        <div>
+          <div class="incluso-card-title">Hospedagem 3 Noites</div>
+          <div class="incluso-card-text">Acomodação na Fazenda Colomi — "seu lugar de paz" na Mata Atlântica de Guapimirim, RJ.</div>
+        </div>
+      </div>
+
+      <div class="incluso-card fade-up stagger-3">
+        <div class="incluso-icon">🎙️</div>
+        <div>
+          <div class="incluso-card-title">Rodas de Conversa Exclusivas</div>
+          <div class="incluso-card-text">Com o Gestor do PARNA Serra dos Órgãos, Gestor da APA Guapimirim, Secretário de Turismo e Irmãos Mello.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     PROGRAMAÇÃO
+════════════════════════════════════════════ -->
+<section class="section programacao" id="programacao">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="text-center fade-up">
+      <div class="section-label" style="justify-content:center;">Cronograma</div>
+      <h2 class="section-title">4 dias de <em>imersão total</em></h2>
+      <p class="section-sub" style="margin-inline:auto;">
+        Cada dia foi desenhado para maximizar aprendizado, vivência e networking.
+      </p>
+    </div>
+
+    <div class="dias-grid">
+
+      <!-- DIA 1 -->
+      <div class="dia-card fade-up">
+        <div class="dia-card-header">
+          <div class="dia-number">01</div>
+          <div class="dia-date">
+            <div class="dia-weekday">Quinta-feira</div>
+            <div class="dia-ddmm">13/08</div>
+          </div>
+        </div>
+        <div class="dia-card-body">
+          <div class="dia-atividade">
+            <div class="dia-hora">08h</div>
+            <div class="dia-desc"><strong>Chegada ao aeroporto</strong></div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">11h</div>
+            <div class="dia-desc"><strong>Transfer coletivo</strong> Galeão → Fazenda Colomi</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">14h</div>
+            <div class="dia-desc"><strong>Abertura oficial</strong> Boas-vindas e introdução ao workshop</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">15h</div>
+            <div class="dia-desc"><strong>Observação de Aves</strong> com Daniel Mello</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">16h</div>
+            <div class="dia-desc"><strong>Palestra Especial:</strong> Mercado de Birdwatching com Daniel Mello</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">19h</div>
+            <div class="dia-desc"><strong>Jantar</strong> · Roda de conversa</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 2 -->
+      <div class="dia-card fade-up stagger-1">
+        <div class="dia-card-header">
+          <div class="dia-number">02</div>
+          <div class="dia-date">
+            <div class="dia-weekday">Sexta-feira</div>
+            <div class="dia-ddmm">14/08</div>
+          </div>
+        </div>
+        <div class="dia-card-body">
+          <div class="dia-atividade">
+            <div class="dia-hora">08h</div>
+            <div class="dia-desc"><strong>PARNA Serra dos Órgãos</strong> Trilhas interpretativas: fauna, flora e ecossistemas</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">12h</div>
+            <div class="dia-desc"><strong>Almoço</strong></div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">14h</div>
+            <div class="dia-desc"><strong>Workshop de Gestão:</strong> Experiências práticas de gestão de parques nacionais</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">19h</div>
+            <div class="dia-desc"><strong>Jantar</strong> · Roda de conversa</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 3 -->
+      <div class="dia-card fade-up stagger-2">
+        <div class="dia-card-header">
+          <div class="dia-number">03</div>
+          <div class="dia-date">
+            <div class="dia-weekday">Sábado</div>
+            <div class="dia-ddmm">15/08</div>
+          </div>
+        </div>
+        <div class="dia-card-body">
+          <div class="dia-atividade">
+            <div class="dia-hora">08h</div>
+            <div class="dia-desc"><strong>APA Guapimirim</strong> Monitoramento ambiental e interpretação da biodiversidade</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">12h</div>
+            <div class="dia-desc"><strong>Almoço</strong></div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">14h</div>
+            <div class="dia-desc"><strong>Visita ao Boto Cinza</strong> Projeto de recuperação e monitoramento de áreas protegidas</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">19h</div>
+            <div class="dia-desc"><strong>Jantar</strong> · Roda de conversa</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIA 4 -->
+      <div class="dia-card fade-up stagger-3">
+        <div class="dia-card-header">
+          <div class="dia-number">04</div>
+          <div class="dia-date">
+            <div class="dia-weekday">Domingo</div>
+            <div class="dia-ddmm">16/08</div>
+          </div>
+        </div>
+        <div class="dia-card-body">
+          <div class="dia-atividade">
+            <div class="dia-hora">08h</div>
+            <div class="dia-desc"><strong>Imersão em campo:</strong> Atividades práticas de vivência na propriedade</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">11h</div>
+            <div class="dia-desc"><strong>Gestão da Fazenda Colomi:</strong> Operação, custos, estratégia de marketing</div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">12h</div>
+            <div class="dia-desc"><strong>Almoço</strong></div>
+          </div>
+          <div class="dia-atividade">
+            <div class="dia-hora">14h</div>
+            <div class="dia-desc"><strong>Encerramento</strong> e retorno ao Galeão</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     GALERIA
+════════════════════════════════════════════ -->
+<section class="section-sm galeria" id="galeria">
+  <div class="container">
+    <div class="text-center fade-up" style="margin-bottom:0">
+      <div class="section-label" style="justify-content:center;">Destinos</div>
+      <h2 class="section-title">Onde você vai <em>estar</em></h2>
+    </div>
+
+    <div class="galeria-grid">
+      <div class="g-item g-1 fade-up" onclick="openLightbox('images/slide-03.jpg')">
+        <img src="images/slide-03.jpg" alt="Serra dos Órgãos — Amanhecer">
+      </div>
+      <div class="g-item g-2 fade-up stagger-1" onclick="openLightbox('images/slide-06.jpg')">
+        <img src="images/slide-06.jpg" alt="Trilha na Mata Atlântica">
+      </div>
+      <div class="g-item g-3 fade-up stagger-2" onclick="openLightbox('images/slide-04.jpg')">
+        <img src="images/slide-04.jpg" alt="Centro de Visitantes">
+      </div>
+      <div class="g-item g-4 fade-up stagger-3" onclick="openLightbox('images/slide-07.jpg')">
+        <img src="images/slide-07.jpg" alt="Jardim ecológico">
+      </div>
+      <div class="g-item g-5 fade-up stagger-4" onclick="openLightbox('images/slide-09.jpg')">
+        <img src="images/slide-09.jpg" alt="Passeio de barco ICMBio">
+      </div>
+      <div class="g-item g-6 fade-up stagger-5" onclick="openLightbox('images/slide-10.jpg')">
+        <img src="images/slide-10.jpg" alt="Boto Cinza na APA">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     PREÇOS
+════════════════════════════════════════════ -->
+<section class="section precos" id="precos">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label" style="justify-content:center;">Investimento</div>
+      <h2 class="section-title">Garanta sua vaga com<br><em>condições especiais</em></h2>
+      <p class="section-sub" style="margin-inline:auto;">
+        Apenas 12 lugares. A imersão é exclusiva e personalizada para o seu projeto.
+      </p>
+    </div>
+
+    <div class="preco-grid">
+
+      <!-- LOTE 1 — DESTAQUE -->
+      <div class="preco-card preco-card-destaque fade-up">
+        <div class="preco-best-badge">MELHOR OPÇÃO</div>
+        <div class="preco-card-label">🔥 1º Lote</div>
+        <div class="preco-card-name">Expedicionista</div>
+
+        <div class="preco-valor">
+          <div class="preco-de">De R$ 4.500,00</div>
+          <div class="preco-por">
+            <span class="preco-cifra">R$</span>
+            <span class="preco-num">4.000</span>
+          </div>
+        </div>
+        <div class="preco-parce">Em até 4x · Sinal R$ 500 para confirmar</div>
+
+        <div class="preco-divider"></div>
+
+        <div class="preco-bonus">
+          <div class="preco-bonus-label">🎁 Bônus exclusivo do 1º lote</div>
+          <div class="preco-bonus-text">1 ano de acesso ao VPPN</div>
+          <div class="preco-bonus-value">Valor normal: R$ 1.450,00 — incluso de graça</div>
+        </div>
+
+        <ul class="preco-features">
+          <li><span class="check">✦</span> Todos os itens do pacote completo</li>
+          <li><span class="check">✦</span> 3 noites na Fazenda Colomi</li>
+          <li><span class="check">✦</span> Transfer + alimentação completa</li>
+          <li><span class="check">✦</span> Todas as visitas técnicas inclusas</li>
+          <li><span class="check">✦</span> Bônus: 1 ano de VPPN (R$1.450)</li>
+        </ul>
+
+        <a href="https://wa.me/5592993252938?text=QUERO+IR+%7C+1a+Expedi%C3%A7%C3%A3o+VPPN" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">
+          Garantir agora via WhatsApp
+        </a>
+        <div class="preco-prazo">Pix: CNPJ 58.357.654/0001-57</div>
+      </div>
+
+      <!-- VALOR CHEIO -->
+      <div class="preco-card preco-card-regular fade-up stagger-2">
+        <div class="preco-card-label">Valor Integral</div>
+        <div class="preco-card-name">Valor Cheio</div>
+
+        <div class="preco-valor">
+          <div class="preco-por">
+            <span class="preco-cifra">R$</span>
+            <span class="preco-num" style="color:var(--muted)">4.500</span>
+          </div>
+        </div>
+        <div class="preco-parce">Em até 4x · Sinal R$ 500 para confirmar</div>
+
+        <div class="preco-divider"></div>
+
+        <ul class="preco-features">
+          <li><span class="check">✦</span> Todos os itens do pacote completo</li>
+          <li><span class="check">✦</span> 3 noites na Fazenda Colomi</li>
+          <li><span class="check">✦</span> Transfer + alimentação completa</li>
+          <li><span class="check">✦</span> Todas as visitas técnicas inclusas</li>
+          <li style="opacity:.4;"><span>✕</span> Bônus VPPN não incluso</li>
+        </ul>
+
+        <a href="https://wa.me/5592993252938?text=QUERO+IR+%7C+1a+Expedi%C3%A7%C3%A3o+VPPN" target="_blank" class="btn btn-outline" style="width:100%;justify-content:center;">
+          Garantir minha vaga
+        </a>
+      </div>
+
+    </div>
+
+    <div class="daypass-box fade-up">
+      <div class="daypass-box-label">Opção avulsa</div>
+      <h3 class="daypass-box-title">Não pode ficar os 4 dias? Participe sem pernoite, com alimentação inclusa</h3>
+      <div class="daypass-grid">
+        <div class="daypass-item">
+          <div class="daypass-item-name">1 dia de atividade</div>
+          <div class="daypass-item-price">R$ 1.500</div>
+          <div class="daypass-item-desc">Sem pernoite · Com alimentação</div>
+        </div>
+        <div class="daypass-item">
+          <div class="daypass-item-name">Evento completo (4 dias)</div>
+          <div class="daypass-item-price">R$ 3.000</div>
+          <div class="daypass-item-desc">Sem pernoite · Com alimentação</div>
+        </div>
+      </div>
+      <a href="https://wa.me/5592993252938?text=QUERO+SABER+SOBRE+A+OP%C3%87%C3%83O+AVULSA+%7C+1a+Expedi%C3%A7%C3%A3o+VPPN" target="_blank" class="btn btn-outline" style="margin-top:24px;">Falar sobre opção avulsa</a>
+    </div>
+
+    <!-- GARANTIA -->
+    <div class="garantia-box fade-up">
+      <div class="garantia-icon">🛡️</div>
+      <div>
+        <div class="garantia-title">Garantia de grupo mínimo</div>
+        <div class="garantia-text">
+          Caso o grupo mínimo de 10 participantes não seja atingido, devolvemos 100% do valor pago. Sua reserva é segura.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     CTA FINAL
+════════════════════════════════════════════ -->
+<section class="cta-final">
+  <div class="cta-final-bg"></div>
+  <div class="cta-final-overlay"></div>
+
+  <div class="container cta-final-content">
+    <div class="fade-up">
+      <div class="section-label text-center" style="justify-content:center;">Últimas Vagas</div>
+    </div>
+    <h2 class="cta-final-title fade-up stagger-1">
+      Sua próxima grande<br><em>experiência profissional</em><br>começa aqui
+    </h2>
+    <p class="cta-final-sub fade-up stagger-2">
+      12 lugares. Uma imersão que pode mudar a trajetória do seu projeto de ecoturismo.
+    </p>
+
+    <div class="vagas-restantes fade-up stagger-3">
+      <span style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse-red 1.5s infinite;"></span>
+      APENAS 12 VAGAS DISPONÍVEIS
+    </div>
+
+    <div class="fade-up stagger-4">
+      <a href="https://wa.me/5592993252938?text=QUERO+IR+%7C+1a+Expedi%C3%A7%C3%A3o+VPPN" target="_blank" class="btn btn-whatsapp">
+        Garantir minha vaga agora
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">Visitação Padrão Parque Nacional</div>
+    <p class="footer-text">
+      1ª Expedição VPPN · I Encontro VPPN — Ecoturismo na Prática<br>
+      13 a 16 de Agosto · Fazenda Colomi, Guapimirim / RJ<br>
+      <br>
+      CNPJ: 58.357.654/0001-57
+    </p>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════
+     LIGHTBOX
+════════════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">×</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════ -->
+<script>
+  // ── Hero parallax bg zoom
+  const heroBg = document.getElementById('heroBg');
+  setTimeout(() => heroBg.classList.add('loaded'), 100);
+
+  // ── Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── Lightbox
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+
+</body>
+</html>

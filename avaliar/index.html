@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IAT — Índice de Atratividade Turística</title>
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','791417620220737');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=791417620220737&ev=PageView&noscript=1"/></noscript>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#1e4530;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:system-ui,sans-serif}
+.dot{width:10px;height:10px;border-radius:50%;background:#c8a84b;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+</style>
+</head>
+<body>
+<div class="dot"></div>
+<script>
+// ── CONFIG ───────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://sdjlnjqtgnodnifkbykq.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamxuanF0Z25vZG5pZmtieWtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTkwMjQsImV4cCI6MjA5NDk3NTAyNH0.Zf-54wX26NjM2bagxqQv8A0ZfHWywYIE9uOldc4vz2g';
+
+const DEST = {
+  quiz: '/quiz-iat/',
+  lp:   'https://thiagoberaldo.com/calculadora-iat/',
+};
+
+// ── UTM passthrough ──────────────────────────────────────────────
+const params = new URLSearchParams(location.search);
+const UTM = {
+  utm_source:   params.get('utm_source')   || '',
+  utm_medium:   params.get('utm_medium')   || '',
+  utm_campaign: params.get('utm_campaign') || '',
+  utm_content:  params.get('utm_content')  || '',
+  utm_term:     params.get('utm_term')     || '',
+  utm_id:       params.get('utm_id')       || '',
+};
+const DEV = {
+  screen:   screen.width + 'x' + screen.height,
+  viewport: window.innerWidth + 'x' + window.innerHeight,
+  platform: navigator.platform || '',
+};
+
+// ── SESSION: reutiliza se usuário voltar (mesmo dispositivo/sessão) ─
+const STORAGE_KEY = 'ab_iat_variant';
+let variant = sessionStorage.getItem(STORAGE_KEY);
+if (!variant) {
+  variant = Math.random() < 0.5 ? 'quiz' : 'lp';
+  sessionStorage.setItem(STORAGE_KEY, variant);
+}
+
+// ── LOG → Supabase ───────────────────────────────────────────────
+const SID = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2);
+
+fetch(SUPABASE_URL + '/rest/v1/ab_visits', {
+  method: 'POST',
+  headers: {
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=minimal',
+  },
+  body: JSON.stringify(Object.assign({session_id: SID, variant}, UTM, DEV)),
+}).catch(() => {});
+
+// ── PIXEL ────────────────────────────────────────────────────────
+try { fbq('trackCustom', 'ABSplit', {variant: variant}); } catch(e) {}
+
+// ── REDIRECT (com UTMs + variante) ──────────────────────────────
+const base = DEST[variant];
+const fwd = new URLSearchParams();
+Object.entries(UTM).forEach(([k,v]) => { if(v) fwd.set(k, v); });
+fwd.set('v', variant); // marca a variante na URL de destino
+
+const sep = base.includes('?') ? '&' : '?';
+const url = fwd.toString() ? base + sep + fwd.toString() : base;
+
+// Pequeno delay para garantir que o pixel disparou
+setTimeout(() => { window.location.replace(url); }, 150);
+</script>
+</body>
+</html>

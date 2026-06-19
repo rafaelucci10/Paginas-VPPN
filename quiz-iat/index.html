@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>Avaliação de Potencial Turístico — IAT</title>
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','791417620220737');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=791417620220737&ev=PageView&noscript=1"/></noscript>
+<!-- Fontes Thiago Beraldo -->
+<link rel="preload" href="../fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="../fonts/fonts.css"/></noscript>
+<style>
+:root{
+  --verde:  #1e4530;
+  --verde2: #2d6a42;
+  --verde3: #3d8a5a;
+  --creme:  #f4efe6;
+  --creme2: #e8e1d2;
+  --ouro:   #c8a84b;
+  --branco: #fff;
+  --texto:  #1a1a1a;
+  --disp:   'Fraunces', Georgia, serif;
+  --sans:   'Plus Jakarta Sans', system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--creme);font-family:var(--sans);-webkit-font-smoothing:antialiased;color:var(--texto)}
+
+.quiz-shell{min-height:100vh;display:flex;align-items:flex-start;justify-content:center}
+.quiz-card{background:var(--branco);width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,.1)}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.quiz-header{display:flex;align-items:center;padding:12px 16px 0;gap:12px;min-height:44px;background:var(--branco);position:sticky;top:0;z-index:10}
+.btn-back{background:none;border:none;cursor:pointer;padding:4px;color:var(--verde);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.btn-back svg{width:22px;height:22px}
+.progress-bar-wrap{flex:1;height:5px;background:var(--creme2);border-radius:3px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--verde);border-radius:3px;transition:width .4s ease}
+
+/* ── Steps ───────────────────────────────────────────────────── */
+.step{padding:28px 20px 40px;flex:1;display:flex;flex-direction:column}
+.step--hidden{display:none!important}
+
+/* ── Intro ───────────────────────────────────────────────────── */
+.intro-logo{display:flex;justify-content:center;margin-bottom:20px}
+.intro-logo img{height:48px;object-fit:contain}
+.intro-title{font-family:var(--disp);font-size:1.6rem;font-weight:700;line-height:1.2;text-align:center;margin-bottom:20px;color:var(--verde)}
+.intro-title .ul{text-decoration:underline;color:var(--texto)}
+.intro-img{width:100%;border-radius:14px;overflow:hidden;margin-bottom:20px;aspect-ratio:4/3;background:var(--creme2)}
+.intro-img img{width:100%;height:100%;object-fit:cover;display:block}
+.intro-sub{font-size:.92rem;text-align:center;line-height:1.7;color:#444;margin-bottom:32px}
+.intro-sub mark{background:#ffe066;padding:0 3px;font-weight:700;font-style:normal;border-radius:2px}
+
+/* ── Question ────────────────────────────────────────────────── */
+.q-title{font-family:var(--disp);font-size:1.2rem;font-weight:600;text-align:center;line-height:1.35;margin-bottom:28px;color:var(--verde)}
+.q-title small{font-family:var(--sans);font-weight:400;font-size:.78em;color:#666;display:block;margin-top:4px}
+
+/* ── Options ─────────────────────────────────────────────────── */
+.opts{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+.opt{display:flex;align-items:center;gap:10px;padding:14px 16px;border:1.5px solid var(--creme2);border-radius:10px;background:var(--creme);cursor:pointer;font-size:.92rem;font-weight:500;color:var(--texto);transition:border-color .12s,background .12s;-webkit-tap-highlight-color:transparent;user-select:none}
+.opt:active{background:var(--creme2)}
+.opt.selected{border-color:var(--verde);background:#e6efe9;font-weight:600}
+.opt-emoji{font-size:1.2rem;flex-shrink:0;line-height:1}
+.opt-check{width:20px;height:20px;border:2px solid var(--verde2);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-left:auto;background:var(--branco);transition:background .12s}
+.opt.selected .opt-check{background:var(--verde)}
+.opt.selected .opt-check::after{content:'';width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);display:block}
+
+/* ── Interstitial ────────────────────────────────────────────── */
+.inter-title{font-family:var(--disp);font-size:1.25rem;font-weight:700;text-align:center;line-height:1.3;margin-bottom:18px;color:var(--verde)}
+.inter-img{width:100%;border-radius:12px;overflow:hidden;margin-bottom:18px}
+.inter-img img{width:100%;display:block}
+.inter-body{font-size:.88rem;text-align:center;line-height:1.7;color:#444;margin-bottom:28px}
+.inter-body strong{font-weight:700;color:var(--verde)}
+
+/* ── Testimonials ────────────────────────────────────────────── */
+.tests-title{font-family:var(--disp);font-size:1.25rem;font-weight:700;text-align:center;margin-bottom:20px;color:var(--verde);line-height:1.3}
+.test-card{border:1px solid var(--creme2);border-radius:12px;padding:16px;margin-bottom:12px;background:var(--creme)}
+.test-stars{color:var(--ouro);font-size:1rem;margin-bottom:4px;letter-spacing:.05em}
+.test-name{font-weight:700;font-size:.9rem;color:var(--verde)}
+.test-place{font-size:.78rem;color:#888;margin-bottom:8px}
+.test-text{font-size:.86rem;color:#333;line-height:1.6}
+
+/* ── Loading ─────────────────────────────────────────────────── */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:24px;text-align:center;padding:0 10px}
+.loading-title{font-family:var(--disp);font-size:1.1rem;font-weight:600;line-height:1.4;color:var(--verde)}
+.loading-bar-wrap{width:100%;display:flex;flex-direction:column;gap:6px}
+.loading-pct{font-size:.85rem;font-weight:700;text-align:right;color:var(--verde)}
+.loading-bar{height:8px;background:var(--creme2);border-radius:4px;overflow:hidden}
+.loading-bar-fill{height:100%;background:var(--verde);border-radius:4px;width:0%;transition:width .35s ease}
+.loading-sub{font-size:.85rem;color:#777}
+
+/* ── Result ──────────────────────────────────────────────────── */
+.result-badge{text-align:center;margin-bottom:6px}
+.result-badge span{display:inline-block;background:var(--creme2);color:var(--verde);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 12px;border-radius:20px}
+.result-profile{font-family:var(--disp);font-size:1.4rem;font-weight:700;text-align:center;margin-bottom:24px;color:var(--ouro);line-height:1.2}
+.rsec{margin-bottom:16px}
+.rsec h3{font-size:.88rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--verde);margin-bottom:8px}
+.rsec p,.rsec li{font-size:.88rem;line-height:1.7;color:#333}
+.rsec ul{padding-left:18px;margin:6px 0}
+.rdiv{border:none;border-top:1px dashed var(--creme2);margin:20px 0}
+.ropp{background:var(--creme);border:1px solid var(--creme2);border-left:3px solid var(--verde);border-radius:10px;padding:16px;margin-bottom:20px}
+.ropp h3{font-size:.88rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--verde);margin-bottom:8px}
+.ropp p,.ropp li{font-size:.88rem;line-height:1.7;color:#333}
+.ropp ul{padding-left:18px;margin-top:6px;list-style:none;padding-left:0}
+.ropp ul li::before{content:'✓ ';color:var(--verde);font-weight:700}
+.rstep{background:var(--verde);border-radius:10px;padding:16px;margin-bottom:24px}
+.rstep h3{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ouro);margin-bottom:6px}
+.rstep p{font-size:.88rem;line-height:1.65;color:var(--creme)}
+.hlY{background:#ffe066;font-weight:700;padding:0 3px;border-radius:2px;font-style:italic}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn-cta{display:block;width:100%;padding:18px 20px;background:var(--verde);color:var(--creme);font-family:var(--sans);font-size:.93rem;font-weight:700;text-align:center;border:none;border-radius:10px;cursor:pointer;text-decoration:none;transition:background .15s,opacity .15s;line-height:1.3;margin-top:4px;letter-spacing:.01em}
+.btn-cta:hover{background:var(--verde2);color:var(--branco)}
+.btn-cta:active{opacity:.85}
+.btn-cta-gold{background:linear-gradient(135deg,var(--ouro),#b8942e);color:var(--verde)}
+.btn-cta-gold:hover{background:linear-gradient(135deg,#d4b55a,var(--ouro));color:var(--verde)}
+.sticky-cta{position:sticky;bottom:0;background:var(--branco);padding:10px 0 0;border-top:1px solid var(--creme2);margin-top:16px}
+
+/* ── Desktop ─────────────────────────────────────────────────── */
+@media(min-width:431px){
+  .quiz-shell{padding:24px 16px 48px}
+  .quiz-card{border-radius:20px;min-height:auto}
+}
+</style>
+</head>
+<body>
+<div class="quiz-shell">
+<div class="quiz-card">
+
+  <!-- Header -->
+  <div class="quiz-header" id="header">
+    <button class="btn-back" id="btn-back" onclick="goBack()" aria-label="Voltar" style="visibility:hidden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ETAPA 1 — Intro -->
+  <div class="step" id="step-0">
+    <div class="intro-logo">
+      <img src="../images/vivendo_de-3_copy-1-768x285.png" alt="Vivendo de Ecoturismo" loading="eager"/>
+    </div>
+    <h1 class="intro-title">
+      Como avaliar o Potencial Turístico de uma <span class="ul">Área Natural</span>
+    </h1>
+    <!-- IMAGEM: substitua pelo arquivo da intro do quiz original -->
+    <div class="intro-img">
+      <img src="images/intro-quiz.webp" alt="Área natural com potencial turístico" loading="eager"/>
+    </div>
+    <p class="intro-sub">
+      Responda 7 perguntas e descubra <mark>como identificar</mark> se você está lidando com um <mark>ativo turístico valioso</mark> sem saber
+    </p>
+    <button class="btn-cta" onclick="startQuiz()">Iniciar avaliação estratégica</button>
+  </div>
+
+  <!-- ETAPA 2 — Q1 -->
+  <div class="step step--hidden" id="step-1">
+    <p class="q-title">Você tem uma área natural?</p>
+    <ul class="opts" id="opts-1"></ul>
+  </div>
+
+  <!-- ETAPA 3 — Q2 -->
+  <div class="step step--hidden" id="step-2">
+    <p class="q-title">Você já pensou em usar a terra para gerar renda com turismo?</p>
+    <ul class="opts" id="opts-2"></ul>
+  </div>
+
+  <!-- ETAPA 4 — Credencial Parque Nacional -->
+  <div class="step step--hidden" id="step-3">
+    <h2 class="inter-title">Uma ferramenta Padrão Parque Nacional</h2>
+    <div class="inter-img">
+      <!-- IMAGEM: substitua pelo arquivo da credencial do quiz original (Cataratas) -->
+      <img src="images/parque-nacional.webp" alt="Cataratas do Iguaçu" loading="lazy"/>
+    </div>
+    <p class="inter-body">
+      O <strong>Índice de Atratividade Turística</strong> foi desenvolvido <strong>para os parques nacionais</strong> brasileiros e já foi utilizado no planejamento de áreas como o <strong>Parque Nacional do Iguaçu, Parque Nacional de Brasília e Floresta Nacional de São Francisco de Paula.</strong>
+    </p>
+    <button class="btn-cta" onclick="nextStep()">Continuar</button>
+  </div>
+
+  <!-- ETAPA 5 — Q3 atrativos (multi) -->
+  <div class="step step--hidden" id="step-4">
+    <p class="q-title">Considerando sua área ou uma área natural que você está interessado, quais atrativos você já identificou?<small>(múltipla escolha)</small></p>
+    <ul class="opts" id="opts-4"></ul>
+    <div class="sticky-cta"><button class="btn-cta" onclick="nextStep()">Continuar</button></div>
+  </div>
+
+  <!-- ETAPA 6 — Q4 terra parada -->
+  <div class="step step--hidden" id="step-5">
+    <p class="q-title">Você sente que a terra está parada e não gera retorno?</p>
+    <ul class="opts" id="opts-5"></ul>
+  </div>
+
+  <!-- ETAPA 7 — Q5 dificuldades (multi) -->
+  <div class="step step--hidden" id="step-6">
+    <p class="q-title">Quais dessas dificuldades você enfrenta hoje?<small>(múltipla escolha)</small></p>
+    <ul class="opts" id="opts-6"></ul>
+    <div class="sticky-cta"><button class="btn-cta" onclick="nextStep()">Continuar</button></div>
+  </div>
+
+  <!-- ETAPA 8 — Q6 o que mais gostaria (multi) -->
+  <div class="step step--hidden" id="step-7">
+    <p class="q-title">O que você mais gostaria ao transformar uma área em um empreendimento turístico?<small>(múltipla escolha)</small></p>
+    <ul class="opts" id="opts-7"></ul>
+    <div class="sticky-cta"><button class="btn-cta" onclick="nextStep()">Continuar</button></div>
+  </div>
+
+  <!-- ETAPA 9 — Depoimentos -->
+  <div class="step step--hidden" id="step-8">
+    <h2 class="tests-title">Uma nova forma de viver com o Ecoturismo</h2>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-name">Connie</div>
+      <div class="test-place">Maple Leaf Reserva Florestal</div>
+      <p class="test-text">Totalmente virou nossa chave, encheu a gente de esperança. Estou estudando, estou fascinada, já estou usando, inclusive.</p>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-name">Sheila</div>
+      <div class="test-place">Fazenda Colomi</div>
+      <p class="test-text">O método trouxe uma visão do todo e das particularidades que muitas vezes a gente não consegue enxergar (...) Já conseguimos direcionar melhor nosso público e criar continuidade de receita.</p>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-name">Bernardo</div>
+      <div class="test-place">Pesquisador e Consultor</div>
+      <p class="test-text">Fizemos o IAT e aplicamos as ferramentas de verdade. Saímos com um documento concreto em mãos. Isso é extremamente estimulante.</p>
+    </div>
+    <button class="btn-cta" onclick="nextStep()" style="margin-top:8px">Continuar</button>
+  </div>
+
+  <!-- ETAPA 10 — Q7 disposto -->
+  <div class="step step--hidden" id="step-9">
+    <p class="q-title">Você está disposto a utilizar um instrumento técnico para descobrir o potencial de turismo da sua área?</p>
+    <ul class="opts" id="opts-9"></ul>
+  </div>
+
+  <!-- ETAPA 11 — Q8 perfil principal -->
+  <div class="step step--hidden" id="step-10">
+    <p class="q-title">Qual é seu perfil principal?</p>
+    <ul class="opts" id="opts-10"></ul>
+  </div>
+
+  <!-- ETAPA 12 — Loading -->
+  <div class="step step--hidden" id="step-11">
+    <div class="loading-wrap">
+      <p class="loading-title">Entendendo seus objetivos e identificando o seu perfil</p>
+      <div class="loading-bar-wrap">
+        <div class="loading-pct" id="loading-pct">0%</div>
+        <div class="loading-bar"><div class="loading-bar-fill" id="loading-fill"></div></div>
+      </div>
+      <p class="loading-sub">Aguarde, estamos analisando seus dados...</p>
+    </div>
+  </div>
+
+  <!-- RESULTADO 1 — Empreendedor Natural -->
+  <div class="step step--hidden" id="result-1">
+    <div class="result-badge"><span>Seu perfil</span></div>
+    <p class="result-profile">Empreendedor Natural</p>
+    <div class="rsec">
+      <h3>Diagnóstico</h3>
+      <p>Você ainda está na <strong>fase de descoberta.</strong></p>
+      <br/>
+      <p>Provavelmente percebe que áreas naturais podem ter valor turístico, mas ainda <strong>não possui critérios claros para identificar quais elementos realmente tornam um local atrativo para visitação.</strong></p>
+      <br/>
+      <p>Muitos proprietários ou interessados olham para uma área natural e pensam:</p>
+      <br/>
+      <p><span class="hlY">"Será que isso poderia virar algo turístico?"</span></p>
+      <br/>
+      <p>Mas sem uma estrutura de avaliação, fica difícil saber se existe potencial real ou apenas impressão.</p>
+    </div>
+    <hr class="rdiv"/>
+    <div class="ropp">
+      <h3>Oportunidade</h3>
+      <p>A boa notícia é que <strong>quase todas as áreas possuem potencial turístico oculto</strong> que <strong>só aparece quando avaliadas com critérios técnicos.</strong></p>
+      <br/>
+      <p>Pequenos elementos naturais podem se transformar em experiências altamente valorizadas quando corretamente identificados.</p>
+    </div>
+    <div class="rstep">
+      <h3>Próximo passo</h3>
+      <p>Para sair da incerteza e descobrir o verdadeiro potencial da área, você precisa transformar observação em classificação estruturada.</p>
+    </div>
+    <a href="https://thiagoberaldo.com/calculadora-iat/?v=quiz" class="btn-cta btn-cta-gold" onclick="fbq('track','InitiateCheckout')">Descobrir o potencial da área com o IAT</a>
+  </div>
+
+  <!-- RESULTADO 2 — Empreendedor Estratégico -->
+  <div class="step step--hidden" id="result-2">
+    <div class="result-badge"><span>Seu perfil</span></div>
+    <p class="result-profile">Empreendedor Estratégico</p>
+    <div class="rsec">
+      <h3>Diagnóstico</h3>
+      <p>Você já percebe que <strong>uma área natural pode gerar valor com turismo.</strong></p>
+      <br/>
+      <p>Provavelmente já pensou em:</p>
+      <ul>
+        <li>Trilhas</li>
+        <li>Experiências na natureza</li>
+        <li>Receber visitantes</li>
+        <li>Criar uma fonte de renda sustentável</li>
+      </ul>
+      <br/>
+      <p>Isso mostra que <strong>você já enxerga oportunidade onde muitas pessoas não enxergam.</strong></p>
+    </div>
+    <hr class="rdiv"/>
+    <div class="rsec">
+      <h3>O desafio</h3>
+      <p>A maior dificuldade nessa fase é <strong>saber se a ideia realmente é viável.</strong></p>
+      <br/>
+      <p>Muitos projetos começam baseados apenas em entusiasmo e acabam enfrentando dificuldades <u>porque faltou uma avaliação estruturada do potencial turístico da área.</u></p>
+    </div>
+    <hr class="rdiv"/>
+    <div class="ropp">
+      <h3>Oportunidade</h3>
+      <p>Quando o potencial é analisado com indicadores claros, é possível:</p>
+      <ul>
+        <li>Identificar os atrativos mais fortes</li>
+        <li>Entender limitações da área</li>
+        <li>Reduzir riscos de investimento</li>
+        <li>Planejar experiências mais atrativas</li>
+      </ul>
+    </div>
+    <a href="https://thiagoberaldo.com/calculadora-iat/?v=quiz" class="btn-cta btn-cta-gold" onclick="fbq('track','InitiateCheckout')">Quero transformar o potencial da área em resultado</a>
+  </div>
+
+  <!-- RESULTADO 3 — Planejador de Experiências -->
+  <div class="step step--hidden" id="result-3">
+    <div class="result-badge"><span>Seu perfil</span></div>
+    <p class="result-profile">Planejador de Experiências na Natureza</p>
+    <div class="rsec">
+      <h3>Diagnóstico</h3>
+      <p>Você já pensa na área natural de <strong>forma estratégica.</strong></p>
+      <br/>
+      <p>Suas respostas mostram que você considera:</p>
+      <ul>
+        <li>Experiências para visitantes</li>
+        <li>Oportunidades de uso turístico</li>
+      </ul>
+      <br/>
+      <p>Isso indica uma <strong>mentalidade mais próxima do planejamento profissional da visitação.</strong></p>
+    </div>
+    <hr class="rdiv"/>
+    <div class="rsec">
+      <h3>O ponto de evolução</h3>
+      <p>Mesmo com boa visão estratégica, muitos projetos ficam limitados porque <strong>não utilizam uma metodologia estruturada de avaliação.</strong></p>
+      <br/>
+      <p>Sem isso, <u>decisões importantes acabam sendo tomadas com base em percepção.</u></p>
+    </div>
+    <hr class="rdiv"/>
+    <div class="ropp">
+      <h3>Oportunidade</h3>
+      <p>Quando os atrativos são classificados dentro de um <strong>índice estruturado,</strong> você consegue:</p>
+      <ul>
+        <li>Priorizar investimentos</li>
+        <li>Entender o nível real de atratividade</li>
+        <li>Estruturar melhor as experiências turísticas</li>
+        <li>Comunicar valor com mais autoridade</li>
+      </ul>
+    </div>
+    <a href="https://thiagoberaldo.com/calculadora-iat/?v=quiz" class="btn-cta btn-cta-gold" onclick="fbq('track','InitiateCheckout')">Usar o IAT para planejar com critérios profissionais</a>
+  </div>
+
+  <!-- RESULTADO 4 — Gestor Técnico -->
+  <div class="step step--hidden" id="result-4">
+    <div class="result-badge"><span>Seu perfil</span></div>
+    <p class="result-profile">Gestor Técnico</p>
+    <div class="rsec">
+      <h3>Diagnóstico</h3>
+      <p>Seu perfil demonstra uma visão mais técnica sobre áreas naturais e potencial turístico.</p>
+      <br/>
+      <p>Você provavelmente já entende que fatores como <strong>atratividade natural, acessibilidade, experiência do visitante e estrutura da área</strong> <u>influenciam diretamente no sucesso de um projeto de visitação.</u></p>
+    </div>
+    <hr class="rdiv"/>
+    <div class="rsec">
+      <h3>O ponto crítico</h3>
+      <p>Mesmo profissionais experientes enfrentam um desafio comum:</p>
+      <br/>
+      <p><strong>A ausência de um instrumento padronizado de avaliação de atratividade turística.</strong></p>
+      <br/>
+      <p>Sem isso, <u>muitas análises continuam dependendo de interpretação individual.</u></p>
+    </div>
+    <hr class="rdiv"/>
+    <div class="ropp">
+      <h3>Oportunidade</h3>
+      <p><strong>Um índice estruturado permite transformar análise qualitativa em classificação comparável e defensável.</strong></p>
+      <br/>
+      <p>Isso traz muito mais segurança para decisões de:</p>
+      <ul>
+        <li>Planejamento</li>
+        <li>Investimento</li>
+        <li>Consultoria</li>
+        <li>Gestão de áreas naturais</li>
+      </ul>
+    </div>
+    <a href="https://thiagoberaldo.com/calculadora-iat/?v=quiz" class="btn-cta btn-cta-gold" onclick="fbq('track','InitiateCheckout')">Aplicar o IAT na minha avaliação</a>
+  </div>
+
+</div><!-- /quiz-card -->
+</div><!-- /quiz-shell -->
+
+<script>
+// ── CONFIG — Supabase ─────────────────────────────────────────────
+const SUPABASE_URL = 'https://sdjlnjqtgnodnifkbykq.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamxuanF0Z25vZG5pZmtieWtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTkwMjQsImV4cCI6MjA5NDk3NTAyNH0.Zf-54wX26NjM2bagxqQv8A0ZfHWywYIE9uOldc4vz2g';
+
+// ── SESSION & UTM ─────────────────────────────────────────────────
+const SID = crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2);
+const P = new URLSearchParams(location.search);
+const UTM = {
+  utm_source:P.get('utm_source')||'',utm_medium:P.get('utm_medium')||'',
+  utm_campaign:P.get('utm_campaign')||'',utm_content:P.get('utm_content')||'',
+  utm_term:P.get('utm_term')||'',utm_id:P.get('utm_id')||'',
+};
+const DEV = {
+  screen:screen.width+'x'+screen.height,
+  viewport:window.innerWidth+'x'+window.innerHeight,
+  platform:navigator.platform||'',
+};
+
+// ── STEPS ─────────────────────────────────────────────────────────
+const STEPS = [
+  {id:0,type:'intro'},
+  {id:1,type:'single',key:'q1',opts:[
+    {e:'🏔️',t:'Sim, sou dono'},{e:'🚴',t:'Estou pensando em comprar uma'},
+    {e:'🪧',t:'Tenho acesso, mas não sou proprietário'},
+    {e:'📊',t:'Sou consultor e quero aprender mais sobre planejamento do ecoturismo'},
+    {e:'☁️',t:'Ainda não, mas sonho com isso'},
+  ]},
+  {id:2,type:'single',key:'q2',opts:[
+    {t:'Nunca'},{t:'Algumas vezes'},{t:'Já pensei seriamente'},{t:'Sim, estou buscando isso'},
+  ]},
+  {id:3,type:'interstitial'},
+  {id:4,type:'multi',key:'q3',opts:[
+    'Trilhas naturais','Mirantes / visuais panorâmicos','Cachoeira / rio / lagos / praias',
+    'Presença de fauna / aves','Campos','Árvores Centenárias','Formações Geológicas',
+    'Formações Vegetais específicas','Patrimônio cultural ou histórico','Outros','Nenhum ainda',
+  ]},
+  {id:5,type:'single',key:'q4',opts:[
+    {t:'Sim, totalmente'},{t:'Em parte'},{t:'Não, mas acho que pode render mais'},
+  ]},
+  {id:6,type:'multi',key:'q5',opts:[
+    'Não sei por onde começar','Falta de recursos','Insegurança sobre viabilidade',
+    'Falta de conhecimento técnico','Nenhuma das anteriores',
+  ]},
+  {id:7,type:'multi',key:'q6',opts:[
+    'Promover a conservação ambiental','Criar um negócio familiar','Ter liberdade financeira',
+    'Ter uma renda extra mensal','Oferecer Experiências Encantadoras',
+  ]},
+  {id:8,type:'interstitial'},
+  {id:9,type:'single',key:'q7',opts:[
+    {t:'Sim, preciso disso agora'},{t:'Talvez, quero analisar'},{t:'Ainda não tenho certeza'},
+  ]},
+  {id:10,type:'single',key:'q8',opts:[
+    {t:'Dono de terra querendo valorizar o patrimônio'},
+    {t:'Empreendedor buscando renda com ecoturismo'},
+    {t:'Profissional ou consultor em planejamento do turismo'},
+    {t:'Gestor público de áreas naturais'},
+    {t:'Outro'},
+  ]},
+  {id:11,type:'loading'},
+];
+
+const TOTAL = 11; // last interactive step index (for progress)
+const PROFILE = ['result-1','result-2','result-3','result-4','result-1'];
+const answers = {};
+let cur = 0;
+
+// ── BUILD OPTIONS ─────────────────────────────────────────────────
+STEPS.forEach(step => {
+  if (!step.opts) return;
+  const ul = document.getElementById('opts-'+step.id);
+  if (!ul) return;
+  step.opts.forEach((opt,i) => {
+    const li = document.createElement('li');
+    li.className = 'opt';
+    if (step.type === 'single') {
+      const em = opt.e ? '<span class="opt-emoji">'+opt.e+'</span>' : '';
+      li.innerHTML = em+'<span>'+opt.t+'</span>';
+      li.onclick = () => pickSingle(step,i,opt.t,li);
+    } else {
+      li.innerHTML = '<span>'+opt+'</span><span class="opt-check"></span>';
+      li.onclick = () => toggleMulti(step,i,opt,li);
+    }
+    ul.appendChild(li);
+  });
+});
+
+function pickSingle(step,i,val,el){
+  document.querySelectorAll('#opts-'+step.id+' .opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[step.key]={i,val};
+  logEvent('step_answer',step.id,val);
+  setTimeout(()=>nextStep(),280);
+}
+function toggleMulti(step,i,val,el){
+  el.classList.toggle('selected');
+  if(!answers[step.key]) answers[step.key]=[];
+  if(el.classList.contains('selected')){ answers[step.key].push(val); }
+  else { answers[step.key]=answers[step.key].filter(v=>v!==val); }
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────
+function showStep(n){
+  document.querySelectorAll('.step').forEach(el=>el.classList.add('step--hidden'));
+  const el=document.getElementById('step-'+n);
+  if(el){el.classList.remove('step--hidden');window.scrollTo(0,0);}
+  const pct=n===0?0:Math.min(Math.round((n/TOTAL)*100),95);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('btn-back').style.visibility=(n>0&&n<11)?'visible':'hidden';
+  cur=n;
+}
+
+function startQuiz(){
+  logVisit();
+  showStep(1);
+}
+function nextStep(){
+  const next=cur+1;
+  if(next===11){showStep(11);runLoading();return;}
+  showStep(next);
+}
+function goBack(){
+  if(cur>1) showStep(cur-1);
+}
+
+function runLoading(){
+  let pct=0;
+  const fill=document.getElementById('loading-fill');
+  const pctEl=document.getElementById('loading-pct');
+  const iv=setInterval(()=>{
+    pct+=Math.random()*12+5;
+    if(pct>=100){pct=100;clearInterval(iv);setTimeout(showResult,500);}
+    fill.style.width=pct+'%';
+    pctEl.textContent=Math.round(pct)+'%';
+  },200);
+}
+
+function showResult(){
+  const q8=answers['q8'];
+  const rid=q8?PROFILE[q8.i]:'result-1';
+  document.querySelectorAll('.step').forEach(el=>el.classList.add('step--hidden'));
+  const el=document.getElementById(rid);
+  if(el){el.classList.remove('step--hidden');window.scrollTo(0,0);}
+  document.getElementById('progress-fill').style.width='100%';
+  document.getElementById('btn-back').style.visibility='hidden';
+  logEvent('complete',11,rid);
+  try{fbq('track','ViewContent',{content_name:rid});}catch(e){}
+}
+
+// ── SUPABASE ──────────────────────────────────────────────────────
+async function sb(table,data){
+  try{ fetch(SUPABASE_URL+'/rest/v1/'+table,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(data)}); }catch(e){}
+}
+function logVisit(){
+  sb('quiz_sessions',Object.assign({session_id:SID},UTM,DEV));
+  sb('quiz_events',{session_id:SID,event_type:'visit',step:0});
+}
+function logEvent(type,step,answer){
+  sb('quiz_events',{session_id:SID,event_type:type,step,answer:answer!=null?String(answer):null});
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+showStep(0);
+</script>
+</body>
+</html>

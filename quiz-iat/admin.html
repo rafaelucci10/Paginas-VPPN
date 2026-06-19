@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Painel IAT</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f5f7fa;color:#111;-webkit-font-smoothing:antialiased}
+
+/* Login */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center}
+.login-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:340px;box-shadow:0 4px 24px rgba(0,0,0,.1)}
+.login-card h2{font-size:1.15rem;font-weight:700;margin-bottom:20px;text-align:center}
+.login-card input{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:.95rem;margin-bottom:12px;font-family:inherit;outline:none}
+.login-card input:focus{border-color:#1e4530}
+.login-card button{width:100%;padding:14px;background:#1e4530;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit}
+.err{font-size:.82rem;color:#c0392b;margin-top:8px;text-align:center}
+
+/* Header */
+header{background:#1e4530;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px}
+header h1{font-size:.95rem;font-weight:700}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:#c8a84b}
+header span{font-size:.78rem;opacity:.55;margin-left:auto}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:2px solid #e8e8e8;background:#fff;padding:0 24px}
+.tab{padding:14px 20px;font-size:.88rem;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;color:#666;transition:color .15s,border-color .15s}
+.tab.active{color:#1e4530;border-bottom-color:#1e4530}
+
+/* Container */
+.container{max-width:1200px;margin:0 auto;padding:24px 20px}
+
+/* Metrics */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.metric{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.metric-icon{font-size:1.2rem;margin-bottom:8px}
+.metric-label{font-size:.72rem;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.metric-val{font-size:1.9rem;font-weight:800;color:#111;line-height:1}
+.metric-sub{font-size:.72rem;color:#bbb;margin-top:4px}
+
+/* A/B comparison */
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.ab-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.ab-card.winner{border:2px solid #2d9a4e}
+.ab-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.ab-title{font-size:.9rem;font-weight:700}
+.ab-badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.badge-quiz{background:#e8f5ec;color:#1e4530}
+.badge-lp{background:#e8eaf5;color:#1a237e}
+.badge-win{background:#2d9a4e;color:#fff}
+.ab-stat{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:.85rem}
+.ab-stat:last-child{border:none}
+.ab-stat-label{color:#666}
+.ab-stat-val{font-weight:700;color:#111}
+.ab-bar-wrap{margin-top:12px}
+.ab-bar-label{font-size:.72rem;color:#888;margin-bottom:4px}
+.ab-bar{height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.ab-bar-fill-a{height:100%;background:#1e4530;border-radius:4px;transition:width .6s ease}
+.ab-bar-fill-b{height:100%;background:#3949ab;border-radius:4px;transition:width .6s ease}
+
+/* Toolbar */
+.toolbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.toolbar input,.toolbar select{padding:8px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.83rem;font-family:inherit;outline:none;background:#fff}
+.toolbar input:focus,.toolbar select:focus{border-color:#1e4530}
+.btn-refresh{padding:8px 14px;background:#1e4530;color:#fff;border:none;border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit}
+.time-tabs{display:flex;gap:6px;margin-left:auto}
+.ttab{padding:7px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;background:#fff;font-family:inherit;transition:all .12s}
+.ttab.active{background:#1e4530;color:#fff;border-color:#1e4530}
+
+/* Table */
+.table-wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden}
+.overflow-x{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:#f8f9fa;padding:11px 14px;text-align:left;font-weight:600;color:#666;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid #eee;white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid #f5f5f5;color:#222;vertical-align:middle}
+tr:last-child td{border:none}
+tr:hover td{background:#f8fff8}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.73rem;font-weight:700}
+.b-quiz{background:#e8f5ec;color:#1e4530}
+.b-lp{background:#e8eaf5;color:#1a237e}
+.empty-row td,.loading-row td{text-align:center;padding:40px;color:#bbb;font-size:.9rem}
+.section-label{font-size:.9rem;font-weight:700;color:#333;margin-bottom:12px}
+@media(max-width:600px){.ab-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="login-wrap" class="login-wrap">
+  <div class="login-card">
+    <h2>Painel IAT</h2>
+    <input type="password" id="pwd" placeholder="Senha" onkeydown="if(event.key==='Enter')login()"/>
+    <button onclick="login()">Entrar</button>
+    <p class="err" id="err" style="display:none">Senha incorreta.</p>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <header>
+    <div class="logo-dot"></div>
+    <h1>Painel IAT — Thiago Beraldo</h1>
+    <span id="last-update"></span>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('ab')">Teste A/B</div>
+    <div class="tab" onclick="switchTab('quiz')">Quiz</div>
+    <div class="tab" onclick="switchTab('conv')">Conversões 💰</div>
+  </div>
+
+  <!-- TAB: Conversões -->
+  <div id="tab-conv" class="container" style="display:none">
+    <div class="metrics">
+      <div class="metric"><div class="metric-icon">🛒</div><div class="metric-label">Cliques no Checkout</div><div class="metric-val" id="cv-clicks">—</div><div class="metric-sub">Ambas variantes</div></div>
+      <div class="metric"><div class="metric-icon">💳</div><div class="metric-label">Compras</div><div class="metric-val" id="cv-purchases">—</div><div class="metric-sub">Quiz + LP identificados</div></div>
+      <div class="metric"><div class="metric-icon">📊</div><div class="metric-label">Taxa de compra</div><div class="metric-val" id="cv-rate">—</div><div class="metric-sub">Compras / Visitas</div></div>
+      <div class="metric"><div class="metric-icon">🏆</div><div class="metric-label">Melhor variante</div><div class="metric-val" id="cv-winner">—</div><div class="metric-sub">Por conversão</div></div>
+    </div>
+
+    <div class="ab-grid" style="margin-bottom:24px">
+      <div class="ab-card" id="cv-card-quiz">
+        <div class="ab-header">
+          <span class="ab-title">Quiz → Compras</span>
+          <span class="ab-badge badge-quiz">v=quiz</span>
+        </div>
+        <div class="ab-stat"><span class="ab-stat-label">Visitas em /avaliar/</span><span class="ab-stat-val" id="cv-q-visits">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Cliques no checkout</span><span class="ab-stat-val" id="cv-q-clicks">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Compras</span><span class="ab-stat-val" id="cv-q-purchases">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Conversão (compras/visitas)</span><span class="ab-stat-val" id="cv-q-rate">—</span></div>
+        <div class="ab-bar-wrap">
+          <div class="ab-bar-label">Taxa de compra</div>
+          <div class="ab-bar"><div class="ab-bar-fill-a" id="cv-bar-quiz" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="ab-card" id="cv-card-lp">
+        <div class="ab-header">
+          <span class="ab-title">LP Direta → Compras</span>
+          <span class="ab-badge badge-lp">v=lp</span>
+        </div>
+        <div class="ab-stat"><span class="ab-stat-label">Visitas em /avaliar/</span><span class="ab-stat-val" id="cv-l-visits">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Cliques no checkout</span><span class="ab-stat-val" id="cv-l-clicks">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Compras</span><span class="ab-stat-val" id="cv-l-purchases">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Conversão (compras/visitas)</span><span class="ab-stat-val" id="cv-l-rate">—</span></div>
+        <div class="ab-bar-wrap">
+          <div class="ab-bar-label">Taxa de compra</div>
+          <div class="ab-bar"><div class="ab-bar-fill-b" id="cv-bar-lp" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="section-label" style="margin:0">Histórico de eventos</p>
+      <select id="filter-conv" onchange="renderConvTable()">
+        <option value="">Todos</option>
+        <option value="purchase">Compras</option>
+        <option value="checkout_click">Cliques checkout</option>
+      </select>
+      <button class="btn-refresh" onclick="loadData()">↻ Atualizar</button>
+      <div class="time-tabs">
+        <button class="ttab active" data-h="24" onclick="setTime(this)">24h</button>
+        <button class="ttab" data-h="168" onclick="setTime(this)">7 dias</button>
+        <button class="ttab" data-h="720" onclick="setTime(this)">30 dias</button>
+        <button class="ttab" data-h="0" onclick="setTime(this)">Tudo</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <div class="overflow-x">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Evento</th><th>Variante</th><th>Sessão</th><th>Data/Hora</th>
+          </tr></thead>
+          <tbody id="cv-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:.75rem;color:#bbb;margin-top:12px;padding:0 4px">⚠️ Para registrar compras aqui, configure a URL de obrigado do produto IAT no Hotmart para <strong>thiagoberaldo.com/obrigado-iat/</strong>.</p>
+  </div>
+
+  <!-- TAB: A/B -->
+  <div id="tab-ab" class="container">
+    <div class="metrics" id="ab-metrics">
+      <div class="metric"><div class="metric-icon">👥</div><div class="metric-label">Total de visitas</div><div class="metric-val" id="ab-total">—</div><div class="metric-sub">Router /avaliar/</div></div>
+      <div class="metric"><div class="metric-icon">🧪</div><div class="metric-label">Variante Quiz</div><div class="metric-val" id="ab-quiz-n">—</div><div class="metric-sub" id="ab-quiz-pct">—% do tráfego</div></div>
+      <div class="metric"><div class="metric-icon">📄</div><div class="metric-label">Variante LP</div><div class="metric-val" id="ab-lp-n">—</div><div class="metric-sub" id="ab-lp-pct">—% do tráfego</div></div>
+      <div class="metric"><div class="metric-icon">✅</div><div class="metric-label">Quiz completos</div><div class="metric-val" id="ab-complete">—</div><div class="metric-sub">Chegaram ao resultado</div></div>
+    </div>
+
+    <div class="ab-grid">
+      <div class="ab-card" id="card-quiz">
+        <div class="ab-header">
+          <span class="ab-title">Variante A — Quiz</span>
+          <span class="ab-badge badge-quiz">quiz-iat</span>
+        </div>
+        <div class="ab-stat"><span class="ab-stat-label">Visitas</span><span class="ab-stat-val" id="cq-visits">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Completaram quiz</span><span class="ab-stat-val" id="cq-complete">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Taxa de conclusão</span><span class="ab-stat-val" id="cq-rate">—</span></div>
+        <div class="ab-bar-wrap">
+          <div class="ab-bar-label">Conclusão</div>
+          <div class="ab-bar"><div class="ab-bar-fill-a" id="bar-quiz" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="ab-card" id="card-lp">
+        <div class="ab-header">
+          <span class="ab-title">Variante B — Landing Page</span>
+          <span class="ab-badge badge-lp">calculadora-iat</span>
+        </div>
+        <div class="ab-stat"><span class="ab-stat-label">Visitas</span><span class="ab-stat-val" id="cl-visits">—</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">InitiateCheckout</span><span class="ab-stat-val">Ver Meta Ads *</span></div>
+        <div class="ab-stat"><span class="ab-stat-label">Taxa conversão</span><span class="ab-stat-val">Ver Meta Ads *</span></div>
+        <p style="font-size:.72rem;color:#bbb;margin-top:12px">* Filtrar por <code>v=lp</code> no Meta Ads Manager</p>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="section-label" style="margin:0">Visitas por variante</p>
+      <button class="btn-refresh" onclick="loadData()">↻ Atualizar</button>
+      <div class="time-tabs">
+        <button class="ttab active" data-h="24" onclick="setTime(this)">24h</button>
+        <button class="ttab" data-h="168" onclick="setTime(this)">7 dias</button>
+        <button class="ttab" data-h="720" onclick="setTime(this)">30 dias</button>
+        <button class="ttab" data-h="0" onclick="setTime(this)">Tudo</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="overflow-x">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Variante</th><th>utm_source</th><th>utm_medium</th>
+            <th>utm_campaign</th><th>Dispositivo</th><th>Data/Hora</th>
+          </tr></thead>
+          <tbody id="ab-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Quiz -->
+  <div id="tab-quiz" class="container" style="display:none">
+    <div class="metrics">
+      <div class="metric"><div class="metric-icon">👁️</div><div class="metric-label">Visitas</div><div class="metric-val" id="q-visits">—</div><div class="metric-sub">Acessaram o quiz</div></div>
+      <div class="metric"><div class="metric-icon">⚡</div><div class="metric-label">Interação</div><div class="metric-val" id="q-rate">—</div><div class="metric-sub">Responderam algo</div></div>
+      <div class="metric"><div class="metric-icon">🎯</div><div class="metric-label">Qualificados</div><div class="metric-val" id="q-qualified">—</div><div class="metric-sub">+50% das etapas</div></div>
+      <div class="metric"><div class="metric-icon">✅</div><div class="metric-label">Completos</div><div class="metric-val" id="q-complete">—</div><div class="metric-sub">Chegaram ao resultado</div></div>
+    </div>
+
+    <div class="toolbar">
+      <p class="section-label" style="margin:0">Eventos do quiz</p>
+      <select id="filter-event" onchange="renderQuizTable()">
+        <option value="">Todos os eventos</option>
+        <option value="visit">visit</option>
+        <option value="step_answer">step_answer</option>
+        <option value="complete">complete</option>
+      </select>
+      <button class="btn-refresh" onclick="loadData()">↻ Atualizar</button>
+      <div class="time-tabs">
+        <button class="ttab active" data-h="24" onclick="setTime(this)">24h</button>
+        <button class="ttab" data-h="168" onclick="setTime(this)">7 dias</button>
+        <button class="ttab" data-h="720" onclick="setTime(this)">30 dias</button>
+        <button class="ttab" data-h="0" onclick="setTime(this)">Tudo</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="overflow-x">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Evento</th><th>Etapa</th><th>Resposta/Resultado</th><th>Sessão</th><th>Data/Hora</th>
+          </tr></thead>
+          <tbody id="q-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://sdjlnjqtgnodnifkbykq.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamxuanF0Z25vZG5pZmtieWtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTkwMjQsImV4cCI6MjA5NDk3NTAyNH0.Zf-54wX26NjM2bagxqQv8A0ZfHWywYIE9uOldc4vz2g';
+const ADMIN_PWD    = 'iat@vppn2026';
+
+let abVisits = [], quizEvents = [], quizSessions = [], abEvents = [];
+let timeHours = 24;
+let activeTab = 'ab';
+
+function login() {
+  if (document.getElementById('pwd').value === ADMIN_PWD) {
+    document.getElementById('login-wrap').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('err').style.display = 'block';
+  }
+}
+
+function switchTab(t) {
+  activeTab = t;
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', ['ab','quiz','conv'][i] === t));
+  document.getElementById('tab-ab').style.display   = t === 'ab'   ? 'block' : 'none';
+  document.getElementById('tab-quiz').style.display = t === 'quiz' ? 'block' : 'none';
+  document.getElementById('tab-conv').style.display = t === 'conv' ? 'block' : 'none';
+}
+
+function setTime(btn) {
+  document.querySelectorAll('.ttab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  timeHours = +btn.dataset.h;
+  loadData();
+}
+
+async function sbGet(table, extra) {
+  const url = new URL(SUPABASE_URL + '/rest/v1/' + table);
+  url.searchParams.set('order', 'created_at.desc');
+  url.searchParams.set('limit', '1000');
+  if (extra) Object.entries(extra).forEach(([k,v]) => url.searchParams.set(k,v));
+  const res = await fetch(url, {
+    headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
+  });
+  return res.json();
+}
+
+async function loadData() {
+  const tbody = document.getElementById(activeTab === 'ab' ? 'ab-tbody' : 'q-tbody');
+  if (tbody) tbody.innerHTML = '<tr class="loading-row"><td colspan="9">Carregando...</td></tr>';
+
+  const since = timeHours > 0 ? new Date(Date.now() - timeHours*3600000).toISOString() : null;
+  const filter = since ? {'created_at': 'gte.' + since} : {};
+
+  try {
+    [abVisits, quizEvents, quizSessions, abEvents] = await Promise.all([
+      sbGet('ab_visits', filter),
+      sbGet('quiz_events', filter),
+      sbGet('quiz_sessions', filter),
+      sbGet('ab_events', filter),
+    ]);
+    abVisits     = Array.isArray(abVisits)     ? abVisits     : [];
+    quizEvents   = Array.isArray(quizEvents)   ? quizEvents   : [];
+    quizSessions = Array.isArray(quizSessions) ? quizSessions : [];
+    abEvents     = Array.isArray(abEvents)     ? abEvents     : [];
+    computeAB();
+    computeQuiz();
+    computeConversions();
+    renderABTable();
+    renderQuizTable();
+    renderConvTable();
+    document.getElementById('last-update').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+  } catch(e) {
+    if (tbody) tbody.innerHTML = '<tr class="empty-row"><td colspan="9">Erro — verifique as credenciais Supabase.</td></tr>';
+  }
+}
+
+function computeAB() {
+  const quizV = abVisits.filter(v => v.variant === 'quiz');
+  const lpV   = abVisits.filter(v => v.variant === 'lp');
+  const total = abVisits.length;
+  const completes = new Set(quizEvents.filter(e => e.event_type === 'complete').map(e => e.session_id)).size;
+  const qRate = quizV.length > 0 ? ((completes / quizV.length)*100).toFixed(1)+'%' : '—';
+
+  set('ab-total',    total);
+  set('ab-quiz-n',   quizV.length);
+  set('ab-lp-n',     lpV.length);
+  set('ab-complete', completes);
+  set('ab-quiz-pct', total > 0 ? ((quizV.length/total)*100).toFixed(0)+'% do tráfego' : '—');
+  set('ab-lp-pct',   total > 0 ? ((lpV.length/total)*100).toFixed(0)+'% do tráfego' : '—');
+  set('cq-visits',   quizV.length);
+  set('cl-visits',   lpV.length);
+  set('cq-complete', completes);
+  set('cq-rate',     qRate);
+
+  const barPct = quizV.length > 0 ? Math.min(((completes/quizV.length)*100), 100) : 0;
+  document.getElementById('bar-quiz').style.width = barPct + '%';
+
+  // Destaca o card com mais visitas
+  document.getElementById('card-quiz').classList.toggle('winner', quizV.length >= lpV.length && total > 0);
+  document.getElementById('card-lp').classList.toggle('winner', lpV.length > quizV.length && total > 0);
+}
+
+function computeQuiz() {
+  const visits = new Set(quizSessions.map(s => s.session_id)).size;
+  const interacted = new Set(quizEvents.filter(e => e.event_type === 'step_answer').map(e => e.session_id)).size;
+  const stepsBySession = {};
+  quizEvents.filter(e => e.event_type === 'step_answer').forEach(e => {
+    stepsBySession[e.session_id] = (stepsBySession[e.session_id]||0)+1;
+  });
+  const qualified = Object.values(stepsBySession).filter(n => n >= 5).length;
+  const complete  = new Set(quizEvents.filter(e => e.event_type === 'complete').map(e => e.session_id)).size;
+  const rate = visits > 0 ? ((interacted/visits)*100).toFixed(1)+'%' : '—';
+
+  set('q-visits',    visits);
+  set('q-rate',      rate);
+  set('q-qualified', qualified);
+  set('q-complete',  complete);
+}
+
+function renderABTable() {
+  const tbody = document.getElementById('ab-tbody');
+  if (!abVisits.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Sem dados ainda.</td></tr>'; return; }
+  tbody.innerHTML = abVisits.map((v,i) => `<tr>
+    <td>${i+1}</td>
+    <td><span class="badge ${v.variant==='quiz'?'b-quiz':'b-lp'}">${v.variant==='quiz'?'A — Quiz':'B — LP'}</span></td>
+    <td>${esc(v.utm_source||'—')}</td>
+    <td>${esc(v.utm_medium||'—')}</td>
+    <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(v.utm_campaign||'—')}</td>
+    <td style="font-size:.77rem;color:#666">${esc((v.screen||'')+(v.platform?' · '+v.platform:''))}</td>
+    <td style="white-space:nowrap;font-size:.78rem;color:#666">${v.created_at?new Date(v.created_at).toLocaleString('pt-BR'):'—'}</td>
+  </tr>`).join('');
+}
+
+function renderQuizTable() {
+  const filter = document.getElementById('filter-event').value;
+  const data = filter ? quizEvents.filter(e => e.event_type === filter) : quizEvents;
+  const tbody = document.getElementById('q-tbody');
+  if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Sem dados ainda.</td></tr>'; return; }
+  tbody.innerHTML = data.map((e,i) => `<tr>
+    <td>${i+1}</td>
+    <td><code style="font-size:.78rem;background:#f5f5f5;padding:2px 6px;border-radius:4px">${esc(e.event_type||'')}</code></td>
+    <td>${e.step != null ? e.step : '—'}</td>
+    <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(e.answer||'—')}</td>
+    <td style="font-size:.75rem;color:#aaa">${esc((e.session_id||'').slice(0,8)+'...')}</td>
+    <td style="white-space:nowrap;font-size:.78rem;color:#666">${e.created_at?new Date(e.created_at).toLocaleString('pt-BR'):'—'}</td>
+  </tr>`).join('');
+}
+
+function computeConversions() {
+  const quizVisits = abVisits.filter(v => v.variant === 'quiz').length;
+  const lpVisits   = abVisits.filter(v => v.variant === 'lp').length;
+
+  const qClicks    = abEvents.filter(e => e.event_type === 'checkout_click' && e.variant === 'quiz').length;
+  const lClicks    = abEvents.filter(e => e.event_type === 'checkout_click' && e.variant === 'lp').length;
+  const qPurchases = abEvents.filter(e => e.event_type === 'purchase' && e.variant === 'quiz').length;
+  const lPurchases = abEvents.filter(e => e.event_type === 'purchase' && e.variant === 'lp').length;
+
+  const qRate = quizVisits > 0 ? ((qPurchases/quizVisits)*100).toFixed(2)+'%' : '—';
+  const lRate = lpVisits   > 0 ? ((lPurchases/lpVisits)*100).toFixed(2)+'%'   : '—';
+  const totalClicks = qClicks + lClicks;
+  const totalPurch  = qPurchases + lPurchases;
+  const totalVis    = quizVisits + lpVisits;
+  const overallRate = totalVis > 0 ? ((totalPurch/totalVis)*100).toFixed(2)+'%' : '—';
+
+  let winner = '—';
+  if (qPurchases > 0 || lPurchases > 0) {
+    const qR = quizVisits > 0 ? qPurchases/quizVisits : 0;
+    const lR = lpVisits   > 0 ? lPurchases/lpVisits   : 0;
+    winner = qR >= lR ? 'Quiz 🧪' : 'LP Direta 📄';
+  }
+
+  set('cv-clicks',    totalClicks);
+  set('cv-purchases', totalPurch);
+  set('cv-rate',      overallRate);
+  set('cv-winner',    winner);
+  set('cv-q-visits',    quizVisits);
+  set('cv-q-clicks',    qClicks);
+  set('cv-q-purchases', qPurchases);
+  set('cv-q-rate',      qRate);
+  set('cv-l-visits',    lpVisits);
+  set('cv-l-clicks',    lClicks);
+  set('cv-l-purchases', lPurchases);
+  set('cv-l-rate',      lRate);
+
+  const maxRate = Math.max(
+    quizVisits > 0 ? (qPurchases/quizVisits)*100 : 0,
+    lpVisits   > 0 ? (lPurchases/lpVisits)*100   : 0,
+    0.01
+  );
+  const qPct = quizVisits > 0 ? Math.min(((qPurchases/quizVisits)*100/maxRate)*100, 100) : 0;
+  const lPct = lpVisits   > 0 ? Math.min(((lPurchases/lpVisits)*100/maxRate)*100, 100)   : 0;
+  document.getElementById('cv-bar-quiz').style.width = qPct + '%';
+  document.getElementById('cv-bar-lp').style.width   = lPct + '%';
+
+  const qWins = quizVisits > 0 && lpVisits > 0 && qPurchases/quizVisits >= lPurchases/lpVisits;
+  const lWins = quizVisits > 0 && lpVisits > 0 && lPurchases/lpVisits   >  qPurchases/quizVisits;
+  document.getElementById('cv-card-quiz').classList.toggle('winner', qWins);
+  document.getElementById('cv-card-lp').classList.toggle('winner',   lWins);
+}
+
+function renderConvTable() {
+  const filter = document.getElementById('filter-conv').value;
+  const attributed = abEvents.filter(e => e.variant === 'quiz' || e.variant === 'lp');
+  const data = filter ? attributed.filter(e => e.event_type === filter) : attributed;
+  const tbody = document.getElementById('cv-tbody');
+  if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Sem dados ainda — compras aparecem após configurar a URL de obrigado no Hotmart.</td></tr>'; return; }
+  tbody.innerHTML = data.map((e,i) => `<tr>
+    <td>${i+1}</td>
+    <td><code style="font-size:.78rem;background:${e.event_type==='purchase'?'#e8f5ec':'#f5f5f5'};padding:2px 6px;border-radius:4px;color:${e.event_type==='purchase'?'#1e4530':'#333'}">${esc(e.event_type||'')}</code></td>
+    <td><span class="badge ${e.variant==='quiz'?'b-quiz':e.variant==='lp'?'b-lp':''}" style="${e.variant!=='quiz'&&e.variant!=='lp'?'background:#fff3cd;color:#7a5c00':''}">${e.variant==='quiz'?'A — Quiz':e.variant==='lp'?'B — LP':'❓ '+esc(e.variant)}</span></td>
+    <td style="font-size:.75rem;color:#aaa">${esc((e.session_id||'').slice(0,8)+'...')}</td>
+    <td style="white-space:nowrap;font-size:.78rem;color:#666">${e.created_at?new Date(e.created_at).toLocaleString('pt-BR'):'—'}</td>
+  </tr>`).join('');
+}
+
+function set(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>

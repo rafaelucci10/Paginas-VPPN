@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Compra Confirmada — Calculadora IAT</title>
+<link rel="icon" type="image/png" href="../favicon.png"/>
+<link rel="preload" href="../fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="../fonts/fonts.css"/></noscript>
+<!-- Meta Pixel VPPN -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1358655868587428');fbq('init','791417620220737');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=791417620220737&ev=PageView&noscript=1"/></noscript>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#1e4530;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:#f4efe6;border-radius:20px;max-width:480px;width:100%;padding:48px 36px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.check{width:72px;height:72px;background:#1e4530;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.check svg{width:36px;height:36px;stroke:#c8a84b;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+h1{font-family:'Fraunces',Georgia,serif;font-size:1.8rem;font-weight:700;color:#1e4530;margin-bottom:12px;line-height:1.2}
+.sub{font-size:.95rem;color:#4a6358;line-height:1.7;margin-bottom:32px}
+.divider{height:1px;background:#e8e1d2;margin:28px 0}
+.steps{text-align:left;display:flex;flex-direction:column;gap:16px;margin-bottom:32px}
+.step{display:flex;align-items:flex-start;gap:14px}
+.step-num{width:28px;height:28px;background:#1e4530;color:#c8a84b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-text{font-size:.88rem;color:#2a3d2e;line-height:1.6}
+.step-text strong{font-weight:700;color:#1e4530;display:block;margin-bottom:2px}
+.btn{display:block;width:100%;background:#c8a84b;color:#152e20;font-weight:800;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;padding:18px 24px;border-radius:10px;text-decoration:none;transition:all .2s;margin-bottom:12px}
+.btn:hover{background:#e4cc82;transform:translateY(-1px)}
+.note{font-size:.78rem;color:#7a9082;line-height:1.6}
+@media(max-width:480px){.card{padding:36px 24px}.check{width:60px;height:60px}h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="check">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h1>Compra confirmada!</h1>
+  <p class="sub">Sua Calculadora IAT está pronta. Em instantes você receberá o acesso por e-mail.</p>
+
+  <div class="divider"></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>Verifique seu e-mail</strong>
+        Procure por um e-mail da Hotmart com o link de acesso. Cheque também Spam e Promoções.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>Acesse a plataforma</strong>
+        Clique no link do e-mail para acessar a Calculadora IAT diretamente na plataforma Hotmart.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Faça sua primeira análise</strong>
+        Em 30 minutos você terá o índice técnico da sua área e recomendações práticas.
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Dificuldades? Entre em contato: <a href="mailto:thiago.beraldo@reconexaonatural.com" style="color:#1e4530;font-weight:600">thiago.beraldo@reconexaonatural.com</a></p>
+</div>
+
+<!-- Purchase tracking -->
+<script>
+(function(){
+  var SUPA='https://sdjlnjqtgnodnifkbykq.supabase.co';
+  var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamxuanF0Z25vZG5pZmtieWtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTkwMjQsImV4cCI6MjA5NDk3NTAyNH0.Zf-54wX26NjM2bagxqQv8A0ZfHWywYIE9uOldc4vz2g';
+
+  var urlParams=new URLSearchParams(location.search);
+  var variant=urlParams.get('src')||localStorage.getItem('iat_variant')||'unknown';
+  var sid=sessionStorage.getItem('ab_iat_lp_sid')||(Date.now().toString(36)+Math.random().toString(36).slice(2));
+
+  // Limpa localStorage após capturar
+  localStorage.removeItem('iat_variant');
+
+  // Pixel Purchase
+  try{fbq('track','Purchase',{value:49,currency:'BRL',variant:variant});}catch(e){}
+
+  // Supabase
+  fetch(SUPA+'/rest/v1/ab_events',{
+    method:'POST',
+    headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({session_id:sid,variant:variant,event_type:'purchase'})
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>
