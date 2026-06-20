@@ -525,10 +525,11 @@ tr:hover td{background:rgba(0,0,0,.012)}
                 <option value="mine">Minhas tarefas</option>
               </select>
               <div class="fsep"></div>
-              <select id="proj-filter" onchange="projFilter=this.value;renderTasks()" style="border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff">
+              <select id="proj-filter" onchange="projFilter=this.value;renderTasks();updateDelProjBtn()" style="border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff">
                 <option value="all">Todos os projetos</option>
               </select>
               <button onclick="newProject()" style="border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff;cursor:pointer" title="Criar novo projeto">+ Projeto</button>
+              <button id="del-proj-btn" onclick="deleteProject()" style="display:none;border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff;cursor:pointer;color:var(--mu)" title="Excluir projeto selecionado">🗑</button>
             </div>
             <button onclick="openModal()" style="background:var(--dk);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700">+ Nova Tarefa</button>
           </div>
@@ -837,6 +838,7 @@ async function initApp(user){
   setDate();
   await loadAssigneeOptions();
   await loadProjects();
+  updateDelProjBtn();
   await loadTasks();
   if(currentRole==='admin'){
     loadUsers();
@@ -874,6 +876,30 @@ async function newProject(){
   if(error){alert('Não foi possível criar (talvez já exista um projeto com esse nome).');return;}
   await loadProjects();
   document.getElementById('proj-filter').value='all';
+  updateDelProjBtn();
+}
+
+function updateDelProjBtn(){
+  const sel=document.getElementById('proj-filter').value;
+  document.getElementById('del-proj-btn').style.display=(currentRole==='admin'&&sel!=='all')?'inline-block':'none';
+}
+
+async function deleteProject(){
+  const id=document.getElementById('proj-filter').value;
+  if(id==='all')return;
+  const proj=allProjects.find(p=>p.id===id);
+  const linked=allTasks.filter(t=>t.project_id===id).length;
+  const msg=linked>0
+    ?`Excluir o projeto "${proj?.name}"? As ${linked} tarefa(s) vinculadas NÃO serão apagadas, só ficam sem projeto.`
+    :`Excluir o projeto "${proj?.name}"?`;
+  if(!confirm(msg))return;
+  if(linked>0)await sb.from('rn_tasks').update({project_id:null,project:null}).eq('project_id',id);
+  await sb.from('rn_projects').delete().eq('id',id);
+  await loadProjects();
+  document.getElementById('proj-filter').value='all';
+  projFilter='all';
+  updateDelProjBtn();
+  await loadTasks();
 }
 
 (async()=>{
