@@ -567,8 +567,9 @@ tr:hover td{background:rgba(0,0,0,.012)}
       <!-- ══ CONTEÚDO ══ -->
       <div class="page" id="page-conteudo">
         <div class="page-inner">
-          <div class="ph"><h1>Conteúdo</h1><p>Linha editorial (Felipe/Fluxo, jun/2026) e fluxo de produção: ideia → roteiro → gravação → edição → postado.</p></div>
+          <div class="ph"><h1>Conteúdo</h1><p>Linha editorial e fluxo de produção: ideia → roteiro → gravação → edição → postado.</p></div>
 
+          <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button onclick="openPillarModal()" style="border:1px solid var(--bd);border-radius:8px;padding:8px 14px;font-size:13px;background:#fff;cursor:pointer">+ Pilar</button></div>
           <div id="pillars-ref"></div>
 
           <div class="ph" style="margin-top:30px"><h1 style="font-size:18px">Quadro de produção</h1></div>
@@ -576,10 +577,6 @@ tr:hover td{background:rgba(0,0,0,.012)}
             <div class="fbar" style="margin-bottom:0">
               <select id="pillar-filter" onchange="pillarFilter=this.value;renderContent()" style="border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff">
                 <option value="all">Todos os pilares</option>
-                <option value="Pilar 1 — Potencial escondido da área">Pilar 1 — Potencial escondido</option>
-                <option value="Pilar 2 — Erros do improviso">Pilar 2 — Erros do improviso</option>
-                <option value="Pilar 3 — Método e primeiros passos">Pilar 3 — Método</option>
-                <option value="Pilar 4 — Mercado e oportunidade">Pilar 4 — Mercado</option>
               </select>
             </div>
             <button onclick="openContentModal()" style="background:var(--dk);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700">+ Nova Ideia</button>
@@ -612,90 +609,13 @@ tr:hover td{background:rgba(0,0,0,.012)}
       <!-- ══ PROCESSOS ══ -->
       <div class="page" id="page-processos">
         <div class="page-inner">
-          <div class="ph"><h1>Processos</h1><p>Procedimentos Operacionais Padrão. Clique para expandir.</p></div>
-          <div class="alert a-gold" style="margin-bottom:18px">📋 Estrutura: Objetivo · Responsáveis · Etapas com Input/Output · Prazos · Instruções</div>
-
-          <div class="pop">
-            <div class="pop-h" onclick="togglePop(this)">
-              <div class="pop-hl"><div class="pop-num">01</div><div><div class="pop-title">Criação de Criativos</div><div class="pop-sub">Do briefing à publicação</div></div></div>
-              <div style="display:flex;align-items:center;gap:8px"><span class="b b-b">Em construção</span><span class="pop-chev">▾</span></div>
-            </div>
-            <div class="pop-body">
-              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Padronizar o fluxo de produção de criativos — do briefing à publicação — garantindo nomenclatura correta e qualidade consistente.</div></div>
-              <div class="pop-sec"><div class="pop-sec-l">Responsáveis</div><div class="pop-sec-v"><strong>Executa:</strong> Designer / Editor &nbsp;|&nbsp; <strong>Aprova:</strong> Rafael &nbsp;|&nbsp; <strong>Valida:</strong> Thiago</div></div>
-              <div class="pop-sec"><div class="pop-sec-l">Etapas</div>
-                <table class="steps-t"><thead><tr><th>#</th><th>Etapa</th><th>Input</th><th>Output</th><th>Prazo</th></tr></thead><tbody>
-                  <tr><td><span class="sn">1</span></td><td><strong>Briefing</strong></td><td>Demanda da campanha</td><td>Doc de briefing preenchido</td><td>1 dia</td></tr>
-                  <tr><td><span class="sn">2</span></td><td><strong>Copy</strong></td><td>Briefing aprovado</td><td>Copy escrita + ângulo</td><td>1 dia</td></tr>
-                  <tr><td><span class="sn">3</span></td><td><strong>Produção</strong></td><td>Copy + referência</td><td>Arquivo Canva / Drive</td><td>2 dias</td></tr>
-                  <tr><td><span class="sn">4</span></td><td><strong>Revisão</strong></td><td>Arquivo finalizado</td><td>Aprovação ou feedback</td><td>1 dia</td></tr>
-                  <tr><td><span class="sn">5</span></td><td><strong>Nome + Subida</strong></td><td>Criativo aprovado</td><td>Ad no ar + registro</td><td>Mesmo dia</td></tr>
-                </tbody></table>
-              </div>
-            </div>
+          <div class="ph"><h1>Processos</h1><p>POPs e fluxogramas. Clique pra expandir, ✎ pra editar, + pra criar.</p></div>
+          <div class="alert a-gold" style="margin-bottom:18px">📋 POP: Objetivo · Responsáveis · Etapas com Input/Output/Prazo. Fluxograma: sequência de passos coloridos por tipo.</div>
+          <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:14px">
+            <button onclick="openProcessModal('pop')" style="border:1px solid var(--bd);border-radius:8px;padding:8px 14px;font-size:13px;background:#fff;cursor:pointer">+ POP</button>
+            <button onclick="openProcessModal('fluxo')" style="background:var(--dk);color:var(--ac);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">+ Fluxograma</button>
           </div>
-
-          <div class="pop">
-            <div class="pop-h" onclick="togglePop(this)">
-              <div class="pop-hl"><div class="pop-num">02</div><div><div class="pop-title">Análise Semanal de Campanhas</div><div class="pop-sub">Toda segunda-feira</div></div></div>
-              <div style="display:flex;align-items:center;gap:8px"><span class="b b-r">A detalhar</span><span class="pop-chev">▾</span></div>
-            </div>
-            <div class="pop-body">
-              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Garantir análise regular para decisões rápidas. Nenhuma campanha roda mais de 7 dias sem revisão.</div></div>
-              <div class="pop-sec"><div class="pop-sec-l">Responsáveis</div><div class="pop-sec-v"><strong>Executa:</strong> Rafael &nbsp;|&nbsp; <strong>Alinha:</strong> Thiago</div></div>
-              <div class="pop-sec"><div class="pop-sec-l">Etapas</div>
-                <table class="steps-t"><thead><tr><th>#</th><th>Etapa</th><th>Input</th><th>Output</th><th>Prazo</th></tr></thead><tbody>
-                  <tr><td><span class="sn">1</span></td><td><strong>Coleta</strong></td><td>Gerenciador Meta</td><td>Planilha preenchida</td><td>Segunda-feira</td></tr>
-                  <tr><td><span class="sn">2</span></td><td><strong>Análise</strong></td><td>Planilha preenchida</td><td>Lista de ações</td><td>Mesmo dia</td></tr>
-                  <tr><td><span class="sn">3</span></td><td><strong>Execução</strong></td><td>Lista de ações</td><td>Pausar / Escalar / Testar</td><td>Mesmo dia</td></tr>
-                  <tr><td><span class="sn">4</span></td><td><strong>Resumo</strong></td><td>Decisões tomadas</td><td>Mensagem no WhatsApp</td><td>Mesmo dia</td></tr>
-                </tbody></table>
-              </div>
-            </div>
-          </div>
-
-          <div class="pop">
-            <div class="pop-h" onclick="togglePop(this)">
-              <div class="pop-hl"><div class="pop-num">03</div><div><div class="pop-title">Atendimento ao Cliente</div><div class="pop-sub">WhatsApp — leads, alunos e suporte</div></div></div>
-              <div style="display:flex;align-items:center;gap:8px"><span class="b b-r">A detalhar</span><span class="pop-chev">▾</span></div>
-            </div>
-            <div class="pop-body">
-              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Padronizar atendimento via WhatsApp com resposta rápida, qualificação correta e encaminhamento.</div></div>
-              <div class="pop-sec"><div class="pop-sec-l">Responsáveis</div><div class="pop-sec-v"><strong>Executa:</strong> Marina (SAC) / João (leads quentes) &nbsp;|&nbsp; <strong>Escala:</strong> Thiago</div></div>
-              <div class="pop-sec"><div class="pop-sec-l">Instruções</div><div class="pop-sec-v" style="color:var(--mu)">A detalhar — scripts de resposta, SLA, protocolo de reembolso.</div></div>
-            </div>
-          </div>
-
-          <div class="pop">
-            <div class="pop-h" onclick="togglePop(this)">
-              <div class="pop-hl"><div class="pop-num">04</div><div><div class="pop-title">Onboarding de Colaboradores</div><div class="pop-sub">Integração ao time</div></div></div>
-              <div style="display:flex;align-items:center;gap:8px"><span class="b b-r">A detalhar</span><span class="pop-chev">▾</span></div>
-            </div>
-            <div class="pop-body">
-              <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">Integrar novos colaboradores à cultura, processos e ferramentas em até 7 dias.</div></div>
-              <div class="pop-sec"><div class="pop-sec-l">Checklist</div><div class="pop-sec-v" style="color:var(--mu)">A detalhar — acesso ao portal, leitura dos POPs, apresentação do time, acesso às ferramentas.</div></div>
-            </div>
-          </div>
-
-          <div class="ph" style="margin-top:36px"><h1>Fluxograma — Conteúdo → Anúncios</h1><p>Como o conteúdo orgânico alimenta a Mandala de Tráfego (metodologia Felipe/Fluxo, jun/2026).</p></div>
-          <div class="flow">
-            <div class="flow-box flow-content">📝 Conteúdo Orgânico<br><small>4 pilares — ver página Conteúdo</small></div>
-            <div class="flow-arrow">↓</div>
-            <div class="flow-box">📲 Publicação no Instagram</div>
-            <div class="flow-arrow">↓</div>
-            <div class="flow-box flow-ads">🚀 Turbinar (Descoberta)<br><small>até R$50/dia · Business Suite, nunca pelo iPhone</small></div>
-            <div class="flow-arrow">↓</div>
-            <div class="flow-box">👥 Público de Envolvimento<br><small>quem interagiu com o perfil nos últimos 30-45 dias</small></div>
-            <div class="flow-arrow">↓</div>
-            <div class="flow-box flow-ads">💬 Campanha Relacionamento<br><small>~R$25/dia · vídeos 1min+ · entrevistas, depoimentos, trabalho de campo</small></div>
-            <div class="flow-arrow">↓</div>
-            <div class="flow-box">🎯 Público "viu 25% do vídeo"<br><small>deixar rodar 1-2 dias antes de usar</small></div>
-            <div class="flow-arrow">↓</div>
-            <div class="flow-box flow-ads">💰 Campanha Conversão<br><small>R$180/dia · conjunto 1: 3 melhores históricos · conjunto 2: 3 novos de urgência oculta</small></div>
-            <div class="flow-arrow">↓</div>
-            <div class="flow-box flow-goal">✅ Venda VPPN</div>
-          </div>
-          <div class="alert a-gold" style="margin-top:14px">⚡ Regra de ouro: nunca mexer numa campanha que está indo bem (só verba, ±20%). Se ela morrer, cria campanha nova — não reanima. Ver detalhes completos em <strong>estruturacao/regras-de-operacao.md</strong>.</div>
+          <div id="processes-list"></div>
         </div>
       </div>
 
@@ -876,13 +796,7 @@ tr:hover td{background:rgba(0,0,0,.012)}
   <div class="modal">
     <h3 id="content-modal-title">Nova Ideia</h3>
     <div class="mf"><label>Tema / título *</label><input type="text" id="c-title" placeholder="Ex: 5 sinais de que sua área tem potencial..."></div>
-    <div class="mf"><label>Pilar</label><select id="c-pillar">
-      <option value="">Nenhum</option>
-      <option value="Pilar 1 — Potencial escondido da área">Pilar 1 — Potencial escondido da área</option>
-      <option value="Pilar 2 — Erros do improviso">Pilar 2 — Erros do improviso</option>
-      <option value="Pilar 3 — Método e primeiros passos">Pilar 3 — Método e primeiros passos</option>
-      <option value="Pilar 4 — Mercado e oportunidade">Pilar 4 — Mercado e oportunidade</option>
-    </select></div>
+    <div class="mf"><label>Pilar</label><select id="c-pillar"><option value="">Nenhum</option></select></div>
     <div class="mf"><label>Hook / ideia do material</label><textarea id="c-hook" rows="2" placeholder="O gancho ou a ideia central do vídeo/post..."></textarea></div>
     <div class="mf-row">
       <div class="mf"><label>Formato</label><input type="text" id="c-format" placeholder="Ex: Reels dentro do carro"></div>
@@ -893,6 +807,51 @@ tr:hover td{background:rgba(0,0,0,.012)}
     <div class="modal-foot">
       <button class="btn-cancel" onclick="closeContentModal()">Cancelar</button>
       <button class="btn-save" onclick="saveContent()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PILAR -->
+<div class="modal-bg" id="pillar-modal">
+  <div class="modal">
+    <h3 id="pillar-modal-title">Novo Pilar</h3>
+    <div class="mf"><label>Nome *</label><input type="text" id="pl-name" placeholder="Ex: Pilar 5 — ..."></div>
+    <div class="mf"><label>Objetivo</label><textarea id="pl-objective" rows="2"></textarea></div>
+    <div class="mf"><label>Formatos sugeridos</label><input type="text" id="pl-formats" placeholder="Ex: Reels · Carrossel · Stories"></div>
+    <div class="mf"><label>Hooks de exemplo (um por linha)</label><textarea id="pl-hooks" rows="3"></textarea></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closePillarModal()">Cancelar</button>
+      <button class="btn-save" onclick="savePillar()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PROCESSO (POP ou Fluxograma) -->
+<div class="modal-bg" id="process-modal">
+  <div class="modal" style="max-width:600px">
+    <h3 id="process-modal-title">Novo Processo</h3>
+    <div class="mf"><label>Título *</label><input type="text" id="pr-title"></div>
+    <div class="mf"><label>Subtítulo</label><input type="text" id="pr-subtitle"></div>
+    <div id="pr-pop-fields">
+      <div class="mf-row">
+        <div class="mf"><label>Tag de status</label><input type="text" id="pr-status-tag" placeholder="Ex: Em construção"></div>
+        <div class="mf"><label>Responsáveis</label><input type="text" id="pr-responsible" placeholder="Executa: X | Aprova: Y"></div>
+      </div>
+      <div class="mf"><label>Objetivo</label><textarea id="pr-objective" rows="2"></textarea></div>
+      <div class="mf"><label>Etapas</label>
+        <div id="pr-steps-pop"></div>
+        <button type="button" onclick="addPopStepRow()" style="margin-top:6px;border:1px solid var(--bd);border-radius:6px;padding:5px 10px;font-size:12px;background:#fff;cursor:pointer">+ Etapa</button>
+      </div>
+    </div>
+    <div id="pr-fluxo-fields" style="display:none">
+      <div class="mf"><label>Passos do fluxo (em ordem)</label>
+        <div id="pr-steps-fluxo"></div>
+        <button type="button" onclick="addFluxoStepRow()" style="margin-top:6px;border:1px solid var(--bd);border-radius:6px;padding:5px 10px;font-size:12px;background:#fff;cursor:pointer">+ Passo</button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeProcessModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveProcess()">Salvar</button>
     </div>
   </div>
 </div>
@@ -941,8 +900,9 @@ async function initApp(user){
   await loadProjects();
   updateDelProjBtn();
   await loadTasks();
-  renderPillarsRef();
+  await loadPillars();
   await loadContent();
+  await loadProcesses();
   if(currentRole==='admin'){
     loadUsers();
     document.getElementById('owner-fsep').style.display='block';
@@ -1077,7 +1037,7 @@ function renderTasks(){
   });
 }
 
-function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function onDragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over')}
 function onDragLeave(e){e.currentTarget.classList.remove('drag-over')}
 async function onDrop(e,status){
@@ -1141,26 +1101,207 @@ async function delTask(id){if(!confirm('Excluir?'))return;await sb.from('rn_task
 
 function togglePop(el){el.closest('.pop').classList.toggle('open')}
 
-/* ── CONTEÚDO ── */
-const PILLARS=[
-  {n:'Pilar 1 — Potencial escondido da área',o:'Atrair proprietários que ainda não têm clareza de que a área pode virar um negócio de ecoturismo.',f:'Carrossel educativo · Reels com narração · Post checklist · Stories com enquete',h:['Você tem uma área bonita, mas ela ainda não gera renda? Talvez o problema não seja a área.','Nem toda área natural vira destino. Mas algumas têm sinais claros de potencial.','Antes de pensar em cabanas, restaurantes ou trilhas, olhe para isso na sua propriedade.']},
-  {n:'Pilar 2 — Erros do improviso',o:'Gerar consciência do problema e fazer o público perceber o risco de começar errado.',f:'Reels provocativo · Carrossel "erro comum" · Post comparação · Stories com caixa de pergunta',h:['O primeiro erro de quem quer viver de ecoturismo é começar pela infraestrutura.','Você não precisa construir mais. Precisa decidir melhor.','Receber visitantes no improviso pode sair mais caro do que manter a área fechada.']},
-  {n:'Pilar 3 — Método e primeiros passos',o:'Preparar o público para entender o valor do Método VPPN.',f:'(formato livre — educativo)',h:[]},
-  {n:'Pilar 4 — Mercado e oportunidade',o:'Fazer o avatar sentir que o mercado está se movendo e que a área dele pode ficar para trás.',f:'Post notícia comentada · Reels "tendência" · Carrossel de dados · Stories com opinião do especialista',h:[]},
-];
+/* ── CONTEÚDO: PILARES (editáveis) ── */
+let allPillars=[],editingPillarId=null;
+async function loadPillars(){
+  const{data}=await sb.from('rn_pillars').select('*').order('position',{ascending:true});
+  allPillars=data||[];
+  renderPillarsRef();
+  const sel=document.getElementById('c-pillar');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Nenhum</option>'+allPillars.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  if(allPillars.some(p=>p.id===cur))sel.value=cur;
+  const filterSel=document.getElementById('pillar-filter');
+  const curF=filterSel.value;
+  filterSel.innerHTML='<option value="all">Todos os pilares</option>'+allPillars.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  if(allPillars.some(p=>p.id===curF))filterSel.value=curF;
+}
 function renderPillarsRef(){
-  document.getElementById('pillars-ref').innerHTML=PILLARS.map((p,i)=>`
+  document.getElementById('pillars-ref').innerHTML=allPillars.map((p,i)=>{
+    const hooks=(p.hooks||'').split('\n').filter(Boolean);
+    const del=currentRole==='admin'?`<span onclick="event.stopPropagation();delPillar('${p.id}')" style="cursor:pointer;color:var(--mu);font-size:13px;margin-left:8px" title="Excluir">✕</span>`:'';
+    return`
     <div class="pop">
       <div class="pop-h" onclick="togglePop(this)">
-        <div class="pop-hl"><div class="pop-num">0${i+1}</div><div><div class="pop-title">${esc(p.n)}</div><div class="pop-sub">${esc(p.f)}</div></div></div>
-        <span class="pop-chev">▾</span>
+        <div class="pop-hl"><div class="pop-num">0${i+1}</div><div><div class="pop-title">${esc(p.name)}</div><div class="pop-sub">${esc(p.formats||'')}</div></div></div>
+        <div style="display:flex;align-items:center"><span onclick="event.stopPropagation();editPillar('${p.id}')" style="cursor:pointer;color:var(--mu);font-size:13px" title="Editar">✎</span>${del}<span class="pop-chev">▾</span></div>
       </div>
       <div class="pop-body">
-        <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">${esc(p.o)}</div></div>
-        ${p.h.length?`<div class="pop-sec"><div class="pop-sec-l">Exemplos de hook</div><div class="pop-sec-v">${p.h.map(esc).join('<br>')}</div></div>`:''}
+        <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">${esc(p.objective||'')}</div></div>
+        ${hooks.length?`<div class="pop-sec"><div class="pop-sec-l">Exemplos de hook</div><div class="pop-sec-v">${hooks.map(esc).join('<br>')}</div></div>`:''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('')||'<p style="color:var(--mu);font-size:13px">Nenhum pilar ainda — clique em "+ Pilar".</p>';
 }
+function openPillarModal(){
+  editingPillarId=null;
+  document.getElementById('pillar-modal-title').textContent='Novo Pilar';
+  ['pl-name','pl-objective','pl-formats','pl-hooks'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pillar-modal').classList.add('open');
+}
+function editPillar(id){
+  const p=allPillars.find(x=>x.id===id);
+  if(!p)return;
+  editingPillarId=id;
+  document.getElementById('pillar-modal-title').textContent='Editar Pilar';
+  document.getElementById('pl-name').value=p.name||'';
+  document.getElementById('pl-objective').value=p.objective||'';
+  document.getElementById('pl-formats').value=p.formats||'';
+  document.getElementById('pl-hooks').value=p.hooks||'';
+  document.getElementById('pillar-modal').classList.add('open');
+}
+function closePillarModal(){document.getElementById('pillar-modal').classList.remove('open');editingPillarId=null}
+async function savePillar(){
+  const name=document.getElementById('pl-name').value.trim();
+  if(!name)return alert('Nome é obrigatório');
+  const payload={name,objective:document.getElementById('pl-objective').value.trim(),formats:document.getElementById('pl-formats').value.trim(),hooks:document.getElementById('pl-hooks').value.trim()};
+  if(editingPillarId){
+    await sb.from('rn_pillars').update(payload).eq('id',editingPillarId);
+  }else{
+    payload.position=allPillars.length+1;
+    payload.created_by=currentUser?.email||'';
+    await sb.from('rn_pillars').insert(payload);
+  }
+  closePillarModal();
+  await loadPillars();
+}
+async function delPillar(id){if(!confirm('Excluir esse pilar? As ideias de conteúdo ligadas a ele ficam sem pilar.'))return;await sb.from('rn_content').update({pillar_id:null}).eq('pillar_id',id);await sb.from('rn_pillars').delete().eq('id',id);await loadPillars();await loadContent();}
+
+/* ── PROCESSOS: POPs e Fluxogramas (editáveis) ── */
+let allProcesses=[],editingProcessId=null,currentProcessType='pop';
+async function loadProcesses(){
+  const{data}=await sb.from('rn_processes').select('*').order('position',{ascending:true});
+  allProcesses=data||[];
+  renderProcesses();
+}
+function renderProcesses(){
+  const kindCls={normal:'',content:'flow-content',ads:'flow-ads',goal:'flow-goal'};
+  const kindIcon={normal:'',content:'📝 ',ads:'🚀 ',goal:'✅ '};
+  document.getElementById('processes-list').innerHTML=allProcesses.map((p,i)=>{
+    const editBtn=`<span onclick="event.stopPropagation();editProcess('${p.id}')" style="cursor:pointer;color:var(--mu);font-size:13px" title="Editar">✎</span>`;
+    const delBtn=currentRole==='admin'?`<span onclick="event.stopPropagation();delProcess('${p.id}')" style="cursor:pointer;color:var(--mu);font-size:13px;margin-left:6px" title="Excluir">✕</span>`:'';
+    const steps=p.steps||[];
+    if(p.type==='pop'){
+      return`<div class="pop">
+        <div class="pop-h" onclick="togglePop(this)">
+          <div class="pop-hl"><div class="pop-num">${String(i+1).padStart(2,'0')}</div><div><div class="pop-title">${esc(p.title)}</div><div class="pop-sub">${esc(p.subtitle||'')}</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px">${p.status_tag?`<span class="b b-b">${esc(p.status_tag)}</span>`:''}${editBtn}${delBtn}<span class="pop-chev">▾</span></div>
+        </div>
+        <div class="pop-body">
+          ${p.objective?`<div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">${esc(p.objective)}</div></div>`:''}
+          ${p.responsible?`<div class="pop-sec"><div class="pop-sec-l">Responsáveis</div><div class="pop-sec-v">${esc(p.responsible)}</div></div>`:''}
+          ${steps.length?`<div class="pop-sec"><div class="pop-sec-l">Etapas</div>
+            <table class="steps-t"><thead><tr><th>#</th><th>Etapa</th><th>Input</th><th>Output</th><th>Prazo</th></tr></thead><tbody>
+              ${steps.map((s,si)=>`<tr><td><span class="sn">${si+1}</span></td><td><strong>${esc(s.step)}</strong></td><td>${esc(s.input||'')}</td><td>${esc(s.output||'')}</td><td>${esc(s.deadline||'')}</td></tr>`).join('')}
+            </tbody></table></div>`:''}
+        </div>
+      </div>`;
+    }
+    return`<div class="pop open" style="margin-top:18px">
+      <div class="pop-h" onclick="togglePop(this)">
+        <div class="pop-hl"><div><div class="pop-title">🔀 ${esc(p.title)}</div><div class="pop-sub">${esc(p.subtitle||'')}</div></div></div>
+        <div style="display:flex;align-items:center;gap:8px">${editBtn}${delBtn}<span class="pop-chev">▾</span></div>
+      </div>
+      <div class="pop-body" style="padding-top:14px">
+        <div class="flow">
+          ${steps.map((s,si)=>`${si>0?'<div class="flow-arrow">↓</div>':''}<div class="flow-box ${kindCls[s.kind]||''}">${kindIcon[s.kind]||''}${esc(s.label)}${s.sub?`<br><small>${esc(s.sub)}</small>`:''}</div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('')||'<p style="color:var(--mu);font-size:13px">Nenhum processo ainda.</p>';
+}
+
+function addPopStepRow(step){
+  step=step||{step:'',input:'',output:'',deadline:''};
+  const div=document.createElement('div');
+  div.className='step-row';
+  div.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr 80px 22px;gap:6px;margin-bottom:6px;align-items:center';
+  div.innerHTML=`<input type="text" placeholder="Etapa" value="${esc(step.step)}" class="sr-step" style="padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+    <input type="text" placeholder="Input" value="${esc(step.input)}" class="sr-input" style="padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+    <input type="text" placeholder="Output" value="${esc(step.output)}" class="sr-output" style="padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+    <input type="text" placeholder="Prazo" value="${esc(step.deadline)}" class="sr-deadline" style="padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+    <span onclick="this.closest('.step-row').remove()" style="cursor:pointer;color:var(--mu);text-align:center">✕</span>`;
+  document.getElementById('pr-steps-pop').appendChild(div);
+}
+function addFluxoStepRow(step){
+  step=step||{label:'',sub:'',kind:'normal'};
+  const div=document.createElement('div');
+  div.className='step-row';
+  div.style.cssText='display:grid;grid-template-columns:1fr 1fr 110px 22px;gap:6px;margin-bottom:6px;align-items:center';
+  div.innerHTML=`<input type="text" placeholder="Label" value="${esc(step.label)}" class="sr-label" style="padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+    <input type="text" placeholder="Subtítulo (opcional)" value="${esc(step.sub)}" class="sr-sub" style="padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+    <select class="sr-kind" style="padding:6px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+      <option value="normal" ${step.kind==='normal'?'selected':''}>Normal</option>
+      <option value="content" ${step.kind==='content'?'selected':''}>Conteúdo</option>
+      <option value="ads" ${step.kind==='ads'?'selected':''}>Anúncio</option>
+      <option value="goal" ${step.kind==='goal'?'selected':''}>Meta/Resultado</option>
+    </select>
+    <span onclick="this.closest('.step-row').remove()" style="cursor:pointer;color:var(--mu);text-align:center">✕</span>`;
+  document.getElementById('pr-steps-fluxo').appendChild(div);
+}
+
+function openProcessModal(type){
+  editingProcessId=null;
+  currentProcessType=type;
+  document.getElementById('process-modal-title').textContent=type==='pop'?'Novo POP':'Novo Fluxograma';
+  document.getElementById('pr-pop-fields').style.display=type==='pop'?'block':'none';
+  document.getElementById('pr-fluxo-fields').style.display=type==='fluxo'?'block':'none';
+  ['pr-title','pr-subtitle','pr-status-tag','pr-responsible','pr-objective'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pr-steps-pop').innerHTML='';
+  document.getElementById('pr-steps-fluxo').innerHTML='';
+  if(type==='pop')addPopStepRow();else addFluxoStepRow();
+  document.getElementById('process-modal').classList.add('open');
+}
+function editProcess(id){
+  const p=allProcesses.find(x=>x.id===id);
+  if(!p)return;
+  editingProcessId=id;
+  currentProcessType=p.type;
+  document.getElementById('process-modal-title').textContent='Editar '+(p.type==='pop'?'POP':'Fluxograma');
+  document.getElementById('pr-pop-fields').style.display=p.type==='pop'?'block':'none';
+  document.getElementById('pr-fluxo-fields').style.display=p.type==='fluxo'?'block':'none';
+  document.getElementById('pr-title').value=p.title||'';
+  document.getElementById('pr-subtitle').value=p.subtitle||'';
+  document.getElementById('pr-status-tag').value=p.status_tag||'';
+  document.getElementById('pr-responsible').value=p.responsible||'';
+  document.getElementById('pr-objective').value=p.objective||'';
+  document.getElementById('pr-steps-pop').innerHTML='';
+  document.getElementById('pr-steps-fluxo').innerHTML='';
+  const steps=p.steps||[];
+  if(p.type==='pop'){if(steps.length)steps.forEach(addPopStepRow);else addPopStepRow();}
+  else{if(steps.length)steps.forEach(addFluxoStepRow);else addFluxoStepRow();}
+  document.getElementById('process-modal').classList.add('open');
+}
+function closeProcessModal(){document.getElementById('process-modal').classList.remove('open');editingProcessId=null}
+async function saveProcess(){
+  const title=document.getElementById('pr-title').value.trim();
+  if(!title)return alert('Título é obrigatório');
+  let steps=[];
+  if(currentProcessType==='pop'){
+    document.querySelectorAll('#pr-steps-pop .step-row').forEach(row=>{
+      const step=row.querySelector('.sr-step').value.trim();
+      if(!step)return;
+      steps.push({step,input:row.querySelector('.sr-input').value.trim(),output:row.querySelector('.sr-output').value.trim(),deadline:row.querySelector('.sr-deadline').value.trim()});
+    });
+  }else{
+    document.querySelectorAll('#pr-steps-fluxo .step-row').forEach(row=>{
+      const label=row.querySelector('.sr-label').value.trim();
+      if(!label)return;
+      steps.push({label,sub:row.querySelector('.sr-sub').value.trim(),kind:row.querySelector('.sr-kind').value});
+    });
+  }
+  const payload={type:currentProcessType,title,subtitle:document.getElementById('pr-subtitle').value.trim(),status_tag:document.getElementById('pr-status-tag').value.trim(),objective:document.getElementById('pr-objective').value.trim(),responsible:document.getElementById('pr-responsible').value.trim(),steps};
+  if(editingProcessId){
+    await sb.from('rn_processes').update(payload).eq('id',editingProcessId);
+  }else{
+    payload.position=allProcesses.length+1;
+    payload.created_by=currentUser?.email||'';
+    await sb.from('rn_processes').insert(payload);
+  }
+  closeProcessModal();
+  await loadProcesses();
+}
+async function delProcess(id){if(!confirm('Excluir esse processo?'))return;await sb.from('rn_processes').delete().eq('id',id);await loadProcesses();}
 
 async function loadContent(){
   const{data}=await sb.from('rn_content').select('*').order('position',{ascending:true});
@@ -1170,7 +1311,7 @@ async function loadContent(){
 
 function renderContent(){
   const cols=['ideia','roteiro','gravacao','edicao','postado'];
-  const f=pillarFilter==='all'?allContent:allContent.filter(c=>c.pillar===pillarFilter);
+  const f=pillarFilter==='all'?allContent:allContent.filter(c=>c.pillar_id===pillarFilter);
   cols.forEach(col=>{
     const el=document.getElementById('cards-c-'+col);
     const cnt=document.getElementById('cnt-c-'+col);
@@ -1179,13 +1320,13 @@ function renderContent(){
     el.innerHTML=items.map(c=>{
       const del=currentRole==='admin'?`<span onclick="delContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Excluir">✕</span>`:'';
       const edit=`<span onclick="editContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Editar">✎</span>`;
-      const pillarShort=(c.pillar||'').replace('— ','');
+      const pillarName=(allPillars.find(p=>p.id===c.pillar_id)?.name||c.pillar||'').replace('— ','');
       const assigneeName=allUsers.find(u=>u.id===c.assignee_id)?.name||c.assignee||'';
       return`<div class="k-card" draggable="true" data-id="${c.id}">
         <div class="k-card-t">${esc(c.title)}${edit}${del}</div>
         ${c.hook?`<div class="k-card-d">${esc(c.hook)}</div>`:''}
         <div class="k-card-m">
-          ${c.pillar?`<span class="b b-gr">${esc(pillarShort)}</span>`:''}
+          ${pillarName?`<span class="b b-gr">${esc(pillarName)}</span>`:''}
           ${c.format?`<span class="b b-g">${esc(c.format)}</span>`:''}
           ${assigneeName?`<span class="b b-gr">👤 ${esc(assigneeName)}</span>`:''}
         </div>
@@ -1220,7 +1361,7 @@ function editContent(id){
   editingContentId=id;
   document.getElementById('content-modal-title').textContent='Editar Ideia';
   document.getElementById('c-title').value=c.title||'';
-  document.getElementById('c-pillar').value=c.pillar||'';
+  document.getElementById('c-pillar').value=c.pillar_id||'';
   document.getElementById('c-hook').value=c.hook||'';
   document.getElementById('c-format').value=c.format||'';
   document.getElementById('c-ass').value=c.assignee_id||'';
@@ -1235,7 +1376,9 @@ async function saveContent(){
   if(!title)return alert('Tema/título é obrigatório');
   const assId=document.getElementById('c-ass').value||null;
   const assName=allUsers.find(u=>u.id===assId)?.name||'';
-  const payload={title,pillar:document.getElementById('c-pillar').value||null,hook:document.getElementById('c-hook').value.trim(),format:document.getElementById('c-format').value.trim(),notes:document.getElementById('c-notes').value.trim(),assignee_id:assId,assignee:assName};
+  const pillarId=document.getElementById('c-pillar').value||null;
+  const pillarName=allPillars.find(p=>p.id===pillarId)?.name||null;
+  const payload={title,pillar_id:pillarId,pillar:pillarName,hook:document.getElementById('c-hook').value.trim(),format:document.getElementById('c-format').value.trim(),notes:document.getElementById('c-notes').value.trim(),assignee_id:assId,assignee:assName};
   if(editingContentId){
     payload.status=document.getElementById('c-status').value;
     await sb.from('rn_content').update(payload).eq('id',editingContentId);
