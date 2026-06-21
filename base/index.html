@@ -238,6 +238,16 @@ tr:hover td{background:rgba(0,0,0,.012)}
 .steps-t tr:last-child td{border-bottom:none}
 .sn{width:24px;height:24px;background:var(--ac);color:var(--dk);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:10px}
 
+/* ── FLUXOGRAMA ── */
+.flow{display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto}
+.flow-box{width:100%;background:var(--card);border:1px solid var(--br);border-radius:10px;padding:14px 18px;text-align:center;font-size:13px;font-weight:700;color:var(--dk)}
+.flow-box small{display:block;font-weight:400;color:var(--mu);font-size:11px;margin-top:4px;line-height:1.5}
+.flow-content{background:var(--bg);border-color:var(--ac)}
+.flow-ads{background:var(--dk);color:var(--ac);border-color:var(--dk)}
+.flow-ads small{color:rgba(244,239,230,.65)}
+.flow-goal{background:#2d6a2d;color:#fff;border-color:#2d6a2d}
+.flow-arrow{font-size:20px;color:var(--mu);padding:4px 0}
+
 /* ── DASHBOARD (admin) ── */
 .stat{text-align:center;padding:20px}
 .stat-ic{font-size:26px;margin-bottom:8px}
@@ -308,6 +318,7 @@ tr:hover td{background:rgba(0,0,0,.012)}
 
       <div class="sb-lbl">Operação</div>
       <div class="ni" data-page="projetos" onclick="nav(this)"><span class="ni-ic">📋</span><span>Projetos</span></div>
+      <div class="ni" data-page="conteudo" onclick="nav(this)"><span class="ni-ic">🎬</span><span>Conteúdo</span></div>
       <div class="ni" data-page="processos" onclick="nav(this)"><span class="ni-ic">⚙️</span><span>Processos</span></div>
       <div class="ni" data-page="criacao" onclick="nav(this)" data-roles="admin,editor"><span class="ni-ic">🎨</span><span>Criação</span></div>
       <div class="ni" data-page="materiais" onclick="nav(this)"><span class="ni-ic">📁</span><span>Materiais</span></div>
@@ -553,6 +564,51 @@ tr:hover td{background:rgba(0,0,0,.012)}
         </div>
       </div>
 
+      <!-- ══ CONTEÚDO ══ -->
+      <div class="page" id="page-conteudo">
+        <div class="page-inner">
+          <div class="ph"><h1>Conteúdo</h1><p>Linha editorial (Felipe/Fluxo, jun/2026) e fluxo de produção: ideia → roteiro → gravação → edição → postado.</p></div>
+
+          <div id="pillars-ref"></div>
+
+          <div class="ph" style="margin-top:30px"><h1 style="font-size:18px">Quadro de produção</h1></div>
+          <div class="k-toolbar">
+            <div class="fbar" style="margin-bottom:0">
+              <select id="pillar-filter" onchange="pillarFilter=this.value;renderContent()" style="border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff">
+                <option value="all">Todos os pilares</option>
+                <option value="Pilar 1 — Potencial escondido da área">Pilar 1 — Potencial escondido</option>
+                <option value="Pilar 2 — Erros do improviso">Pilar 2 — Erros do improviso</option>
+                <option value="Pilar 3 — Método e primeiros passos">Pilar 3 — Método</option>
+                <option value="Pilar 4 — Mercado e oportunidade">Pilar 4 — Mercado</option>
+              </select>
+            </div>
+            <button onclick="openContentModal()" style="background:var(--dk);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700">+ Nova Ideia</button>
+          </div>
+          <div class="kanban" style="grid-template-columns:repeat(5,1fr)">
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onContentDrop(event,'ideia')">
+              <div class="k-col-h"><span class="k-col-t">💡 Ideia</span><span class="k-cnt" id="cnt-c-ideia">0</span></div>
+              <div class="k-cards" id="cards-c-ideia"></div>
+            </div>
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onContentDrop(event,'roteiro')">
+              <div class="k-col-h"><span class="k-col-t">📝 Roteiro</span><span class="k-cnt" id="cnt-c-roteiro">0</span></div>
+              <div class="k-cards" id="cards-c-roteiro"></div>
+            </div>
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onContentDrop(event,'gravacao')">
+              <div class="k-col-h"><span class="k-col-t">🎥 Gravação</span><span class="k-cnt" id="cnt-c-gravacao">0</span></div>
+              <div class="k-cards" id="cards-c-gravacao"></div>
+            </div>
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onContentDrop(event,'edicao')">
+              <div class="k-col-h"><span class="k-col-t">✂️ Edição</span><span class="k-cnt" id="cnt-c-edicao">0</span></div>
+              <div class="k-cards" id="cards-c-edicao"></div>
+            </div>
+            <div class="k-col" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onContentDrop(event,'postado')">
+              <div class="k-col-h"><span class="k-col-t">✅ Postado</span><span class="k-cnt" id="cnt-c-postado">0</span></div>
+              <div class="k-cards" id="cards-c-postado"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ══ PROCESSOS ══ -->
       <div class="page" id="page-processos">
         <div class="page-inner">
@@ -620,6 +676,26 @@ tr:hover td{background:rgba(0,0,0,.012)}
               <div class="pop-sec"><div class="pop-sec-l">Checklist</div><div class="pop-sec-v" style="color:var(--mu)">A detalhar — acesso ao portal, leitura dos POPs, apresentação do time, acesso às ferramentas.</div></div>
             </div>
           </div>
+
+          <div class="ph" style="margin-top:36px"><h1>Fluxograma — Conteúdo → Anúncios</h1><p>Como o conteúdo orgânico alimenta a Mandala de Tráfego (metodologia Felipe/Fluxo, jun/2026).</p></div>
+          <div class="flow">
+            <div class="flow-box flow-content">📝 Conteúdo Orgânico<br><small>4 pilares — ver página Conteúdo</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">📲 Publicação no Instagram</div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box flow-ads">🚀 Turbinar (Descoberta)<br><small>até R$50/dia · Business Suite, nunca pelo iPhone</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">👥 Público de Envolvimento<br><small>quem interagiu com o perfil nos últimos 30-45 dias</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box flow-ads">💬 Campanha Relacionamento<br><small>~R$25/dia · vídeos 1min+ · entrevistas, depoimentos, trabalho de campo</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box">🎯 Público "viu 25% do vídeo"<br><small>deixar rodar 1-2 dias antes de usar</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box flow-ads">💰 Campanha Conversão<br><small>R$180/dia · conjunto 1: 3 melhores históricos · conjunto 2: 3 novos de urgência oculta</small></div>
+            <div class="flow-arrow">↓</div>
+            <div class="flow-box flow-goal">✅ Venda VPPN</div>
+          </div>
+          <div class="alert a-gold" style="margin-top:14px">⚡ Regra de ouro: nunca mexer numa campanha que está indo bem (só verba, ±20%). Se ela morrer, cria campanha nova — não reanima. Ver detalhes completos em <strong>estruturacao/regras-de-operacao.md</strong>.</div>
         </div>
       </div>
 
@@ -795,17 +871,43 @@ tr:hover td{background:rgba(0,0,0,.012)}
   </div>
 </div>
 
+<!-- MODAL NOVA IDEIA DE CONTEÚDO -->
+<div class="modal-bg" id="content-modal">
+  <div class="modal">
+    <h3 id="content-modal-title">Nova Ideia</h3>
+    <div class="mf"><label>Tema / título *</label><input type="text" id="c-title" placeholder="Ex: 5 sinais de que sua área tem potencial..."></div>
+    <div class="mf"><label>Pilar</label><select id="c-pillar">
+      <option value="">Nenhum</option>
+      <option value="Pilar 1 — Potencial escondido da área">Pilar 1 — Potencial escondido da área</option>
+      <option value="Pilar 2 — Erros do improviso">Pilar 2 — Erros do improviso</option>
+      <option value="Pilar 3 — Método e primeiros passos">Pilar 3 — Método e primeiros passos</option>
+      <option value="Pilar 4 — Mercado e oportunidade">Pilar 4 — Mercado e oportunidade</option>
+    </select></div>
+    <div class="mf"><label>Hook / ideia do material</label><textarea id="c-hook" rows="2" placeholder="O gancho ou a ideia central do vídeo/post..."></textarea></div>
+    <div class="mf-row">
+      <div class="mf"><label>Formato</label><input type="text" id="c-format" placeholder="Ex: Reels dentro do carro"></div>
+      <div class="mf"><label>Responsável</label><select id="c-ass"><option value="">Ninguém</option></select></div>
+    </div>
+    <div class="mf" id="c-status-wrap" style="display:none"><label>Etapa</label><select id="c-status"><option value="ideia">Ideia</option><option value="roteiro">Roteiro</option><option value="gravacao">Gravação</option><option value="edicao">Edição</option><option value="postado">Postado</option></select></div>
+    <div class="mf"><label>Notas</label><textarea id="c-notes" rows="2" placeholder="Observações, link do roteiro/arquivo..."></textarea></div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeContentModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveContent()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SURL='https://sdjlnjqtgnodnifkbykq.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkamxuanF0Z25vZG5pZmtieWtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTkwMjQsImV4cCI6MjA5NDk3NTAyNH0.Zf-54wX26NjM2bagxqQv8A0ZfHWywYIE9uOldc4vz2g';
 const sb=supabase.createClient(SURL,SKEY);
 
-const BADGES={home:'Reconexão Natural',equipe:'Organograma por departamento',cultura:'Valores e manifesto',projetos:'Kanban do time',processos:'POPs e fluxos',criacao:'Banco + nomenclatura',materiais:'Recursos & Drive',dashboard:'Visão admin',metas:'OKRs',senhas:'Acessos internos',admin:'Gerenciar usuários'};
-const TITLES={home:'Início',equipe:'Equipe',cultura:'Cultura',projetos:'Projetos',processos:'Processos',criacao:'Criação',materiais:'Materiais',dashboard:'Dashboard',metas:'Metas',senhas:'Senhas',admin:'Administração'};
+const BADGES={home:'Reconexão Natural',equipe:'Organograma por departamento',cultura:'Valores e manifesto',projetos:'Kanban do time',conteudo:'Linha editorial + produção',processos:'POPs e fluxos',criacao:'Banco + nomenclatura',materiais:'Recursos & Drive',dashboard:'Visão admin',metas:'OKRs',senhas:'Acessos internos',admin:'Gerenciar usuários'};
+const TITLES={home:'Início',equipe:'Equipe',cultura:'Cultura',projetos:'Projetos',conteudo:'Conteúdo',processos:'Processos',criacao:'Criação',materiais:'Materiais',dashboard:'Dashboard',metas:'Metas',senhas:'Senhas',admin:'Administração'};
 const ADMIN_ONLY=['dashboard','metas','senhas','admin'];
 const EDITOR_ROLES=['admin','editor'];
 
-let currentUser=null,currentRole='editor',allTasks=[],taskFilter='all',ownerFilter='all',projFilter='all',draggedId=null,allUsers=[],allProjects=[];
+let currentUser=null,currentRole='editor',allTasks=[],taskFilter='all',ownerFilter='all',projFilter='all',draggedId=null,allUsers=[],allProjects=[],allContent=[],pillarFilter='all',editingContentId=null,draggedContentId=null;
 
 document.getElementById('li-e').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 document.getElementById('li-p').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
@@ -839,6 +941,8 @@ async function initApp(user){
   await loadProjects();
   updateDelProjBtn();
   await loadTasks();
+  renderPillarsRef();
+  await loadContent();
   if(currentRole==='admin'){
     loadUsers();
     document.getElementById('owner-fsep').style.display='block';
@@ -851,8 +955,9 @@ async function initApp(user){
 async function loadAssigneeOptions(){
   const{data}=await sb.from('rn_profiles').select('id,name,email').order('name');
   allUsers=data||[];
-  const sel=document.getElementById('t-ass');
-  sel.innerHTML='<option value="">Ninguém</option>'+allUsers.map(u=>`<option value="${u.id}">${esc(u.name||u.email)}</option>`).join('');
+  const opts='<option value="">Ninguém</option>'+allUsers.map(u=>`<option value="${u.id}">${esc(u.name||u.email)}</option>`).join('');
+  document.getElementById('t-ass').innerHTML=opts;
+  document.getElementById('c-ass').innerHTML=opts;
 }
 
 async function loadProjects(){
@@ -1035,6 +1140,114 @@ async function saveTask(){
 async function delTask(id){if(!confirm('Excluir?'))return;await sb.from('rn_tasks').delete().eq('id',id);await loadTasks();}
 
 function togglePop(el){el.closest('.pop').classList.toggle('open')}
+
+/* ── CONTEÚDO ── */
+const PILLARS=[
+  {n:'Pilar 1 — Potencial escondido da área',o:'Atrair proprietários que ainda não têm clareza de que a área pode virar um negócio de ecoturismo.',f:'Carrossel educativo · Reels com narração · Post checklist · Stories com enquete',h:['Você tem uma área bonita, mas ela ainda não gera renda? Talvez o problema não seja a área.','Nem toda área natural vira destino. Mas algumas têm sinais claros de potencial.','Antes de pensar em cabanas, restaurantes ou trilhas, olhe para isso na sua propriedade.']},
+  {n:'Pilar 2 — Erros do improviso',o:'Gerar consciência do problema e fazer o público perceber o risco de começar errado.',f:'Reels provocativo · Carrossel "erro comum" · Post comparação · Stories com caixa de pergunta',h:['O primeiro erro de quem quer viver de ecoturismo é começar pela infraestrutura.','Você não precisa construir mais. Precisa decidir melhor.','Receber visitantes no improviso pode sair mais caro do que manter a área fechada.']},
+  {n:'Pilar 3 — Método e primeiros passos',o:'Preparar o público para entender o valor do Método VPPN.',f:'(formato livre — educativo)',h:[]},
+  {n:'Pilar 4 — Mercado e oportunidade',o:'Fazer o avatar sentir que o mercado está se movendo e que a área dele pode ficar para trás.',f:'Post notícia comentada · Reels "tendência" · Carrossel de dados · Stories com opinião do especialista',h:[]},
+];
+function renderPillarsRef(){
+  document.getElementById('pillars-ref').innerHTML=PILLARS.map((p,i)=>`
+    <div class="pop">
+      <div class="pop-h" onclick="togglePop(this)">
+        <div class="pop-hl"><div class="pop-num">0${i+1}</div><div><div class="pop-title">${esc(p.n)}</div><div class="pop-sub">${esc(p.f)}</div></div></div>
+        <span class="pop-chev">▾</span>
+      </div>
+      <div class="pop-body">
+        <div class="pop-sec"><div class="pop-sec-l">Objetivo</div><div class="pop-sec-v">${esc(p.o)}</div></div>
+        ${p.h.length?`<div class="pop-sec"><div class="pop-sec-l">Exemplos de hook</div><div class="pop-sec-v">${p.h.map(esc).join('<br>')}</div></div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+async function loadContent(){
+  const{data}=await sb.from('rn_content').select('*').order('position',{ascending:true});
+  allContent=data||[];
+  renderContent();
+}
+
+function renderContent(){
+  const cols=['ideia','roteiro','gravacao','edicao','postado'];
+  const f=pillarFilter==='all'?allContent:allContent.filter(c=>c.pillar===pillarFilter);
+  cols.forEach(col=>{
+    const el=document.getElementById('cards-c-'+col);
+    const cnt=document.getElementById('cnt-c-'+col);
+    const items=f.filter(c=>c.status===col);
+    cnt.textContent=items.length;
+    el.innerHTML=items.map(c=>{
+      const del=currentRole==='admin'?`<span onclick="delContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Excluir">✕</span>`:'';
+      const edit=`<span onclick="editContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Editar">✎</span>`;
+      const pillarShort=(c.pillar||'').replace('— ','');
+      const assigneeName=allUsers.find(u=>u.id===c.assignee_id)?.name||c.assignee||'';
+      return`<div class="k-card" draggable="true" data-id="${c.id}">
+        <div class="k-card-t">${esc(c.title)}${edit}${del}</div>
+        ${c.hook?`<div class="k-card-d">${esc(c.hook)}</div>`:''}
+        <div class="k-card-m">
+          ${c.pillar?`<span class="b b-gr">${esc(pillarShort)}</span>`:''}
+          ${c.format?`<span class="b b-g">${esc(c.format)}</span>`:''}
+          ${assigneeName?`<span class="b b-gr">👤 ${esc(assigneeName)}</span>`:''}
+        </div>
+      </div>`;
+    }).join('');
+    el.querySelectorAll('.k-card').forEach(card=>{
+      card.addEventListener('dragstart',e=>{draggedContentId=card.getAttribute('data-id');e.dataTransfer.effectAllowed='move';setTimeout(()=>card.style.opacity='0.4',0);});
+      card.addEventListener('dragend',()=>{card.style.opacity='1';});
+    });
+  });
+}
+
+async function onContentDrop(e,status){
+  e.preventDefault();e.currentTarget.classList.remove('drag-over');
+  if(!draggedContentId)return;
+  await sb.from('rn_content').update({status}).eq('id',draggedContentId);
+  draggedContentId=null;await loadContent();
+}
+
+function openContentModal(){
+  editingContentId=null;
+  document.getElementById('content-modal-title').textContent='Nova Ideia';
+  document.getElementById('c-status-wrap').style.display='none';
+  ['c-title','c-hook','c-format','c-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-pillar').value='';
+  document.getElementById('c-ass').value='';
+  document.getElementById('content-modal').classList.add('open');
+}
+function editContent(id){
+  const c=allContent.find(x=>x.id===id);
+  if(!c)return;
+  editingContentId=id;
+  document.getElementById('content-modal-title').textContent='Editar Ideia';
+  document.getElementById('c-title').value=c.title||'';
+  document.getElementById('c-pillar').value=c.pillar||'';
+  document.getElementById('c-hook').value=c.hook||'';
+  document.getElementById('c-format').value=c.format||'';
+  document.getElementById('c-ass').value=c.assignee_id||'';
+  document.getElementById('c-notes').value=c.notes||'';
+  document.getElementById('c-status-wrap').style.display='block';
+  document.getElementById('c-status').value=c.status||'ideia';
+  document.getElementById('content-modal').classList.add('open');
+}
+function closeContentModal(){document.getElementById('content-modal').classList.remove('open');editingContentId=null}
+async function saveContent(){
+  const title=document.getElementById('c-title').value.trim();
+  if(!title)return alert('Tema/título é obrigatório');
+  const assId=document.getElementById('c-ass').value||null;
+  const assName=allUsers.find(u=>u.id===assId)?.name||'';
+  const payload={title,pillar:document.getElementById('c-pillar').value||null,hook:document.getElementById('c-hook').value.trim(),format:document.getElementById('c-format').value.trim(),notes:document.getElementById('c-notes').value.trim(),assignee_id:assId,assignee:assName};
+  if(editingContentId){
+    payload.status=document.getElementById('c-status').value;
+    await sb.from('rn_content').update(payload).eq('id',editingContentId);
+  }else{
+    payload.status='ideia';
+    payload.created_by=currentUser?.email||'';
+    await sb.from('rn_content').insert(payload);
+  }
+  closeContentModal();
+  await loadContent();
+}
+async function delContent(id){if(!confirm('Excluir essa ideia?'))return;await sb.from('rn_content').delete().eq('id',id);await loadContent();}
 
 async function loadUsers(){
   const{data}=await sb.from('rn_profiles').select('*').order('created_at');
