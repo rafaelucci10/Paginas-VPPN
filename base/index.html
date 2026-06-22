@@ -173,7 +173,7 @@ button{font-family:var(--font-b);cursor:pointer;border:none}
 .k-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .k-card:active{cursor:grabbing}
 .k-card-t{font-size:13px;font-weight:700;color:var(--dk);margin-bottom:6px;line-height:1.3}
-.k-card-d{font-size:11px;color:var(--mu);margin-bottom:8px;line-height:1.5}
+.k-card-d{font-size:11px;color:var(--mu);margin-bottom:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .k-card-m{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .k-card-dt{font-size:10px;color:var(--mu);margin-left:auto}
 .k-add{width:100%;margin-top:8px;padding:7px;background:transparent;border:1px dashed var(--br);border-radius:7px;color:var(--mu);font-size:12px;font-weight:600;transition:all .12s}
@@ -797,7 +797,7 @@ tr:hover td{background:rgba(0,0,0,.012)}
     <div id="cv-pillar-badge" style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px"></div>
     <h3 id="cv-title" style="margin-bottom:14px"></h3>
     <div id="cv-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
-    <div id="cv-hook-wrap" class="mf" style="display:none"><label>Copy / ideia do material</label><div id="cv-hook" style="white-space:pre-wrap;font-size:14px;line-height:1.6;color:var(--dk);background:var(--bg);border-radius:8px;padding:12px 14px"></div></div>
+    <div id="cv-hook-wrap" class="mf" style="display:none"><label>Copy</label><div id="cv-hook" style="white-space:pre-wrap;font-size:14px;line-height:1.6;color:var(--dk);background:var(--bg);border-radius:8px;padding:12px 14px"></div></div>
     <div id="cv-notes-wrap" class="mf" style="display:none"><label>Notas</label><div id="cv-notes" style="white-space:pre-wrap;font-size:13px;line-height:1.6;color:var(--mu)"></div></div>
     <div class="modal-foot" style="justify-content:space-between">
       <button class="btn-cancel" id="cv-del-btn" onclick="delContentFromView()" style="color:#b33">Excluir</button>
@@ -815,7 +815,7 @@ tr:hover td{background:rgba(0,0,0,.012)}
     <h3 id="content-modal-title">Nova Ideia</h3>
     <div class="mf"><label>Tema / título *</label><input type="text" id="c-title" placeholder="Ex: 5 sinais de que sua área tem potencial..."></div>
     <div class="mf"><label>Categoria</label><select id="c-pillar"><option value="">Nenhuma</option></select></div>
-    <div class="mf"><label>Hook / ideia do material</label><textarea id="c-hook" rows="2" placeholder="O gancho ou a ideia central do vídeo/post..."></textarea></div>
+    <div class="mf"><label>Copy (o que o Thiago vai gravar)</label><textarea id="c-hook" rows="8" placeholder="Escreva aqui a copy/roteiro completo do vídeo ou post..."></textarea></div>
     <div class="mf-row">
       <div class="mf"><label>Formato</label><input type="text" id="c-format" placeholder="Ex: Reels dentro do carro"></div>
       <div class="mf"><label>Responsável</label><select id="c-ass"><option value="">Ninguém</option></select></div>
@@ -1339,7 +1339,8 @@ function renderContent(){
       const pillarName=allPillars.find(p=>p.id===c.pillar_id)?.name||c.pillar||'';
       const assigneeName=allUsers.find(u=>u.id===c.assignee_id)?.name||c.assignee||'';
       return`<div class="k-card" draggable="true" data-id="${c.id}">
-        <div class="k-card-t">${esc(c.title)}<span onclick="viewContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Ver">👁 Ver</span></div>
+        <div class="k-card-t">${esc(c.title)}</div>
+        <div onclick="viewContent('${c.id}')" style="cursor:pointer;color:var(--dk);background:var(--bg);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;text-align:center;margin:6px 0">👁 Visualizar</div>
         ${c.hook?`<div class="k-card-d">${esc(c.hook)}</div>`:''}
         <div class="k-card-m">
           ${pillarName?`<span class="b b-gr">${esc(pillarName)}</span>`:''}
