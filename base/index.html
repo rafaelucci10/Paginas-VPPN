@@ -1340,7 +1340,7 @@ function renderContent(){
       const assigneeName=allUsers.find(u=>u.id===c.assignee_id)?.name||c.assignee||'';
       return`<div class="k-card" draggable="true" data-id="${c.id}">
         <div class="k-card-t">${esc(c.title)}</div>
-        <div onclick="viewContent('${c.id}')" style="cursor:pointer;color:var(--dk);background:var(--bg);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;text-align:center;margin:6px 0">👁 Visualizar</div>
+        <div onclick="viewContent('${c.id}')" style="cursor:pointer;color:var(--dk);background:var(--bg);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;text-align:center;margin:6px 0">Visualizar</div>
         ${c.hook?`<div class="k-card-d">${esc(c.hook)}</div>`:''}
         <div class="k-card-m">
           ${pillarName?`<span class="b b-gr">${esc(pillarName)}</span>`:''}
