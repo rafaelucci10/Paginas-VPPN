@@ -569,14 +569,14 @@ tr:hover td{background:rgba(0,0,0,.012)}
         <div class="page-inner">
           <div class="ph"><h1>Conteúdo</h1><p>Linha editorial e fluxo de produção: ideia → roteiro → gravação → edição → postado.</p></div>
 
-          <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button onclick="openPillarModal()" style="border:1px solid var(--bd);border-radius:8px;padding:8px 14px;font-size:13px;background:#fff;cursor:pointer">+ Pilar</button></div>
+          <div style="display:flex;justify-content:flex-end;margin-bottom:10px"><button onclick="openPillarModal()" style="border:1px solid var(--bd);border-radius:8px;padding:8px 14px;font-size:13px;background:#fff;cursor:pointer">+ Categoria</button></div>
           <div id="pillars-ref"></div>
 
           <div class="ph" style="margin-top:30px"><h1 style="font-size:18px">Quadro de produção</h1></div>
           <div class="k-toolbar">
             <div class="fbar" style="margin-bottom:0">
               <select id="pillar-filter" onchange="pillarFilter=this.value;renderContent()" style="border:1px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff">
-                <option value="all">Todos os pilares</option>
+                <option value="all">Todas as categorias</option>
               </select>
             </div>
             <button onclick="openContentModal()" style="background:var(--dk);color:var(--ac);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700">+ Nova Ideia</button>
@@ -791,12 +791,30 @@ tr:hover td{background:rgba(0,0,0,.012)}
   </div>
 </div>
 
+<!-- MODAL VER CONTEÚDO (leitura) -->
+<div class="modal-bg" id="content-view-modal">
+  <div class="modal" style="max-width:560px">
+    <div id="cv-pillar-badge" style="font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px"></div>
+    <h3 id="cv-title" style="margin-bottom:14px"></h3>
+    <div id="cv-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
+    <div id="cv-hook-wrap" class="mf" style="display:none"><label>Copy / ideia do material</label><div id="cv-hook" style="white-space:pre-wrap;font-size:14px;line-height:1.6;color:var(--dk);background:var(--bg);border-radius:8px;padding:12px 14px"></div></div>
+    <div id="cv-notes-wrap" class="mf" style="display:none"><label>Notas</label><div id="cv-notes" style="white-space:pre-wrap;font-size:13px;line-height:1.6;color:var(--mu)"></div></div>
+    <div class="modal-foot" style="justify-content:space-between">
+      <button class="btn-cancel" id="cv-del-btn" onclick="delContentFromView()" style="color:#b33">Excluir</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn-cancel" onclick="closeContentView()">Fechar</button>
+        <button class="btn-save" onclick="editFromView()">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL NOVA IDEIA DE CONTEÚDO -->
 <div class="modal-bg" id="content-modal">
   <div class="modal">
     <h3 id="content-modal-title">Nova Ideia</h3>
     <div class="mf"><label>Tema / título *</label><input type="text" id="c-title" placeholder="Ex: 5 sinais de que sua área tem potencial..."></div>
-    <div class="mf"><label>Pilar</label><select id="c-pillar"><option value="">Nenhum</option></select></div>
+    <div class="mf"><label>Categoria</label><select id="c-pillar"><option value="">Nenhuma</option></select></div>
     <div class="mf"><label>Hook / ideia do material</label><textarea id="c-hook" rows="2" placeholder="O gancho ou a ideia central do vídeo/post..."></textarea></div>
     <div class="mf-row">
       <div class="mf"><label>Formato</label><input type="text" id="c-format" placeholder="Ex: Reels dentro do carro"></div>
@@ -814,8 +832,8 @@ tr:hover td{background:rgba(0,0,0,.012)}
 <!-- MODAL PILAR -->
 <div class="modal-bg" id="pillar-modal">
   <div class="modal">
-    <h3 id="pillar-modal-title">Novo Pilar</h3>
-    <div class="mf"><label>Nome *</label><input type="text" id="pl-name" placeholder="Ex: Pilar 5 — ..."></div>
+    <h3 id="pillar-modal-title">Nova Categoria</h3>
+    <div class="mf"><label>Nome *</label><input type="text" id="pl-name" placeholder="Ex: Descoberta, Relacionamento, Conversão..."></div>
     <div class="mf"><label>Objetivo</label><textarea id="pl-objective" rows="2"></textarea></div>
     <div class="mf"><label>Formatos sugeridos</label><input type="text" id="pl-formats" placeholder="Ex: Reels · Carrossel · Stories"></div>
     <div class="mf"><label>Hooks de exemplo (um por linha)</label><textarea id="pl-hooks" rows="3"></textarea></div>
@@ -1131,11 +1149,11 @@ function renderPillarsRef(){
         ${hooks.length?`<div class="pop-sec"><div class="pop-sec-l">Exemplos de hook</div><div class="pop-sec-v">${hooks.map(esc).join('<br>')}</div></div>`:''}
       </div>
     </div>`;
-  }).join('')||'<p style="color:var(--mu);font-size:13px">Nenhum pilar ainda — clique em "+ Pilar".</p>';
+  }).join('')||'<p style="color:var(--mu);font-size:13px">Nenhuma categoria ainda — clique em "+ Categoria".</p>';
 }
 function openPillarModal(){
   editingPillarId=null;
-  document.getElementById('pillar-modal-title').textContent='Novo Pilar';
+  document.getElementById('pillar-modal-title').textContent='Nova Categoria';
   ['pl-name','pl-objective','pl-formats','pl-hooks'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('pillar-modal').classList.add('open');
 }
@@ -1143,7 +1161,7 @@ function editPillar(id){
   const p=allPillars.find(x=>x.id===id);
   if(!p)return;
   editingPillarId=id;
-  document.getElementById('pillar-modal-title').textContent='Editar Pilar';
+  document.getElementById('pillar-modal-title').textContent='Editar Categoria';
   document.getElementById('pl-name').value=p.name||'';
   document.getElementById('pl-objective').value=p.objective||'';
   document.getElementById('pl-formats').value=p.formats||'';
@@ -1165,7 +1183,7 @@ async function savePillar(){
   closePillarModal();
   await loadPillars();
 }
-async function delPillar(id){if(!confirm('Excluir esse pilar? As ideias de conteúdo ligadas a ele ficam sem pilar.'))return;await sb.from('rn_content').update({pillar_id:null}).eq('pillar_id',id);await sb.from('rn_pillars').delete().eq('id',id);await loadPillars();await loadContent();}
+async function delPillar(id){if(!confirm('Excluir essa categoria? As ideias de conteúdo ligadas a ela ficam sem categoria.'))return;await sb.from('rn_content').update({pillar_id:null}).eq('pillar_id',id);await sb.from('rn_pillars').delete().eq('id',id);await loadPillars();await loadContent();}
 
 /* ── PROCESSOS: POPs e Fluxogramas (editáveis) ── */
 let allProcesses=[],editingProcessId=null,currentProcessType='pop';
@@ -1318,12 +1336,10 @@ function renderContent(){
     const items=f.filter(c=>c.status===col);
     cnt.textContent=items.length;
     el.innerHTML=items.map(c=>{
-      const del=currentRole==='admin'?`<span onclick="delContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Excluir">✕</span>`:'';
-      const edit=`<span onclick="editContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Editar">✎</span>`;
-      const pillarName=(allPillars.find(p=>p.id===c.pillar_id)?.name||c.pillar||'').replace('— ','');
+      const pillarName=allPillars.find(p=>p.id===c.pillar_id)?.name||c.pillar||'';
       const assigneeName=allUsers.find(u=>u.id===c.assignee_id)?.name||c.assignee||'';
       return`<div class="k-card" draggable="true" data-id="${c.id}">
-        <div class="k-card-t">${esc(c.title)}${edit}${del}</div>
+        <div class="k-card-t">${esc(c.title)}<span onclick="viewContent('${c.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Ver">👁 Ver</span></div>
         ${c.hook?`<div class="k-card-d">${esc(c.hook)}</div>`:''}
         <div class="k-card-m">
           ${pillarName?`<span class="b b-gr">${esc(pillarName)}</span>`:''}
@@ -1391,6 +1407,32 @@ async function saveContent(){
   await loadContent();
 }
 async function delContent(id){if(!confirm('Excluir essa ideia?'))return;await sb.from('rn_content').delete().eq('id',id);await loadContent();}
+
+let viewingContentId=null;
+const STATUS_LABEL={ideia:'Ideia',roteiro:'Roteiro',gravacao:'Gravação',edicao:'Edição',postado:'Postado'};
+function viewContent(id){
+  const c=allContent.find(x=>x.id===id);
+  if(!c)return;
+  viewingContentId=id;
+  const pillarName=allPillars.find(p=>p.id===c.pillar_id)?.name||c.pillar||'';
+  const assigneeName=allUsers.find(u=>u.id===c.assignee_id)?.name||c.assignee||'';
+  document.getElementById('cv-pillar-badge').textContent=pillarName||'';
+  document.getElementById('cv-title').textContent=c.title||'';
+  document.getElementById('cv-meta').innerHTML=[
+    `<span class="b b-gr">${esc(STATUS_LABEL[c.status]||c.status)}</span>`,
+    c.format?`<span class="b b-g">${esc(c.format)}</span>`:'',
+    assigneeName?`<span class="b b-gr">👤 ${esc(assigneeName)}</span>`:''
+  ].join('');
+  if(c.hook){document.getElementById('cv-hook-wrap').style.display='block';document.getElementById('cv-hook').textContent=c.hook;}
+  else{document.getElementById('cv-hook-wrap').style.display='none';}
+  if(c.notes){document.getElementById('cv-notes-wrap').style.display='block';document.getElementById('cv-notes').textContent=c.notes;}
+  else{document.getElementById('cv-notes-wrap').style.display='none';}
+  document.getElementById('cv-del-btn').style.display=currentRole==='admin'?'block':'none';
+  document.getElementById('content-view-modal').classList.add('open');
+}
+function closeContentView(){document.getElementById('content-view-modal').classList.remove('open');viewingContentId=null}
+function editFromView(){const id=viewingContentId;closeContentView();editContent(id);}
+async function delContentFromView(){const id=viewingContentId;if(!confirm('Excluir essa ideia?'))return;await sb.from('rn_content').delete().eq('id',id);closeContentView();await loadContent();}
 
 async function loadUsers(){
   const{data}=await sb.from('rn_profiles').select('*').order('created_at');
