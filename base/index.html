@@ -766,6 +766,22 @@ tr:hover td{background:rgba(0,0,0,.012)}
   </div>
 </div>
 
+<!-- MODAL VER TAREFA (leitura) -->
+<div class="modal-bg" id="task-view-modal">
+  <div class="modal" style="max-width:560px">
+    <h3 id="tv-title" style="margin-bottom:14px"></h3>
+    <div id="tv-meta" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
+    <div id="tv-desc-wrap" class="mf" style="display:none"><label>Descrição</label><div id="tv-desc" style="white-space:pre-wrap;font-size:14px;line-height:1.6;color:var(--dk);background:var(--bg);border-radius:8px;padding:12px 14px"></div></div>
+    <div class="modal-foot" style="justify-content:space-between">
+      <button class="btn-cancel" id="tv-del-btn" onclick="delTaskFromView()" style="color:#b33">Excluir</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn-cancel" onclick="closeTaskView()">Fechar</button>
+        <button class="btn-save" onclick="editTaskFromView()">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL NOVA TAREFA -->
 <div class="modal-bg" id="task-modal">
   <div class="modal">
@@ -1032,12 +1048,10 @@ function renderTasks(){
     el.innerHTML=tasks.map(t=>{
       const pc={VPPN:'b-g',IAT:'b-o',Geral:'b-gr'}[t.product]||'b-gr';
       const rc={alta:'b-r',media:'b-o',baixa:'b-g'}[t.priority]||'b-gr';
-      const del=currentRole==='admin'?`<span onclick="delTask('${t.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Excluir">✕</span>`:'';
-      const edit=`<span onclick="editTask('${t.id}')" style="cursor:pointer;color:var(--mu);font-size:11px;margin-left:6px" title="Editar">✎</span>`;
       const assigneeName=allUsers.find(u=>u.id===t.assignee_id)?.name||t.assignee||'';
       const projectName=allProjects.find(p=>p.id===t.project_id)?.name||t.project||'';
       return`<div class="k-card" draggable="true" data-id="${t.id}">
-        <div class="k-card-t">${esc(t.title)}${edit}${del}</div>
+        <div class="k-card-t">${esc(t.title)}</div>
         ${t.description?`<div class="k-card-d">${esc(t.description)}</div>`:''}
         <div class="k-card-m">
           ${t.product?`<span class="b ${pc}">${t.product}</span>`:''}
@@ -1046,6 +1060,7 @@ function renderTasks(){
           ${assigneeName?`<span class="b b-gr">👤 ${esc(assigneeName)}</span>`:''}
           ${t.due_date?`<span class="k-card-dt">📅 ${t.due_date.slice(8,10)}/${t.due_date.slice(5,7)}</span>`:''}
         </div>
+        <div onclick="viewTask('${t.id}')" style="cursor:pointer;color:var(--dk);background:var(--bg);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;text-align:center;margin-top:6px">Visualizar</div>
       </div>`;
     }).join('');
     el.querySelectorAll('.k-card').forEach(c=>{
@@ -1116,6 +1131,35 @@ async function saveTask(){
   await loadTasks();
 }
 async function delTask(id){if(!confirm('Excluir?'))return;await sb.from('rn_tasks').delete().eq('id',id);await loadTasks();}
+
+let viewingTaskId=null;
+const TASK_STATUS_LABEL={backlog:'Backlog',andamento:'Em andamento',revisao:'Revisão',concluido:'Concluído'};
+const TASK_PRI_LABEL={alta:'Alta',media:'Média',baixa:'Baixa'};
+function viewTask(id){
+  const t=allTasks.find(x=>x.id===id);
+  if(!t)return;
+  viewingTaskId=id;
+  const pc={VPPN:'b-g',IAT:'b-o',Geral:'b-gr'}[t.product]||'b-gr';
+  const rc={alta:'b-r',media:'b-o',baixa:'b-g'}[t.priority]||'b-gr';
+  const assigneeName=allUsers.find(u=>u.id===t.assignee_id)?.name||t.assignee||'';
+  const projectName=allProjects.find(p=>p.id===t.project_id)?.name||t.project||'';
+  document.getElementById('tv-title').textContent=t.title||'';
+  document.getElementById('tv-meta').innerHTML=[
+    `<span class="b b-gr">${esc(TASK_STATUS_LABEL[t.status]||t.status)}</span>`,
+    t.product?`<span class="b ${pc}">${esc(t.product)}</span>`:'',
+    projectName?`<span class="b b-gr">📁 ${esc(projectName)}</span>`:'',
+    `<span class="b ${rc}">${esc(TASK_PRI_LABEL[t.priority]||t.priority||'')}</span>`,
+    assigneeName?`<span class="b b-gr">👤 ${esc(assigneeName)}</span>`:'',
+    t.due_date?`<span class="b b-gr">📅 ${t.due_date.slice(8,10)}/${t.due_date.slice(5,7)}/${t.due_date.slice(0,4)}</span>`:''
+  ].join('');
+  if(t.description){document.getElementById('tv-desc-wrap').style.display='block';document.getElementById('tv-desc').textContent=t.description;}
+  else{document.getElementById('tv-desc-wrap').style.display='none';}
+  document.getElementById('tv-del-btn').style.display=currentRole==='admin'?'block':'none';
+  document.getElementById('task-view-modal').classList.add('open');
+}
+function closeTaskView(){document.getElementById('task-view-modal').classList.remove('open');viewingTaskId=null}
+function editTaskFromView(){const id=viewingTaskId;closeTaskView();editTask(id);}
+async function delTaskFromView(){const id=viewingTaskId;if(!confirm('Excluir?'))return;await sb.from('rn_tasks').delete().eq('id',id);closeTaskView();await loadTasks();}
 
 function togglePop(el){el.closest('.pop').classList.toggle('open')}
 
