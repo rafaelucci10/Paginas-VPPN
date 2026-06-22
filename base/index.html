@@ -182,14 +182,14 @@ button{font-family:var(--font-b);cursor:pointer;border:none}
 /* ── MODAL ── */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
-.modal{background:var(--card);border-radius:14px;padding:28px;width:460px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal{background:var(--card);border-radius:14px;padding:28px;width:460px;max-width:92vw;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
 .modal h3{font-family:var(--font-s);font-size:18px;color:var(--dk);margin-bottom:20px}
 .mf{margin-bottom:13px}
 .mf label{display:block;font-size:11px;font-weight:700;color:var(--mu);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
 .mf input,.mf select,.mf textarea{width:100%;border:1px solid var(--br);border-radius:8px;padding:9px 12px;font-size:13px;font-family:var(--font-b);outline:none;color:var(--dk);resize:none}
 .mf input:focus,.mf select:focus,.mf textarea:focus{border-color:var(--ok)}
 .mf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;position:sticky;bottom:-28px;background:var(--card);padding:14px 0 4px;margin-bottom:-28px}
 .btn-cancel{padding:9px 18px;border-radius:8px;border:1px solid var(--br);background:transparent;color:var(--mu);font-size:13px;font-weight:600}
 .btn-save{padding:9px 18px;border-radius:8px;background:var(--dk);color:var(--ac);font-size:13px;font-weight:700}
 
