@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mapa do Tesouro · Método VPPN | Thiago Beraldo</title>
+<meta name="description" content="Toda terra esconde um tesouro. Em 1 dia de imersão ao vivo, o Thiago revela o seu. E você descobre se dá pra virar dinheiro recebendo visitantes."/>
+<!-- Meta Pixel (Pixel IAT, reaproveitado por ser ticket baixo — ver memória do projeto sobre essa decisão) -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','791417620220737');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=791417620220737&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+<!-- Microsoft Clarity -->
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","xxwxi8fbnh");</script>
+<link rel="icon" type="image/png" href="../favicon.png"/>
+<link rel="apple-touch-icon" href="../favicon.png"/>
+<link rel="preload" href="../fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="../fonts/fonts.css"></noscript>
+<style>
+/* ═══════════════════════════════════════════════
+   PICO PAGO — "O MAPA INVISÍVEL"
+   Tema: toda terra esconde um mapa que ainda ninguém
+   viu — dos lugares, das trilhas, do valor que existe
+   mas não foi enxergado. A imersão é a luz que revela.
+   Paleta: quase tudo em tons de noite (verde-preto, não
+   marrom), dourado como a "tinta" que só aparece quando
+   revelada. Dourado é a ponte com a marca do Thiago;
+   o resto é deliberadamente outra coisa.
+   ═══════════════════════════════════════════════ */
+:root{
+  --bg:#0c1613;--bg2:#122019;--bg3:#1a2e26;
+  --line:rgba(238,240,230,.14);
+  --gold:#c8a84b;--gold2:#e9d38f;
+  --cream:#eef0e6;
+  --tm:rgba(238,240,230,.62);
+  --dim:rgba(238,240,230,.32);
+  --rust:#c9784a;
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --r:6px;
+  --sha:0 3px 16px rgba(0,0,0,.35);
+  --sha2:0 20px 60px rgba(0,0,0,.6);
+  --glow:0 0 26px rgba(200,168,75,.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--cream);background:var(--bg);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased;padding-bottom:74px}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+h1,h2,h3,h4{font-family:var(--disp);line-height:1.16;font-weight:600;color:var(--cream)}
+h1{font-size:clamp(1.7rem,3.6vw,2.7rem)}
+h2{font-size:clamp(1.4rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.02rem,1.8vw,1.25rem)}
+p{font-weight:300}
+ul{list-style:none}
+
+.w{max-width:1080px;margin:0 auto;padding:0 24px}
+.wn{max-width:920px;margin:0 auto;padding:0 24px}
+.s{padding:76px 0;position:relative}
+.s--a{background:var(--bg)}
+.s--b{background:var(--bg2)}
+.s--c{background:var(--bg3)}
+
+/* céu noturno sutil — poucos "pontos" quase invisíveis */
+.s--a::before,.s--b::before,.s--c::before,.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.7;
+  background-image:
+    radial-gradient(1px 1px at 8% 20%, rgba(238,240,230,.35) 0, transparent 60%),
+    radial-gradient(1px 1px at 22% 68%, rgba(238,240,230,.25) 0, transparent 60%),
+    radial-gradient(1px 1px at 47% 12%, rgba(238,240,230,.3) 0, transparent 60%),
+    radial-gradient(1px 1px at 68% 74%, rgba(238,240,230,.22) 0, transparent 60%),
+    radial-gradient(1px 1px at 84% 30%, rgba(238,240,230,.3) 0, transparent 60%),
+    radial-gradient(1px 1px at 92% 82%, rgba(238,240,230,.2) 0, transparent 60%),
+    repeating-radial-gradient(circle at 10% 15%, transparent 0 26px, rgba(200,168,75,.04) 27px 28px);
+}
+
+.lbl{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  display:block;margin-bottom:10px;color:var(--gold)}
+.lbl--c{text-align:center}
+.tc{text-align:center;max-width:680px;margin:0 auto 44px;position:relative;z-index:1}
+
+.reveal-block{max-width:640px;margin:0 auto 36px;background:var(--bg2);border:1px solid var(--gold);
+  border-radius:var(--r);padding:36px 32px;text-align:center;box-shadow:var(--sha2),var(--glow);
+  position:relative;z-index:1}
+.reveal-block .lbl{margin-bottom:14px}
+.reveal-block p{color:rgba(238,240,230,.92);font-size:1.15rem;line-height:1.6;margin:0}
+.reveal-block p b{color:var(--gold2);font-weight:700;text-shadow:0 0 22px rgba(200,168,75,.45)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:18px 34px;gap:9px;
+  font-family:var(--sans);font-size:.84rem;font-weight:700;letter-spacing:.02em;
+  border-radius:var(--r);cursor:pointer;transition:all .2s;border:none;width:100%}
+.btn--cta{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1206;
+  box-shadow:0 10px 28px rgba(0,0,0,.4),var(--glow);border:1px solid rgba(0,0,0,.15)}
+.btn--cta:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.5),0 0 34px rgba(200,168,75,.45)}
+.btn--gold{background:linear-gradient(135deg,var(--gold),#a98a3a);color:#1a1206}
+.btn--closed{background:var(--bg2);color:var(--tm);border:1px solid var(--line);cursor:default;
+  font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+
+.tbd{background:#fff3b0;color:#6b5a00;padding:2px 8px;border-radius:2px;font-size:.8em;font-weight:600;
+  white-space:nowrap;display:inline-block;transform:rotate(-1.5deg);box-shadow:1px 2px 4px rgba(0,0,0,.3)}
+
+/* ══ TOPBAR ══ */
+.topbar{background:#08100d;color:var(--cream);text-align:center;font-family:var(--mono);font-size:.7rem;
+  font-weight:600;letter-spacing:.08em;padding:9px 16px;text-transform:uppercase;
+  border-bottom:1px solid rgba(200,168,75,.3)}
+
+/* ══ HERO ══ */
+.hero{background:var(--bg);position:relative;overflow:hidden}
+.hero__in{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:52px 24px 60px;
+  display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+@media(max-width:860px){.hero__in{grid-template-columns:1fr;text-align:center}}
+
+/* selo — anel dourado brilhando no escuro */
+.stamp{width:96px;height:96px;border-radius:50%;border:2px solid var(--gold);display:flex;
+  align-items:center;justify-content:center;margin-bottom:22px;flex-shrink:0;position:relative;box-shadow:var(--glow)}
+.stamp::before{content:'';position:absolute;inset:6px;border:1px dashed rgba(233,211,143,.5);border-radius:50%}
+@media(max-width:860px){.stamp{margin-left:auto;margin-right:auto}}
+.stamp__in{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px}
+.stamp__in i{font-size:.85rem;color:var(--gold2);font-style:normal}
+.stamp__in b{font-family:var(--disp);font-size:.56rem;letter-spacing:.05em;text-transform:uppercase;color:var(--cream);line-height:1.2}
+.stamp__in span{font-family:var(--mono);font-size:.4rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+
+.hero__h1{margin-bottom:16px;letter-spacing:-.01em}
+.hero__h1 b{color:var(--gold2);font-weight:700;text-shadow:0 0 24px rgba(200,168,75,.35)}
+.hero__sub{color:var(--tm);font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.hero__authority{color:var(--gold);font-family:var(--mono);font-size:.68rem;letter-spacing:.03em;margin-bottom:16px}
+@media(max-width:860px){.hero__authority{text-align:center}}
+.hero__list{display:flex;flex-direction:column;gap:11px;margin-bottom:26px}
+.hero__list li{display:flex;gap:10px;align-items:flex-start;color:rgba(238,240,230,.86);font-size:.92rem;text-align:left}
+.hero__list li::before{content:'✦';color:var(--gold2);font-weight:700;flex-shrink:0}
+@media(max-width:860px){.hero__list{align-items:center}.hero__list li{text-align:left}}
+
+.hero__steps{display:flex;flex-direction:column;gap:10px;margin-bottom:26px;text-align:left}
+.hero__steps li{color:rgba(238,240,230,.82);font-size:.88rem;line-height:1.5}
+.hero__steps b{color:var(--gold2);font-family:var(--mono);font-size:.78rem;letter-spacing:.04em}
+.hero__steps span{color:var(--gold);margin:0 2px}
+.hero__price{font-size:1.02rem;font-weight:700;margin-bottom:18px}
+.hero__price b{font-family:var(--disp);font-size:1.55rem;color:var(--gold2);text-shadow:0 0 20px rgba(200,168,75,.4)}
+.hero__date{display:inline-flex;gap:8px;align-items:center;background:rgba(200,168,75,.1);
+  border:1px solid rgba(200,168,75,.4);color:var(--cream);font-size:.76rem;font-weight:600;font-family:var(--mono);
+  padding:8px 16px;border-radius:2px;margin-bottom:22px}
+.hero__cta{max-width:420px}
+@media(max-width:860px){.hero__cta{max-width:100%;margin:0 auto}}
+.hero__bonus{color:var(--tm);font-size:.76rem;margin-top:14px;line-height:1.5}
+
+/* o mapa invisível — quase apagado, só o revelado brilha em dourado */
+.map{border-radius:6px;overflow:hidden;box-shadow:var(--sha2);aspect-ratio:1/1;position:relative;
+  background:radial-gradient(ellipse at 45% 40%,#0f1c17,#070d0a 78%);border:1px solid rgba(200,168,75,.25)}
+@media(max-width:860px){.map{max-width:340px;margin:0 auto}}
+.map svg{width:100%;height:100%}
+.map__caption{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:var(--mono);
+  font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+
+/* ══ TICKER ══ */
+.ticker{background:#08100d;color:var(--cream);overflow:hidden;white-space:nowrap;padding:11px 0;
+  border-top:1px solid rgba(200,168,75,.2);border-bottom:1px solid rgba(200,168,75,.2)}
+.ticker__track{display:inline-block;animation:tick 26s linear infinite}
+.ticker span{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:0 22px;
+  color:var(--gold2);text-shadow:0 0 10px rgba(200,168,75,.3)}
+.ticker span::after{content:'✦';margin-left:22px;opacity:.5;color:var(--gold)}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ══ ANTES/DEPOIS — slider arrastável ══ */
+.compare{position:relative;aspect-ratio:16/10.5;border-radius:var(--r);overflow:hidden;
+  border:1px solid rgba(200,168,75,.4);box-shadow:var(--glow);cursor:ew-resize;touch-action:none}
+.compare--hero{max-width:640px;margin:0 auto;aspect-ratio:4/3}
+.compare__layer{position:absolute;inset:0}
+.compare__layer svg,.compare__layer img{width:100%;height:100%;display:block;object-fit:cover;
+  -webkit-user-drag:none;-webkit-touch-callout:none;user-select:none;pointer-events:none}
+.compare__before{clip-path:inset(0 50% 0 0)}
+.compare__handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);
+  box-shadow:0 0 10px rgba(200,168,75,.6);transform:translateX(-1px);pointer-events:none}
+.compare__knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;
+  border-radius:50%;background:var(--gold);color:#1a1206;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;font-weight:700;box-shadow:var(--sha2);pointer-events:none}
+.compare__label{position:absolute;top:12px;font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;
+  text-transform:uppercase;background:rgba(8,16,13,.75);padding:6px 12px;border-radius:2px;pointer-events:none;z-index:2}
+.compare__label--before{left:12px;color:var(--dim)}
+.compare__label--after{right:12px;color:var(--gold2)}
+.compare__hint{text-align:center;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);margin-top:16px}
+
+.examples__lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
+  text-align:center;margin:44px 0 22px}
+.examples__grid2{display:flex;flex-wrap:wrap;justify-content:center;gap:32px 28px;position:relative;z-index:1}
+.example2{width:100%;max-width:420px}
+.example2 h4{font-family:var(--disp);font-weight:600;font-size:1rem;text-align:center;margin-bottom:12px}
+.example2 .compare__knob{width:32px;height:32px;font-size:.8rem}
+.example2 .compare__label{font-size:.6rem;padding:5px 10px}
+.example2 .compare__hint{font-size:.62rem;margin-top:10px}
+.examples__row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;position:relative;z-index:1}
+.examples__row .example{width:200px}
+.example{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:16px 10px;text-align:center}
+.example__pair{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:10px}
+.example__pair svg{width:46px;height:42px;flex-shrink:0}
+.example__arrow{color:var(--gold);font-size:.85rem;flex-shrink:0}
+.example__label{font-size:.78rem;font-weight:600;color:var(--cream)}
+
+/* ══ CRONOGRAMA ══ */
+.crono{display:grid;grid-template-columns:.85fr 1.15fr;gap:52px;align-items:start;position:relative;z-index:1}
+@media(max-width:860px){.crono{grid-template-columns:1fr}}
+.crono__img{border-radius:var(--r);overflow:hidden;position:sticky;top:24px;border:1px solid rgba(200,168,75,.3);
+  box-shadow:var(--sha);filter:brightness(.85) saturate(.9)}
+@media(max-width:860px){.crono__img{position:static}}
+.crono__img--cutout{border:none;box-shadow:none;overflow:visible;background:none;filter:none;
+  display:flex;justify-content:center}
+.crono__img--cutout img{max-width:82%;height:auto;filter:drop-shadow(0 18px 40px rgba(0,0,0,.5)) drop-shadow(0 0 34px rgba(200,168,75,.28))}
+@media(max-width:860px){.crono__img--cutout img{max-width:52%;max-height:56vh;width:auto}}
+.crono__tag{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:22px 0 12px}
+.card{background:var(--bg3);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;
+  box-shadow:var(--sha);border:1px solid var(--line);border-left:3px solid var(--gold);position:relative}
+.card h4{font-weight:700;font-size:.96rem;margin-bottom:6px}
+.card p{font-size:.85rem;color:var(--tm)}
+.crono__pause{font-family:var(--mono);font-size:.75rem;font-weight:600;color:var(--gold);text-align:center;margin:18px 0;text-transform:uppercase;letter-spacing:.08em}
+
+/* linha do tempo (blocos numerados) */
+.timeline{position:relative;padding-left:30px;margin-top:8px}
+.timeline::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:rgba(200,168,75,.3)}
+.timeline__item{position:relative;margin-bottom:26px}
+.timeline__item:last-child{margin-bottom:0}
+.timeline__dot{position:absolute;left:-30px;top:3px;width:15px;height:15px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--gold);box-shadow:0 0 10px rgba(200,168,75,.5)}
+.timeline__badge{display:inline-block;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;background:var(--gold);color:#1a1206;padding:4px 10px;border-radius:2px;margin-bottom:8px}
+.timeline__item h4{font-weight:700;font-size:.96rem;margin-bottom:6px}
+.timeline__item p{font-size:.85rem;color:var(--tm)}
+.timeline__pause{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--dim);margin:-10px 0 26px;
+  text-transform:uppercase;letter-spacing:.06em}
+
+/* ══ ENTREGÁVEIS ══ */
+.ent__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;position:relative;z-index:1}
+@media(max-width:640px){.ent__grid{grid-template-columns:1fr}}
+.ent{background:var(--bg2);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:8px;
+  border:1px solid var(--line)}
+.ent small{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.ent h4{font-weight:600;font-size:1.08rem}
+.ent p{color:var(--tm);font-size:.85rem}
+.ent details summary{cursor:pointer;list-style:none;color:var(--gold2);font-family:var(--mono);font-size:.72rem;
+  letter-spacing:.04em;margin-top:4px;display:flex;align-items:center;gap:6px}
+.ent details summary::-webkit-details-marker{display:none}
+.ent details summary::after{content:'+';font-size:1rem}
+.ent details[open] summary::after{content:'−'}
+.ent details p{margin-top:8px}
+
+/* ══ ANTES / DEPOIS · É PRA VOCÊ — invisível x revelado ══ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;position:relative;z-index:1}
+@media(max-width:720px){.split{grid-template-columns:1fr}}
+.col{border-radius:var(--r);padding:28px 26px;position:relative;border:1px solid var(--line)}
+.col--no{background:var(--bg2)}
+.col--no h3{color:var(--tm)}
+.col--yes{background:var(--bg3);border-color:rgba(200,168,75,.4);box-shadow:var(--glow)}
+.col h3{font-size:1rem;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.col ul{display:flex;flex-direction:column;gap:12px}
+.col li{display:flex;gap:10px;align-items:flex-start;font-size:.88rem}
+.col--no li{color:var(--tm)}
+.col--no li::before{content:'✕';color:var(--rust);font-weight:800;flex-shrink:0;opacity:.85}
+.col--yes li{color:rgba(238,240,230,.92)}
+.col--yes li::before{content:'✦';color:var(--gold2);font-weight:800;flex-shrink:0}
+.col--yes .flag{position:absolute;top:-12px;right:20px;background:var(--gold);color:#1a1206;
+  font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 13px;border-radius:2px;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+
+/* ══ PROFESSOR ══ */
+.prof{display:grid;grid-template-columns:.7fr 1.3fr;gap:40px;align-items:center;position:relative;z-index:1}
+@media(max-width:720px){.prof{grid-template-columns:1fr;text-align:center}}
+.prof__img{border-radius:var(--r);overflow:hidden;box-shadow:var(--sha);border:1px solid rgba(200,168,75,.35);
+  filter:brightness(.9) saturate(.92)}
+.prof h3{margin-bottom:10px}
+.prof p{font-size:.92rem;color:var(--tm);margin-bottom:16px}
+.prof__badges{display:flex;flex-wrap:wrap;gap:10px}
+@media(max-width:720px){.prof__badges{justify-content:center}}
+.badge{background:var(--bg2);color:var(--gold2);font-family:var(--mono);font-size:.72rem;font-weight:600;
+  padding:8px 14px;border-radius:2px;border:1px solid rgba(200,168,75,.35)}
+
+/* ══ FAQ ══ */
+.faq details{border-bottom:1px solid var(--line);padding:18px 0}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  font-family:var(--sans);font-weight:600;font-size:.96rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';font-size:1.3rem;color:var(--gold);transition:transform .2s;flex-shrink:0}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq p{color:var(--tm);font-size:.88rem;margin-top:12px;max-width:640px}
+
+/* ══ CTA FINAL BAR ══ */
+.finalbar{background:var(--bg2);border-radius:6px;padding:26px 28px;display:flex;flex-wrap:wrap;
+  gap:18px;align-items:center;justify-content:space-between;box-shadow:var(--sha2),var(--glow);border:1px solid var(--gold);
+  position:relative;z-index:1}
+.finalbar__info{display:flex;flex-wrap:wrap;gap:10px}
+.finalbar__info span{background:var(--bg3);color:var(--cream);font-family:var(--mono);font-size:.7rem;font-weight:600;
+  padding:7px 13px;border-radius:2px;border:1px solid var(--line)}
+.finalbar .btn{width:auto;padding:15px 30px}
+.countdown-wrap{background:var(--bg2);border-bottom:1px solid rgba(200,168,75,.3);padding:8px 16px}
+.countdown{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;max-width:1080px;margin:0 auto}
+.countdown__label{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--gold2)}
+.countdown__nums{display:flex;gap:8px}
+.countdown__unit{display:flex;flex-direction:row;align-items:baseline;gap:3px;min-width:auto}
+.countdown__unit b{font-family:var(--disp);font-size:.95rem;color:var(--cream);line-height:1}
+.countdown__unit small{font-family:var(--mono);font-size:.58rem;color:var(--tm);text-transform:uppercase}
+
+/* ══ DEPOIMENTOS ══ */
+.testi__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1}
+@media(max-width:860px){.testi__grid{grid-template-columns:1fr}}
+.testi{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r);
+  padding:24px 22px}
+.testi__stars{color:var(--gold2);letter-spacing:2px;font-size:.9rem;margin-bottom:12px}
+.testi__name{font-family:var(--disp);font-weight:700;font-size:1rem;color:var(--cream);margin-bottom:2px}
+.testi__role{font-family:var(--mono);font-size:.68rem;letter-spacing:.05em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
+.testi__quote{font-size:.9rem;color:rgba(238,240,230,.86);line-height:1.6}
+
+/* ══ CARD DE CTA FLUTUANTE (meio da página) ══ */
+.floatcard{max-width:380px;margin:0 auto;background:var(--bg2);border:1px solid var(--gold);border-radius:10px;
+  padding:32px 28px;text-align:center;box-shadow:var(--sha2),var(--glow);position:relative;z-index:1}
+.floatcard h3{margin-bottom:14px}
+.floatcard__warn{display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:.72rem;
+  color:var(--gold2);background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.3);border-radius:4px;
+  padding:8px 12px;margin-bottom:18px}
+.floatcard__price{font-family:var(--disp);font-weight:700;font-size:4.2rem;line-height:1;color:var(--gold2);margin-bottom:20px;
+  text-shadow:0 0 32px rgba(200,168,75,.55)}
+.floatcard ul{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;text-align:left}
+.floatcard li{display:flex;gap:8px;font-size:.86rem;color:rgba(238,240,230,.86)}
+.floatcard li::before{content:'✓';color:var(--gold2);font-weight:700;flex-shrink:0}
+.floatcard__guarantee{display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:.72rem;
+  color:rgba(238,240,230,.7);margin-top:14px}
+.floatcard__guarantee::before{content:'🛡';flex-shrink:0}
+
+/* ══ STICKY MOBILE CTA ══ */
+.sticky{position:fixed;bottom:0;left:0;right:0;background:#08100d;padding:12px 16px;
+  display:flex;gap:12px;align-items:center;justify-content:space-between;box-shadow:0 -6px 24px rgba(0,0,0,.4);
+  transform:translateY(100%);transition:transform .3s;z-index:50;border-top:1px solid var(--gold)}
+.sticky.show{transform:translateY(0)}
+.sticky__price{color:var(--cream);font-size:.82rem}
+.sticky__price b{color:var(--gold2);font-family:var(--disp);font-size:1.05rem}
+.sticky .btn{width:auto;padding:12px 22px;font-size:.76rem}
+
+footer{background:#08100d;color:var(--dim);text-align:center;font-family:var(--mono);font-size:.68rem;padding:28px 24px;letter-spacing:.04em}
+
+/* ══ GATILHO DE ROLAGEM ══ */
+.scrollcue{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 24px 26px;
+  background:var(--bg);position:relative;z-index:1;text-align:center}
+.scrollcue__txt{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2)}
+.scrollcue__arrow{width:18px;height:18px;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+</style>
+</head>
+<body>
+
+<div class="topbar">Imersão ao vivo · 15 de agosto (sábado)</div>
+
+<div class="countdown-wrap">
+  <div class="countdown" id="countdown">
+    <span class="countdown__label">A turma fecha em</span>
+    <div class="countdown__nums">
+      <div class="countdown__unit"><b id="cd-d">00</b><small>dias</small></div>
+      <div class="countdown__unit"><b id="cd-h">00</b><small>horas</small></div>
+      <div class="countdown__unit"><b id="cd-m">00</b><small>min</small></div>
+      <div class="countdown__unit"><b id="cd-s">00</b><small>seg</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero__in">
+    <div>
+      <div class="stamp">
+        <div class="stamp__in">
+          <i>✦</i>
+          <b>Mapa do<br/>Tesouro</b>
+          <span>Método VPPN</span>
+        </div>
+      </div>
+      <h1 class="hero__h1">Em 1 dia, você vai descobrir <b>o potencial da sua terra pra receber visitantes</b>: trilhas, mirantes, cabanas, camping ou o que mais ela esconder.</h1>
+      <p class="hero__sub">Ao vivo, com o Thiago Beraldo</p>
+      <p class="hero__authority">PhD pela University of Florida · 18 anos como Analista Ambiental do ICMBio · 2× Prêmio Nacional do Turismo</p>
+      <ul class="hero__steps">
+        <li><b>1. DIAGNÓSTICO</b> <span>→</span> A pontuação que mostra, ao vivo, qual o posicionamento da sua terra como destino turístico através da Calculadora do Índice de Atratividade Turística</li>
+        <li><b>2. ANÁLISE</b> <span>→</span> Você sai da imersão com resultado, não só impressão: o Levantamento de Potencial Turístico da sua área</li>
+        <li><b>3. CLAREZA</b> <span>→</span> A resposta que evita decisão no escuro: vale a pena investir tempo e dinheiro na sua terra, ou não</li>
+        <li><b>4. PRIMEIRAS IDEIAS</b> <span>→</span> Por onde começar na prática, com sugestões reais de como desenvolver esse potencial</li>
+      </ul>
+      <p class="hero__price">Isso tudo por apenas <b>R$47</b></p>
+      <div class="hero__date">15 DE AGOSTO · SÁBADO · AO VIVO</div>
+      <div class="hero__cta">
+        <span class="btn btn--closed">Vendas encerradas</span>
+      </div>
+    </div>
+
+    <!-- o mapa invisível: o limite legal mal se vê no escuro; o potencial brilha em dourado -->
+    <div class="map">
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- MAPA 1 — o limite legal, quase invisível no escuro -->
+        <path d="M70,340 L58,148 L182,58 L342,110 L300,322 Z" fill="none" stroke="#eef0e6" stroke-width="1.2" stroke-dasharray="2 5" opacity=".18"/>
+        <g stroke="#eef0e6" stroke-width="1" opacity=".18">
+          <line x1="70" y1="340" x2="80" y2="350"/>
+          <line x1="58" y1="148" x2="46" y2="146"/>
+          <line x1="182" y1="58" x2="182" y2="44"/>
+          <line x1="342" y1="110" x2="356" y2="104"/>
+          <line x1="300" y1="322" x2="312" y2="330"/>
+        </g>
+        <text x="100" y="255" font-family="ui-monospace,monospace" font-size="9" fill="#eef0e6" opacity=".2">142m</text>
+        <text x="250" y="95" font-family="ui-monospace,monospace" font-size="9" fill="#eef0e6" opacity=".2">98m</text>
+
+        <!-- MAPA 2 — o que se revela: caminho e pontos, brilhando em dourado -->
+        <g filter="url(#glow)">
+          <path d="M100,300 C135,265 150,230 148,195 C146,168 168,140 200,128 C222,120 245,118 268,132" fill="none" stroke="#c8a84b" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 9" opacity=".9"/>
+          <circle cx="100" cy="300" r="4" fill="#e9d38f"/>
+          <g transform="translate(148,195)">
+            <path d="M0,-11 L4,-4 L12,0 L4,4 L0,11 L-4,4 L-12,0 L-4,-4 Z" fill="#e9d38f"/>
+          </g>
+          <g transform="translate(268,132)">
+            <path d="M0,-13 L5,-5 L14,0 L5,5 L0,13 L-5,5 L-14,0 L-5,-5 Z" fill="#e9d38f"/>
+          </g>
+        </g>
+
+        <!-- bússola, apagada -->
+        <g stroke="#eef0e6" stroke-width="1" opacity=".2">
+          <line x1="365" y1="335" x2="365" y2="373"/>
+          <line x1="346" y1="354" x2="384" y2="354"/>
+        </g>
+        <text x="365" y="327" text-anchor="middle" font-size="10" fill="#eef0e6" opacity=".22" font-family="Georgia,serif">N</text>
+      </svg>
+      <div class="map__caption">O que já se vê e o que a imersão revela</div>
+    </div>
+  </div>
+</section>
+
+<div class="scrollcue">
+  <span class="scrollcue__txt">Veja o antes e depois</span>
+  <svg class="scrollcue__arrow" viewBox="0 0 24 24" fill="none" stroke="#e9d38f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</div>
+
+<!-- ══════════ TICKER ══════════ -->
+<div class="ticker">
+  <div class="ticker__track">
+    <span>PARA DONOS DE FAZENDAS, SÍTIOS E RPPNs COM POTENCIAL DE ECOTURISMO</span>
+    <span>TAMBÉM VALE SE VOCÊ ESTÁ AVALIANDO COMPRAR UMA ÁREA</span>
+    <span>PARA DONOS DE FAZENDAS, SÍTIOS E RPPNs COM POTENCIAL DE ECOTURISMO</span>
+    <span>TAMBÉM VALE SE VOCÊ ESTÁ AVALIANDO COMPRAR UMA ÁREA</span>
+  </div>
+</div>
+
+<!-- ══════════ ANTES/DEPOIS ILUSTRADO ══════════ -->
+<section class="s s--c">
+  <div class="w">
+    <div class="reveal-block">
+      <span class="lbl lbl--c">O Mapa do Tesouro</span>
+      <p>Sua terra pode esconder um mirante, uma trilha, uma cachoeira ou qualquer outra estrutura simples que ainda ninguém revelou. Isso é o que <b>o Mapa do Tesouro</b> vai revelar: o potencial que já está aí, só esperando pra aparecer.</p>
+    </div>
+    <div class="tc">
+      <h2>A mesma terra, antes e depois</h2>
+    </div>
+
+    <div class="examples__grid2" style="margin-top:0">
+      <div class="example2">
+        <h4>Trilha</h4>
+        <div class="compare compare--hero" data-compare>
+          <div class="compare__layer compare__after">
+            <img src="images/trilha-depois.webp" alt="Entrada de trilha sinalizada com portal de madeira" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__layer compare__before">
+            <img src="images/trilha-antes.webp" alt="Mesmo caminho na mata, sem sinalização" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__label compare__label--before">Antes</div>
+          <div class="compare__label compare__label--after">Depois</div>
+          <div class="compare__handle"><div class="compare__knob">⇔</div></div>
+        </div>
+        <p class="compare__hint">Arraste pros lados para comparar</p>
+      </div>
+      <div class="example2">
+        <h4>Mirante</h4>
+        <div class="compare compare--hero" data-compare>
+          <div class="compare__layer compare__after">
+            <img src="images/mirante-depois.webp" alt="Mirante construído no mesmo mirante, com pessoa observando a vista" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__layer compare__before">
+            <img src="images/mirante-antes.webp" alt="Mesmo topo de morro, sem nenhuma estrutura" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__label compare__label--before">Antes</div>
+          <div class="compare__label compare__label--after">Depois</div>
+          <div class="compare__handle"><div class="compare__knob">⇔</div></div>
+        </div>
+        <p class="compare__hint">Arraste pros lados para comparar</p>
+      </div>
+      <div class="example2">
+        <h4>Cabana</h4>
+        <div class="compare compare--hero" data-compare>
+          <div class="compare__layer compare__after">
+            <img src="images/cabana-depois.webp" alt="Cabana de madeira construída na mesma encosta" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__layer compare__before">
+            <img src="images/cabana-antes.webp" alt="Mesma encosta, sem nenhuma construção" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__label compare__label--before">Antes</div>
+          <div class="compare__label compare__label--after">Depois</div>
+          <div class="compare__handle"><div class="compare__knob">⇔</div></div>
+        </div>
+        <p class="compare__hint">Arraste pros lados para comparar</p>
+      </div>
+      <div class="example2">
+        <h4>Deck na cachoeira</h4>
+        <div class="compare compare--hero" data-compare>
+          <div class="compare__layer compare__after">
+            <img src="images/deck-depois.webp" alt="Deck de madeira construído na mesma cachoeira" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__layer compare__before">
+            <img src="images/deck-antes.webp" alt="Mesma cachoeira, sem nenhuma estrutura" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__label compare__label--before">Antes</div>
+          <div class="compare__label compare__label--after">Depois</div>
+          <div class="compare__handle"><div class="compare__knob">⇔</div></div>
+        </div>
+        <p class="compare__hint">Arraste pros lados para comparar</p>
+      </div>
+      <div class="example2">
+        <h4>Camping</h4>
+        <div class="compare compare--hero" data-compare>
+          <div class="compare__layer compare__after">
+            <img src="images/camping-depois.webp" alt="Área de camping montada às margens do mesmo lago" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__layer compare__before">
+            <img src="images/camping-antes.webp" alt="Mesma clareira à beira do lago, sem nenhuma estrutura" draggable="false" loading="lazy"/>
+          </div>
+          <div class="compare__label compare__label--before">Antes</div>
+          <div class="compare__label compare__label--after">Depois</div>
+          <div class="compare__handle"><div class="compare__knob">⇔</div></div>
+        </div>
+        <p class="compare__hint">Arraste pros lados para comparar</p>
+      </div>
+    </div>
+
+    <p class="examples__lbl">Outras estruturas simples e comuns no Brasil</p>
+    <div class="examples__row">
+      <!-- PORTAL FOTOGRÁFICO -->
+      <div class="example">
+        <div class="example__pair">
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/><path d="M10,40 L20,32 L20,26 L30,18 L30,12" fill="none" stroke="#eef0e6" stroke-width="2" opacity=".18"/></svg>
+          <span class="example__arrow">→</span>
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M10,40 L20,32 L20,26 L30,18 L30,12" fill="none" stroke="#eef0e6" stroke-width="2" opacity=".3"/>
+            <g style="filter:drop-shadow(0 0 5px rgba(200,168,75,.6))">
+              <line x1="24" y1="12" x2="24" y2="2" stroke="#c8a84b" stroke-width="2"/>
+              <line x1="38" y1="12" x2="38" y2="2" stroke="#c8a84b" stroke-width="2"/>
+              <line x1="24" y1="2" x2="38" y2="2" stroke="#c8a84b" stroke-width="2"/>
+              <path d="M31,4 L33,8 L37,9 L33,10 L31,14 L29,10 L25,9 L29,8 Z" fill="#e9d38f"/>
+            </g>
+          </svg>
+        </div>
+        <div class="example__label">Portal fotográfico</div>
+      </div>
+
+      <!-- ARVORISMO -->
+      <div class="example">
+        <div class="example__pair">
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M18,8 L26,24 L10,24 Z" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <line x1="18" y1="24" x2="18" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M42,12 L49,26 L35,26 Z" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <line x1="42" y1="26" x2="42" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+          </svg>
+          <span class="example__arrow">→</span>
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M18,8 L26,24 L10,24 Z" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".3"/>
+            <line x1="18" y1="24" x2="18" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".3"/>
+            <path d="M42,12 L49,26 L35,26 Z" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".3"/>
+            <line x1="42" y1="26" x2="42" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".3"/>
+            <g style="filter:drop-shadow(0 0 5px rgba(200,168,75,.6))">
+              <line x1="18" y1="14" x2="42" y2="20" stroke="#c8a84b" stroke-width="2"/>
+              <circle cx="30" cy="17" r="2.4" fill="#e9d38f"/>
+            </g>
+          </svg>
+        </div>
+        <div class="example__label">Arvorismo</div>
+      </div>
+
+      <!-- TRILHA DE BIKE -->
+      <div class="example">
+        <div class="example__pair">
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/><path d="M10,40 L20,32 L20,26 L30,18 L30,12" fill="none" stroke="#eef0e6" stroke-width="2" opacity=".18"/></svg>
+          <span class="example__arrow">→</span>
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M10,40 L20,32 L20,26 L30,18 L30,12" fill="none" stroke="#eef0e6" stroke-width="2" opacity=".3"/>
+            <g style="filter:drop-shadow(0 0 5px rgba(200,168,75,.6))">
+              <circle cx="20" cy="34" r="5" fill="none" stroke="#c8a84b" stroke-width="1.6"/>
+              <circle cx="34" cy="34" r="5" fill="none" stroke="#c8a84b" stroke-width="1.6"/>
+              <line x1="20" y1="34" x2="27" y2="24" stroke="#c8a84b" stroke-width="1.6"/>
+              <line x1="27" y1="24" x2="34" y2="34" stroke="#c8a84b" stroke-width="1.6"/>
+              <line x1="27" y1="24" x2="24" y2="20" stroke="#c8a84b" stroke-width="1.6"/>
+            </g>
+          </svg>
+        </div>
+        <div class="example__label">Trilha de bike</div>
+      </div>
+
+      <!-- ESCALADA -->
+      <div class="example">
+        <div class="example__pair">
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/><path d="M14,42 L14,20 L30,8 L30,42" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/></svg>
+          <span class="example__arrow">→</span>
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M14,42 L14,20 L30,8 L30,42" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".3"/>
+            <g style="filter:drop-shadow(0 0 5px rgba(200,168,75,.6))">
+              <path d="M18,40 L22,30 L18,22 L24,14" fill="none" stroke="#c8a84b" stroke-width="1.6"/>
+              <circle cx="18" cy="40" r="1.6" fill="#e9d38f"/>
+              <circle cx="22" cy="30" r="1.6" fill="#e9d38f"/>
+              <circle cx="18" cy="22" r="1.6" fill="#e9d38f"/>
+              <circle cx="24" cy="14" r="1.6" fill="#e9d38f"/>
+            </g>
+          </svg>
+        </div>
+        <div class="example__label">Escalada</div>
+      </div>
+
+      <!-- OBSERVAÇÃO DE PÁSSAROS -->
+      <div class="example">
+        <div class="example__pair">
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M30,8 L38,26 L22,26 Z" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <line x1="30" y1="26" x2="30" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+          </svg>
+          <span class="example__arrow">→</span>
+          <svg viewBox="0 0 60 50"><line x1="4" y1="42" x2="56" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".18"/>
+            <path d="M30,8 L38,26 L22,26 Z" fill="none" stroke="#eef0e6" stroke-width="1.5" opacity=".3"/>
+            <line x1="30" y1="26" x2="30" y2="42" stroke="#eef0e6" stroke-width="1.5" opacity=".3"/>
+            <g style="filter:drop-shadow(0 0 5px rgba(200,168,75,.6))">
+              <rect x="14" y="30" width="16" height="4" fill="none" stroke="#c8a84b" stroke-width="1.6"/>
+              <path d="M40,18 Q44,15 47,17 Q44,18 43,21 Q41,20 40,18 Z" fill="#e9d38f"/>
+            </g>
+          </svg>
+        </div>
+        <div class="example__label">Observação de pássaros</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:.76rem;color:var(--dim);margin-top:20px">Ilustrações de exemplo. Não são fotos reais de uma propriedade específica.</p>
+  </div>
+</section>
+
+<!-- ══════════ CRONOGRAMA ══════════ -->
+<section class="s s--b">
+  <div class="w">
+    <div class="crono">
+      <div class="crono__img crono__img--cutout">
+        <img src="images/thiago-mapa.webp" alt="Pessoa analisando o mapa da sua terra com lupa" loading="lazy"/>
+      </div>
+      <div>
+        <span class="lbl">Programação <span>· das 8h às 14h</span></span>
+        <h2 style="margin-bottom:24px">Os 4 passos pra você desvendar no dia 15/08</h2>
+
+        <div class="timeline">
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <span class="timeline__badge">Passo 01</span>
+            <h4>A Calculadora do IAT: a bússola da sua área</h4>
+            <p>Ao vivo, você preenche a Calculadora do IAT (Índice de Atratividade Turística), a ferramenta usada nos parques nacionais, aplicada na sua própria terra, com o Thiago te guiando passo a passo.</p>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <span class="timeline__badge">Passo 02</span>
+            <h4>Da Classificação à Análise, com a IARA</h4>
+            <p>O Thiago apresenta a IARA, a Inteligência de Análise da Atratividade que vai te auxiliar a interpretar o resultado da Calculadora do IAT e transformar em uma análise do seu território.</p>
+          </div>
+          <p class="timeline__pause">Pausa</p>
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <span class="timeline__badge">Passo 03</span>
+            <h4>Tesouro revelado: o que fazer com esse resultado</h4>
+            <p>Você recebe as primeiras ideias práticas de ações, atividades, infraestruturas pra implementar e aumentar o potencial da sua área.</p>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__dot"></div>
+            <span class="timeline__badge">Passo 04</span>
+            <h4>Sessão de tira-dúvidas com o Thiago</h4>
+            <p>Espaço aberto pra perguntas sobre o seu diagnóstico e sobre os próximos passos possíveis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROFESSOR ══════════ -->
+<section class="s s--c">
+  <div class="w">
+    <div class="prof">
+      <div class="prof__img"><img src="images/thiago-bio.webp" alt="Thiago Beraldo" loading="lazy"/></div>
+      <div>
+        <span class="lbl">Quem vai te guiar</span>
+        <h3>Thiago Beraldo</h3>
+        <p>Presidente do Grupo de Especialistas em Turismo da Comissão Mundial de Áreas Protegidas da IUCN/ONU, Doutor em Ecologia pela University of Florida, 18 anos como Analista Ambiental no ICMBio (Instituto Chico Mendes de Conservação da Biodiversidade), criador do Método VPPN (Visitação Padrão Parque Nacional), a mesma metodologia usada no planejamento de parques nacionais brasileiros, adaptada para áreas privadas.</p>
+        <div class="prof__badges">
+          <span class="badge">+500 alunos formados</span>
+          <span class="badge">24 anos de atuação em ecoturismo</span>
+          <span class="badge">2× Prêmio Nacional do Turismo</span>
+          <span class="badge">Metodologia usada em planos de uso público de parques nacionais</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ É PRA VOCÊ? ══════════ -->
+<section class="s s--a">
+  <div class="w">
+    <div class="tc">
+      <span class="lbl lbl--c">Antes de continuar</span>
+      <h2>É para você?</h2>
+    </div>
+    <div class="split">
+      <div class="col col--no">
+        <h3>✕ Essa imersão NÃO é pra você se:</h3>
+        <ul>
+          <li>Você não tem nenhuma área, sua ou de cliente, pra aplicar a calculadora</li>
+          <li>Você acha que dá pra sair implementando direto, sem antes fazer o diagnóstico da sua área</li>
+          <li>Você já recebe amigos e familiares de graça na sua terra e tem vergonha de começar a cobrar sem um motivo técnico pra justificar</li>
+        </ul>
+      </div>
+      <div class="col col--yes">
+        <span class="flag">Essa imersão</span>
+        <h3>✦ Essa imersão é pra você se:</h3>
+        <ul>
+          <li>Você tem uma fazenda, sítio, RPPN ou propriedade com algum atrativo natural: cachoeira, trilha, mirante, fauna</li>
+          <li>Você está avaliando comprar uma área com potencial de ecoturismo</li>
+          <li>Você já recebe visitantes de forma informal e quer entender o potencial real, com técnica</li>
+          <li>Você quer decidir, com clareza, se vale a pena investir tempo e dinheiro nesse caminho</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ENTREGÁVEIS ══════════ -->
+<section class="s s--b">
+  <div class="w">
+    <div class="tc">
+      <span class="lbl lbl--c">Entregáveis</span>
+      <h2>Veja o que você vai receber ao participar da imersão</h2>
+    </div>
+    <div class="ent__grid">
+      <div class="ent"><small>Entregável 1</small><h4>Acesso à Calculadora do IAT</h4><p>Ferramenta que você pode voltar a usar quando quiser, depois da imersão.</p></div>
+      <div class="ent"><small>Entregável 2</small><h4>Relatório de Diagnóstico do Potencial Turístico</h4><p>Gerado ao vivo, em PDF, com a nota e a leitura da sua área.</p></div>
+      <div class="ent"><small>Entregável 3</small><h4>Acesso à IARA, Inteligência de Análise da Atratividade desenvolvida pelo Thiago para fazer seu diagnóstico</h4><p>A interpretação do seu Diagnóstico do Potencial Turístico.</p>
+        <details>
+          <summary>O que é a IARA</summary>
+          <p>A IARA é a inteligência criada pelo Thiago pra ler o resultado da Calculadora do IAT e transformar em análise prática do seu território, sem você precisar interpretar sozinho uma pontuação técnica.</p>
+        </details>
+      </div>
+      <div class="ent"><small>Entregável 4</small><h4>Certificado de participação</h4></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ANTES / DEPOIS ══════════ -->
+<section class="s s--a">
+  <div class="w">
+    <div class="split">
+      <div class="col col--no">
+        <h3>✕ Antes da imersão</h3>
+        <ul>
+          <li>Não sabe se a terra que tem (ou está pensando em comprar) realmente tem potencial pra gerar renda com turismo</li>
+          <li>Sente que a área é só custo (cerca, manutenção, imposto), sem retorno nenhum</li>
+          <li>Vê áreas parecidas recebendo visitantes e não entende por que a sua ainda não decolou</li>
+          <li>Tem vontade de fazer algo, mas não sabe se vale a pena investir tempo e dinheiro nisso</li>
+          <li>Decide no achismo, sem nenhum critério técnico</li>
+        </ul>
+      </div>
+      <div class="col col--yes">
+        <span class="flag">Essa imersão</span>
+        <h3>✦ Depois da imersão</h3>
+        <ul>
+          <li>Sabe, com base técnica, se a sua área tem potencial turístico real</li>
+          <li>Tem um Relatório de Diagnóstico concreto, que pode guardar e mostrar pra quem quiser</li>
+          <li>Sai com as primeiras ideias práticas do que pode ser melhorado</li>
+          <li>Entende com clareza o que ainda falta decidir pra transformar isso num projeto de verdade</li>
+          <li>Enxerga a terra como um ativo que pode gerar renda, não só custo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DEPOIMENTOS ══════════ -->
+<section class="s s--c">
+  <div class="w">
+    <div class="tc">
+      <span class="lbl lbl--c">Quem já aplicou o método</span>
+      <h2>O que dizem sobre o Método VPPN</h2>
+    </div>
+    <div class="testi__grid">
+      <div class="testi">
+        <div class="testi__stars">★★★★★</div>
+        <div class="testi__name">Connie</div>
+        <div class="testi__role">Maple Leaf Reserva Florestal</div>
+        <p class="testi__quote">"Totalmente virou nossa chave, encheu a gente de esperança. Estou estudando, estou fascinada, já estou usando, inclusive."</p>
+      </div>
+      <div class="testi">
+        <div class="testi__stars">★★★★★</div>
+        <div class="testi__name">Sheila</div>
+        <div class="testi__role">Fazenda Colomi</div>
+        <p class="testi__quote">"O método trouxe uma visão do todo e das particularidades que muitas vezes a gente não consegue enxergar (...) Já conseguimos direcionar melhor nosso público e criar continuidade de receita."</p>
+      </div>
+      <div class="testi">
+        <div class="testi__stars">★★★★★</div>
+        <div class="testi__name">Bernardo</div>
+        <div class="testi__role">Pesquisador e Consultor</div>
+        <p class="testi__quote">"Fizemos o IAT e aplicamos as ferramentas de verdade. Saímos com um documento concreto em mãos. Isso é extremamente estimulante."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CARD DE CTA FLUTUANTE ══════════ -->
+<section class="s s--b">
+  <div class="w">
+    <div class="floatcard">
+      <h3>Vendas encerradas</h3>
+      <div class="floatcard__warn">⚠ A turma de 15 de agosto já começou</div>
+      <ul>
+        <li>Calculadora do IAT ao vivo, com o Thiago</li>
+        <li>Relatório de Diagnóstico do Potencial Turístico</li>
+        <li>IARA, Inteligência de Análise da Atratividade</li>
+        <li>Certificado de participação</li>
+      </ul>
+      <span class="btn btn--closed">Vendas encerradas</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FAQ ══════════ -->
+<section class="s s--a faq">
+  <div class="wn">
+    <div class="tc">
+      <span class="lbl lbl--c">FAQ</span>
+      <h2>Perguntas frequentes</h2>
+    </div>
+    <details open>
+      <summary>Nunca fiz nada de ecoturismo, vou conseguir acompanhar?</summary>
+      <p>Sim. A imersão começa do zero. Você só precisa saber informações básicas da sua área (localização, tamanho, o que ela tem). O Thiago te guia passo a passo, ao vivo.</p>
+    </details>
+    <details>
+      <summary>Preciso já ter a área comprada?</summary>
+      <p>Não. Funciona também se você está avaliando uma área específica pra comprar. A calculadora roda em cima de qualquer terreno definido, mesmo que ainda não seja seu.</p>
+    </details>
+    <details>
+      <summary>Tem gravação?</summary>
+      <p>A imersão é ao vivo. Quem quiser garantir o acesso à gravação completa pode adicionar essa opção no checkout.</p>
+    </details>
+    <details>
+      <summary>Se eu não puder participar no horário, perco o valor?</summary>
+      <p>Fale com a gente pelo suporte antes do dia 15 e vemos a melhor forma de te encaixar. E se ao final da imersão você sentir que não valeu os R$47, devolvemos o valor, sem burocracia.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ CTA FINAL ══════════ -->
+<section class="s s--b" id="checkout">
+  <div class="w">
+    <div class="finalbar">
+      <div class="finalbar__info">
+        <span>▶ AO VIVO, ONLINE (ZOOM/MEET)</span>
+        <span>DAS 8H ÀS 14H</span>
+        <span>15 DE AGOSTO</span>
+        <span>RELATÓRIO DE DIAGNÓSTICO</span>
+        <span>CERTIFICADO</span>
+      </div>
+      <span class="btn btn--closed" style="width:auto">Vendas encerradas</span>
+    </div>
+  </div>
+</section>
+
+<footer>RECONEXÃO NATURAL · MÉTODO VPPN · THIAGO BERALDO</footer>
+
+<!-- ══ STICKY MOBILE CTA ══ -->
+<div class="sticky" id="stickyBar">
+  <div class="sticky__price">Vendas encerradas</div>
+  <span class="btn btn--closed">Turma já começou</span>
+</div>
+
+<script>
+window.addEventListener('scroll',function(){
+  var bar=document.getElementById('stickyBar');
+  if(window.scrollY>600){bar.classList.add('show')}else{bar.classList.remove('show')}
+});
+
+// contador regressivo real ate o inicio da imersao (15/08, 8h, horario de Brasilia)
+(function(){
+  var target=new Date('2026-08-15T08:00:00-03:00').getTime();
+  var wrap=document.getElementById('countdown');
+  if(!wrap) return;
+  var elD=document.getElementById('cd-d'), elH=document.getElementById('cd-h'),
+      elM=document.getElementById('cd-m'), elS=document.getElementById('cd-s');
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    var diff=target-new Date().getTime();
+    if(diff<=0){ wrap.style.display='none'; return; }
+    elD.textContent=pad(Math.floor(diff/86400000));
+    elH.textContent=pad(Math.floor((diff%86400000)/3600000));
+    elM.textContent=pad(Math.floor((diff%3600000)/60000));
+    elS.textContent=pad(Math.floor((diff%60000)/1000));
+  }
+  tick();
+  setInterval(tick,1000);
+})();
+
+// slider de comparação antes/depois (arrastável, mouse + touch)
+document.querySelectorAll('.compare').forEach(function(root){
+  var before = root.querySelector('.compare__before');
+  var handle = root.querySelector('.compare__handle');
+  var dragging = false;
+  function setPos(clientX){
+    var rect = root.getBoundingClientRect();
+    var pct = ((clientX - rect.left) / rect.width) * 100;
+    pct = Math.max(0, Math.min(100, pct));
+    before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+    handle.style.left = pct + '%';
+  }
+  root.addEventListener('pointerdown', function(e){
+    dragging = true;
+    root.setPointerCapture(e.pointerId);
+    setPos(e.clientX);
+  });
+  root.addEventListener('pointermove', function(e){ if (dragging) setPos(e.clientX); });
+  root.addEventListener('pointerup', function(){ dragging = false; });
+  root.addEventListener('pointercancel', function(){ dragging = false; });
+});
+</script>
+</body>
+</html>

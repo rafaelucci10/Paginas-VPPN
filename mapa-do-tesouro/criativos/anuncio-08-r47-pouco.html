@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<title>Mapa do Tesouro — Criativo R$47 é pouco</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c8a84b;--gold2:#e9d38f;
+  --cream:#f4efe6;
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1350px}
+body{font-family:var(--sans);color:var(--cream);overflow:hidden;position:relative;
+  background:#0c1613 url('../images/cabana-depois.webp') center 42% / cover no-repeat}
+
+.overlay{position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom, rgba(6,10,8,.9) 0%, rgba(6,10,8,.62) 24%, rgba(6,10,8,.3) 42%, rgba(6,10,8,.55) 64%, rgba(6,10,8,.9) 84%, rgba(4,7,6,.98) 100%);
+}
+
+.wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:88px 66px 0}
+
+h1{font-family:var(--disp);font-weight:700;font-size:86px;line-height:1.08;letter-spacing:-.01em;
+  margin-bottom:34px}
+h1 .g{color:var(--gold2);text-shadow:0 0 44px rgba(200,168,75,.55)}
+h1 .w{color:var(--cream)}
+
+.sub{font-family:var(--disp);font-size:38px;font-weight:600;color:var(--cream);
+  margin-bottom:30px;max-width:760px}
+.sub b{color:var(--gold2);font-weight:700}
+
+.date{display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:24px;font-weight:600;letter-spacing:.04em;
+  color:var(--cream);background:rgba(200,168,75,.14);border:1px solid rgba(200,168,75,.55);
+  padding:16px 30px;border-radius:4px;margin-bottom:16px}
+.date::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--gold2);flex-shrink:0;
+  box-shadow:0 0 10px rgba(233,211,143,.8)}
+
+.ctabar{margin:auto -66px 0;padding:38px 66px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  display:flex;align-items:center;justify-content:center;gap:16px}
+.ctabar__txt{font-family:var(--sans);font-size:36px;font-weight:800;color:#1a1206;letter-spacing:-.01em}
+.ctabar__arrow{width:36px;height:36px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="overlay"></div>
+<div class="wrap">
+  <h1><span class="g">R$47</span> <span class="w">É POUCO PERTO DO POTENCIAL DA SUA TERRA</span></h1>
+
+  <p class="sub">Imersão <b>Mapa do Tesouro</b>, com Thiago Beraldo</p>
+
+  <span class="date">15 de agosto · 8h às 14h · ao vivo no Zoom</span>
+
+  <div class="ctabar">
+    <svg class="ctabar__arrow" viewBox="0 0 24 24" fill="none" stroke="#1a1206" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <span class="ctabar__txt">Clique em "Saiba mais" e veja como participar</span>
+  </div>
+</div>
+</body>
+</html>

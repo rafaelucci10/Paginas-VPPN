@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<title>Mapa do Tesouro — Criativo Antes/Depois Elogio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c1613;
+  --gold:#c8a84b;--gold2:#e9d38f;
+  --cream:#f4efe6;
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px}
+body{font-family:var(--sans);color:var(--cream);overflow:hidden;position:relative;background:var(--bg)}
+
+.split{position:relative;width:100%;height:800px;display:flex}
+.split__half{width:50%;height:100%;position:relative;overflow:hidden}
+.split__half img{width:100%;height:100%;object-fit:cover;display:block}
+.split__half--l img{object-position:60% 45%}
+.split__half--r img{object-position:40% 45%}
+.split__fade{position:absolute;left:0;right:0;bottom:0;height:160px;
+  background:linear-gradient(to bottom, transparent, var(--bg));z-index:2}
+.split__pill{position:absolute;bottom:26px;z-index:3;
+  font-family:var(--mono);font-size:22px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:12px 26px;border-radius:999px}
+.split__half--l .split__pill{left:26px;background:rgba(12,22,18,.85);color:var(--cream);
+  border:1px solid rgba(238,240,230,.3)}
+.split__half--r .split__pill{right:26px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1206}
+.split__divider{position:absolute;top:0;bottom:0;left:50%;width:3px;background:rgba(238,240,230,.5);z-index:3;
+  transform:translateX(-50%)}
+
+.lower{position:relative;height:1120px;display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:56px 64px 0}
+
+.content{display:flex;flex-direction:column;align-items:center;margin:auto 0}
+
+.sky{position:absolute;inset:0;pointer-events:none;opacity:.7;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 15%, rgba(238,240,230,.3) 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 30% 40%, rgba(238,240,230,.22) 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 70% 20%, rgba(238,240,230,.26) 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 88% 50%, rgba(238,240,230,.2) 0, transparent 60%),
+    radial-gradient(1.5px 1.5px at 50% 65%, rgba(238,240,230,.2) 0, transparent 60%);
+}
+
+.tag{position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--gold2);margin-bottom:36px}
+.tag::before,.tag::after{content:'';width:28px;height:1px;background:var(--gold)}
+
+h1{position:relative;z-index:1;font-family:var(--disp);font-weight:700;font-size:86px;line-height:1.1;
+  letter-spacing:-.01em;color:var(--gold2);text-shadow:0 0 44px rgba(200,168,75,.5);margin-bottom:34px;
+  max-width:960px}
+
+.sub{position:relative;z-index:1;font-family:var(--sans);font-size:39px;font-weight:500;
+  color:rgba(244,239,230,.92);line-height:1.4;margin-bottom:42px;max-width:860px}
+
+.date{position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:27px;font-weight:600;letter-spacing:.04em;
+  color:var(--cream);background:rgba(200,168,75,.14);border:1px solid rgba(200,168,75,.55);
+  padding:17px 32px;border-radius:4px}
+.date::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--gold2);flex-shrink:0;
+  box-shadow:0 0 10px rgba(233,211,143,.8)}
+
+.ctabar{margin:0 -64px 0;padding:42px 64px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  display:flex;align-items:center;justify-content:center;gap:16px;position:relative;z-index:1}
+.ctabar__txt{font-family:var(--sans);font-size:40px;font-weight:800;color:#1a1206;letter-spacing:-.01em}
+.ctabar__arrow{width:40px;height:40px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="split">
+  <div class="split__half split__half--l">
+    <img src="../images/cabana-antes.webp" alt="">
+    <span class="split__pill">Antes</span>
+  </div>
+  <div class="split__half split__half--r">
+    <img src="../images/cabana-depois.webp" alt="">
+    <span class="split__pill">Depois</span>
+  </div>
+  <div class="split__divider"></div>
+  <div class="split__fade"></div>
+</div>
+
+<div class="lower">
+  <div class="sky"></div>
+  <div class="content">
+    <span class="tag">Imersão ao vivo, 15 de agosto</span>
+
+    <h1>AQUELA PARTE DA SUA TERRA QUE TODO MUNDO ELOGIA</h1>
+
+    <p class="sub">Descubra se ela pode virar o point turístico que sua região está esperando</p>
+
+    <span class="date">Sábado · 8h às 14h · por R$47</span>
+  </div>
+
+  <div class="ctabar">
+    <svg class="ctabar__arrow" viewBox="0 0 24 24" fill="none" stroke="#1a1206" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <span class="ctabar__txt">Clique em "Saiba mais" e garanta sua vaga</span>
+  </div>
+</div>
+</body>
+</html>

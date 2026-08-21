@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Inscrição Confirmada · Mapa do Tesouro</title>
+<meta name="robots" content="noindex"/>
+<!-- Meta Pixel (só PageView — Purchase já é enviado server-side pelo Hotmart nativamente pros dois pixels, IAT + Beraldo) -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','791417620220737');fbq('init','1358655868587428');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=791417620220737&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+<link rel="icon" type="image/png" href="../../favicon.png"/>
+<link rel="apple-touch-icon" href="../../favicon.png"/>
+<link rel="preload" href="../../fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="../../fonts/fonts.css"></noscript>
+<style>
+:root{
+  --bg:#0c1613;--bg2:#122019;--bg3:#1a2e26;
+  --line:rgba(238,240,230,.14);
+  --gold:#c8a84b;--gold2:#e9d38f;
+  --cream:#eef0e6;
+  --tm:rgba(238,240,230,.62);
+  --dim:rgba(238,240,230,.32);
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --r:6px;
+  --sha:0 3px 16px rgba(0,0,0,.35);
+  --sha2:0 20px 60px rgba(0,0,0,.6);
+  --glow:0 0 26px rgba(200,168,75,.3);
+  --wa:#3fbf63;
+  --glowwa:0 0 30px rgba(63,191,99,.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--cream);background:var(--bg);overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+h1,h2,h3,h4{font-family:var(--disp);line-height:1.16;font-weight:600;color:var(--cream)}
+h1{font-size:clamp(1.6rem,3.4vw,2.4rem)}
+h2{font-size:clamp(1.2rem,2.4vw,1.6rem)}
+p{font-weight:300}
+ul{list-style:none}
+
+.w{max-width:640px;margin:0 auto;padding:0 24px}
+.s{padding:52px 0;position:relative}
+.s--a{background:var(--bg)}
+.s--b{background:var(--bg2)}
+
+.s--a::before,.s--b::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.7;
+  background-image:
+    radial-gradient(1px 1px at 8% 20%, rgba(238,240,230,.35) 0, transparent 60%),
+    radial-gradient(1px 1px at 22% 68%, rgba(238,240,230,.25) 0, transparent 60%),
+    radial-gradient(1px 1px at 47% 12%, rgba(238,240,230,.3) 0, transparent 60%),
+    radial-gradient(1px 1px at 68% 74%, rgba(238,240,230,.22) 0, transparent 60%),
+    radial-gradient(1px 1px at 84% 30%, rgba(238,240,230,.3) 0, transparent 60%),
+    radial-gradient(1px 1px at 92% 82%, rgba(238,240,230,.2) 0, transparent 60%);
+}
+
+.lbl{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  display:block;margin-bottom:10px;color:var(--gold)}
+.lbl--wa{color:var(--wa)}
+.tc{text-align:center;position:relative;z-index:1}
+
+.topbar{background:#08100d;color:var(--cream);text-align:center;font-family:var(--mono);font-size:.7rem;
+  font-weight:600;letter-spacing:.08em;padding:9px 16px;text-transform:uppercase;
+  border-bottom:1px solid rgba(200,168,75,.3)}
+
+/* ══ CONFIRMAÇÃO ══ */
+.confirm{text-align:center;position:relative;z-index:1;padding-top:20px}
+.stamp{width:88px;height:88px;border-radius:50%;border:2px solid var(--gold);display:flex;
+  align-items:center;justify-content:center;margin:0 auto 24px;position:relative;box-shadow:var(--glow);background:var(--bg2)}
+.stamp::before{content:'';position:absolute;inset:6px;border:1px dashed rgba(233,211,143,.5);border-radius:50%}
+.stamp svg{width:34px;height:34px;stroke:var(--gold2);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 8px rgba(200,168,75,.5))}
+.confirm h1{margin-bottom:14px}
+.confirm h1 b{color:var(--gold2);text-shadow:0 0 22px rgba(200,168,75,.4)}
+.confirm p{color:var(--tm);font-size:.98rem;max-width:480px;margin:0 auto}
+
+/* ══ MAPA DAS INSTRUÇÕES ══ */
+.route{max-width:520px;margin:44px auto 0;position:relative;z-index:1}
+.route svg{width:100%;height:auto;display:block}
+.route__caption{text-align:center;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);margin-top:6px}
+
+/* ══ PASSO WHATSAPP (destaque máximo) ══ */
+.wa-card{max-width:520px;margin:0 auto;background:linear-gradient(180deg,var(--bg3),var(--bg2));
+  border:2px solid var(--wa);border-radius:14px;padding:34px 30px;text-align:center;
+  box-shadow:var(--sha2),var(--glowwa);position:relative;z-index:1}
+.wa-card__flag{display:inline-flex;align-items:center;gap:6px;background:var(--wa);color:#052e10;
+  font-family:var(--mono);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;margin-bottom:16px}
+.wa-card__num{width:34px;height:34px;border-radius:50%;background:var(--gold);color:#1a1206;
+  display:inline-flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;
+  font-size:1rem;margin-bottom:14px}
+.wa-card h2{margin-bottom:12px}
+.wa-card p{color:rgba(238,240,230,.88);font-size:.94rem;margin-bottom:24px}
+.wa-card p b{color:var(--gold2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:19px 30px;gap:10px;
+  font-family:var(--sans);font-size:.9rem;font-weight:700;letter-spacing:.02em;
+  border-radius:var(--r);cursor:pointer;transition:all .2s;border:none;width:100%}
+.btn--wa{background:linear-gradient(135deg,#4fd67a,var(--wa));color:#052e10;
+  box-shadow:0 10px 28px rgba(0,0,0,.4),var(--glowwa);border:1px solid rgba(0,0,0,.15)}
+.btn--wa:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.5),0 0 40px rgba(63,191,99,.55)}
+.btn--wa svg{width:20px;height:20px;fill:#052e10;flex-shrink:0}
+.wa-card__micro{font-family:var(--mono);font-size:.66rem;color:var(--dim);letter-spacing:.04em;margin-top:14px}
+
+/* ══ AVISO REFORÇANDO O WHATSAPP ══ */
+.reveal-block{max-width:520px;margin:32px auto 0;background:var(--bg2);border:1px solid var(--gold);
+  border-radius:var(--r);padding:26px 26px;text-align:center;box-shadow:var(--sha2),var(--glow);
+  position:relative;z-index:1}
+.reveal-block p{color:rgba(238,240,230,.9);font-size:.92rem;line-height:1.6;margin:0}
+.reveal-block p b{color:var(--gold2);font-weight:700}
+
+/* ══ PASSO 2 (menor, secundário) ══ */
+.step2{max-width:520px;margin:32px auto 0;background:var(--bg2);border-radius:var(--r);
+  padding:22px 24px;border:1px solid var(--line);position:relative;z-index:1;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.step2__num{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--gold);
+  color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--mono);
+  font-size:.78rem;font-weight:700;flex-shrink:0}
+.step2__txt{flex:1;min-width:200px}
+.step2__txt h4{font-weight:700;font-size:.9rem;margin-bottom:4px}
+.step2__txt p{font-size:.8rem;color:var(--tm)}
+.step2 .btn{width:auto;padding:11px 20px;font-size:.76rem;flex-shrink:0}
+.btn--gold{background:linear-gradient(135deg,var(--gold),#a98a3a);color:#1a1206}
+
+/* ══ INFO BAR ══ */
+.infobar{max-width:520px;margin:32px auto 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative;z-index:1}
+.infobar span{background:var(--bg3);color:var(--cream);font-family:var(--mono);font-size:.68rem;font-weight:600;
+  padding:8px 14px;border-radius:2px;border:1px solid var(--line)}
+
+.support{text-align:center;font-size:.78rem;color:var(--tm);margin-top:36px;position:relative;z-index:1}
+.support a{color:var(--gold2);font-weight:600}
+
+footer{background:#08100d;color:var(--dim);text-align:center;font-family:var(--mono);font-size:.68rem;padding:28px 24px;letter-spacing:.04em}
+
+@media(max-width:480px){.wa-card{padding:28px 22px}.step2{padding:20px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">Mapa do Tesouro · Inscrição Confirmada</div>
+
+<section class="s s--a">
+  <div class="w">
+    <div class="confirm">
+      <div class="stamp">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h1>Sua vaga no <b>Mapa do Tesouro</b> está confirmada!</h1>
+      <p>Faltam só 2 passos rápidos pra você não perder nenhuma instrução até o dia 15 de agosto. O primeiro deles é o mais importante.</p>
+    </div>
+
+    <!-- mapa das instruções: mesmo estilo do "caminho revelado" da landing page -->
+    <div class="route">
+      <svg viewBox="0 0 520 130" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glowr" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <path d="M40,100 C110,60 160,110 220,65 C280,25 330,95 390,55 C420,35 450,45 480,30" fill="none" stroke="#c8a84b" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 9" opacity=".85" filter="url(#glowr)"/>
+        <!-- ponto 1: confirmação (concluído) -->
+        <circle cx="40" cy="100" r="7" fill="#e9d38f" filter="url(#glowr)"/>
+        <text x="40" y="122" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8.5" fill="#eef0e6" opacity=".55">CONFIRMADO</text>
+        <!-- ponto 2: whatsapp (destaque maior, verde) -->
+        <circle cx="220" cy="65" r="10" fill="#3fbf63" filter="url(#glowr)"/>
+        <text x="220" y="46" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" font-weight="700" fill="#eef0e6">WHATSAPP</text>
+        <!-- ponto 3: área de membros -->
+        <g transform="translate(390,55)" filter="url(#glowr)">
+          <path d="M0,-9 L3.5,-3.5 L10,0 L3.5,3.5 L0,9 L-3.5,3.5 L-10,0 L-3.5,-3.5 Z" fill="#e9d38f"/>
+        </g>
+        <text x="390" y="80" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#eef0e6" opacity=".55">ÁREA DE MEMBROS</text>
+        <!-- ponto 4: dia da imersão -->
+        <g transform="translate(480,30)" filter="url(#glowr)">
+          <path d="M0,-11 L4,-4 L12,0 L4,4 L0,11 L-4,4 L-12,0 L-4,-4 Z" fill="#c8a84b"/>
+        </g>
+        <text x="480" y="12" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#eef0e6" opacity=".65">15/08</text>
+      </svg>
+      <p class="route__caption">Seu caminho até a imersão ao vivo</p>
+    </div>
+
+    <!-- PASSO 1 · WHATSAPP — destaque máximo -->
+    <div class="wa-card">
+      <span class="wa-card__flag">⚠ Passo obrigatório</span>
+      <div class="wa-card__num">1</div>
+      <h2>Entre agora no grupo do WhatsApp</h2>
+      <p>É <b>lá</b>, e só lá, que saem o link do Zoom/Meet, o lembrete de horário e qualquer aviso de última hora sobre o dia 15/08. O grupo é fechado (só o Thiago e a equipe falam), mas é onde toda a informação da sua imersão é entregue. <b>Sem entrar no grupo, você corre o risco de não receber o acesso ao vivo.</b></p>
+      <a href="https://chat.whatsapp.com/EvOdoconZMo9lpMgsippOf?s=cl&p=i&mlu=0" onclick="fbq('trackCustom','ClickGrupoWhatsApp')" class="btn btn--wa">
+        <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91.01-5.47-4.44-9.92-9.92-9.92zm5.83 14.19c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.12.11-1.81-.11-.42-.14-.95-.31-1.64-.6-2.88-1.24-4.76-4.15-4.9-4.34-.14-.19-1.17-1.56-1.17-2.98s.74-2.11 1-2.4c.26-.29.57-.36.76-.36s.38 0 .55.01c.18.01.41-.07.64.49.24.58.81 2 .88 2.15.07.14.12.32.02.51-.1.19-.15.31-.3.48-.14.17-.31.37-.44.5-.14.14-.29.29-.13.57.17.29.75 1.24 1.6 2.01 1.11 1 2.04 1.31 2.33 1.46.29.14.46.12.63-.07.17-.19.72-.83.92-1.12.19-.29.38-.24.63-.14.26.1 1.65.78 1.94.92.29.14.48.22.55.34.07.12.07.68-.17 1.36z"/></svg>
+        Entrar no grupo do WhatsApp
+      </a>
+      <p class="wa-card__micro">Grupo fechado · só admin fala · avisos e lembretes saem por aqui</p>
+    </div>
+
+    <div class="reveal-block">
+      <p>Mesmo com a inscrição confirmada, se você não entrar no grupo, <b>não vamos ter como te avisar</b> sobre o link de acesso ao vivo no dia 15/08.</p>
+    </div>
+
+    <!-- PASSO 2 · Área de membros — secundário -->
+    <div class="step2">
+      <div class="step2__num">2</div>
+      <div class="step2__txt">
+        <h4>Acesse a área de membros</h4>
+        <p>É lá que fica o material da imersão e onde seu Relatório de Diagnóstico e certificado ficam disponíveis depois do dia 15/08.</p>
+      </div>
+      <a href="https://hotmart.com/pt-br/club/mapa-tesouro" class="btn btn--gold">Acessar área de membros</a>
+    </div>
+
+    <div class="infobar">
+      <span>▶ AO VIVO (ZOOM/MEET)</span>
+      <span>15 DE AGOSTO · SÁBADO</span>
+      <span>DAS 8H ÀS 14H</span>
+    </div>
+
+    <p class="support">Dificuldades? Fale com a gente: <a href="mailto:thiago.beraldo@reconexaonatural.com">thiago.beraldo@reconexaonatural.com</a></p>
+  </div>
+</section>
+
+<footer>RECONEXÃO NATURAL · MÉTODO VPPN · THIAGO BERALDO</footer>
+
+</body>
+</html>

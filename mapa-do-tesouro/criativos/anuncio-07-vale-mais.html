@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<title>Mapa do Tesouro — Criativo Vale Mais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c8a84b;--gold2:#e9d38f;
+  --cream:#f4efe6;
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1350px}
+body{font-family:var(--sans);color:var(--cream);overflow:hidden;position:relative;
+  background:#0c1613 url('../images/mirante-depois.webp') center 38% / cover no-repeat}
+
+.overlay{position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom, rgba(6,10,8,.88) 0%, rgba(6,10,8,.55) 20%, rgba(6,10,8,.28) 38%, rgba(6,10,8,.4) 58%, rgba(6,10,8,.85) 78%, rgba(4,7,6,.97) 100%);
+}
+
+.wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:64px 68px 0}
+
+.tag{display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:23px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold2);margin-bottom:30px}
+.tag::before,.tag::after{content:'';width:26px;height:1px;background:var(--gold)}
+
+h1{font-family:var(--disp);font-weight:700;font-size:80px;line-height:1.08;letter-spacing:-.01em;
+  margin-bottom:28px}
+h1 .w{color:var(--cream)}
+h1 .g{color:var(--gold2);text-shadow:0 0 40px rgba(200,168,75,.5)}
+
+.sub{font-family:var(--sans);font-size:33px;font-weight:500;color:rgba(244,239,230,.92);
+  margin-bottom:36px;max-width:800px;white-space:nowrap}
+.sub b{color:var(--gold2);font-weight:800}
+
+.box{width:100%;max-width:920px;background:rgba(10,16,13,.72);border:1px solid rgba(200,168,75,.55);
+  border-radius:10px;padding:8px 8px;margin-bottom:34px;backdrop-filter:blur(2px)}
+.item{display:flex;gap:14px;align-items:baseline;text-align:left;padding:19px 24px;
+  border-bottom:1px solid rgba(238,240,230,.1)}
+.item:last-child{border-bottom:none}
+.item__dot{width:8px;height:8px;border-radius:50%;background:var(--gold2);flex-shrink:0;margin-top:9px;
+  box-shadow:0 0 8px rgba(233,211,143,.7)}
+.item__txt{font-size:25px;line-height:1.4;color:rgba(244,239,230,.9)}
+.item__txt b{font-family:var(--mono);font-size:20px;font-weight:700;letter-spacing:.04em;
+  color:var(--gold2);text-transform:uppercase;margin-right:7px}
+
+.ctabar{margin:auto -68px 0;padding:34px 68px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  display:flex;align-items:center;justify-content:center;gap:14px}
+.ctabar__txt{font-family:var(--sans);font-size:34px;font-weight:800;color:#1a1206;letter-spacing:-.01em}
+.ctabar__arrow{width:34px;height:34px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="overlay"></div>
+<div class="wrap">
+  <span class="tag">Imersão ao vivo, 15 de agosto</span>
+
+  <h1><span class="w">SUA TERRA PODE VALER</span> <span class="g">MAIS DO QUE VOCÊ IMAGINA</span></h1>
+
+  <p class="sub">Descubra o potencial real em 1 dia, por <b>R$47</b></p>
+
+  <div class="box">
+    <div class="item"><span class="item__dot"></span><p class="item__txt"><b>Diagnóstico:</b>a nota que mostra se vale a pena investir</p></div>
+    <div class="item"><span class="item__dot"></span><p class="item__txt"><b>Análise:</b>resultado em PDF, não em achismo</p></div>
+    <div class="item"><span class="item__dot"></span><p class="item__txt"><b>Clareza:</b>decida com técnica, não com sorte</p></div>
+    <div class="item"><span class="item__dot"></span><p class="item__txt"><b>Ação:</b>por onde começar ainda no mesmo dia</p></div>
+  </div>
+
+  <div class="ctabar">
+    <svg class="ctabar__arrow" viewBox="0 0 24 24" fill="none" stroke="#1a1206" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <span class="ctabar__txt">Clique em "Saiba mais" e garanta sua vaga</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<title>Mapa do Tesouro — Criativo RPPN Sustenta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c8a84b;--gold2:#e9d38f;
+  --cream:#f4efe6;
+  --disp:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1350px}
+body{font-family:var(--sans);color:var(--cream);overflow:hidden;position:relative;
+  background:#0c1613 url('../images/trilha-depois.webp') center 40% / cover no-repeat}
+
+.overlay{position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom, rgba(6,10,8,.92) 0%, rgba(6,10,8,.68) 26%, rgba(6,10,8,.34) 44%, rgba(6,10,8,.52) 62%, rgba(6,10,8,.9) 82%, rgba(4,7,6,.98) 100%);
+}
+
+.wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:64px 64px 0}
+
+.tag{display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:23px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold2);margin-bottom:32px}
+.tag::before,.tag::after{content:'';width:28px;height:1px;background:var(--gold)}
+
+h1{font-family:var(--disp);font-weight:700;font-size:64px;line-height:1.14;letter-spacing:-.01em;
+  margin-bottom:32px;max-width:960px}
+h1 .w{color:var(--cream)}
+h1 .g{color:var(--gold2);text-shadow:0 0 44px rgba(200,168,75,.5)}
+
+.sub{font-family:var(--sans);font-size:34px;font-weight:500;color:rgba(244,239,230,.92);
+  line-height:1.4;margin-bottom:40px;max-width:800px}
+.sub b{color:var(--gold2);font-weight:700}
+
+.date{display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:.04em;
+  color:var(--cream);background:rgba(200,168,75,.14);border:1px solid rgba(200,168,75,.55);
+  padding:17px 32px;border-radius:4px}
+.date::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--gold2);flex-shrink:0;
+  box-shadow:0 0 10px rgba(233,211,143,.8)}
+
+.ctabar{margin:auto -64px 0;padding:40px 64px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  display:flex;align-items:center;justify-content:center;gap:16px}
+.ctabar__txt{font-family:var(--sans);font-size:38px;font-weight:800;color:#1a1206;letter-spacing:-.01em}
+.ctabar__arrow{width:38px;height:38px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="overlay"></div>
+<div class="wrap">
+  <span class="tag">Imersão ao vivo, 15 de agosto</span>
+
+  <h1><span class="g">RPPN QUE SE SUSTENTA</span> <span class="w">PROTEGE MAIS DO QUE RPPN QUE SÓ GERA CUSTO</span></h1>
+
+  <p class="sub">Descubra como gerar renda sem abrir mão de um metro sequer de mata preservada</p>
+
+  <span class="date">Sábado · 8h às 14h · por R$47</span>
+
+  <div class="ctabar">
+    <svg class="ctabar__arrow" viewBox="0 0 24 24" fill="none" stroke="#1a1206" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <span class="ctabar__txt">Clique em "Saiba mais" e garanta sua vaga</span>
+  </div>
+</div>
+</body>
+</html>
