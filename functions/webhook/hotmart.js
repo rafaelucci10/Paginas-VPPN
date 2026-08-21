@@ -1,4 +1,43 @@
 const SUPABASE_URL = 'https://sdjlnjqtgnodnifkbykq.supabase.co';
+const META_PIXEL_ID = '1358655868587428'; // PIXEL BERALDO — mesmo pixel usado em todo o site
+
+async function sha256Hex(value) {
+  const data = new TextEncoder().encode(value.trim().toLowerCase());
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Dispara o Purchase direto pra API de Conversões da Meta, server-side.
+// Substitui tanto o fbq('track','Purchase') do navegador quanto a integração nativa da Hotmart —
+// evita duplicar o mesmo evento em duas fontes sem event_id compartilhado.
+async function sendMetaPurchase({ token, transaction, buyer, price }) {
+  if (!token) return;
+
+  const userData = {};
+  if (buyer.email) userData.em = [await sha256Hex(buyer.email)];
+  const phone = buyer.checkout_phone || buyer.phone;
+  if (phone) userData.ph = [await sha256Hex(String(phone).replace(/\D/g, ''))];
+
+  const payload = {
+    data: [{
+      event_name: 'Purchase',
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: transaction,
+      action_source: 'system_generated',
+      user_data: userData,
+      custom_data: {
+        value: price?.value ?? 0,
+        currency: price?.currency_value || 'BRL',
+      },
+    }],
+  };
+
+  await fetch(`https://graph.facebook.com/v21.0/${META_PIXEL_ID}/events?access_token=${token}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+}
 
 export async function onRequestPost({ request, env }) {
   const hottok = request.headers.get('x-hotmart-hottok') || '';
@@ -71,6 +110,13 @@ export async function onRequestPost({ request, env }) {
       comprador_email:  buyer.email || '',
       comprador_nome:   buyer.name || '',
     }),
+  });
+
+  await sendMetaPurchase({
+    token: env.META_CAPI_TOKEN,
+    transaction,
+    buyer,
+    price: purchase.price,
   });
 
   return new Response('OK', { status: 200 });
