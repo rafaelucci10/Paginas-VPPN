@@ -1,5 +1,12 @@
 const SUPABASE_URL = 'https://sdjlnjqtgnodnifkbykq.supabase.co';
-const META_PIXEL_ID = '1358655868587428'; // PIXEL BERALDO — mesmo pixel usado em todo o site
+
+// Esse webhook atende mais de um produto Hotmart (mesma URL cadastrada em cada um) —
+// cada produto tem seu próprio pixel Meta, por isso o pixel é escolhido pelo product.id.
+const META_PIXEL_BY_PRODUCT = {
+  '4603825': '1358655868587428', // Visitação Padrão Parque Nacional — PIXEL BERALDO
+  '7360360': '791417620220737',  // Calculadora de Índice de Atratividade Turística (IAT) — Pixel IAT
+};
+const META_PIXEL_DEFAULT = '1358655868587428';
 
 async function sha256Hex(value) {
   const data = new TextEncoder().encode(value.trim().toLowerCase());
@@ -10,7 +17,7 @@ async function sha256Hex(value) {
 // Dispara o Purchase direto pra API de Conversões da Meta, server-side.
 // Substitui tanto o fbq('track','Purchase') do navegador quanto a integração nativa da Hotmart —
 // evita duplicar o mesmo evento em duas fontes sem event_id compartilhado.
-async function sendMetaPurchase({ token, transaction, buyer, price }) {
+async function sendMetaPurchase({ token, transaction, buyer, price, pixelId }) {
   if (!token) return;
 
   const userData = {};
@@ -32,7 +39,7 @@ async function sendMetaPurchase({ token, transaction, buyer, price }) {
     }],
   };
 
-  await fetch(`https://graph.facebook.com/v21.0/${META_PIXEL_ID}/events?access_token=${token}`, {
+  await fetch(`https://graph.facebook.com/v21.0/${pixelId}/events?access_token=${token}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -112,11 +119,13 @@ export async function onRequestPost({ request, env }) {
     }),
   });
 
+  const pixelId = META_PIXEL_BY_PRODUCT[String(product.id)] || META_PIXEL_DEFAULT;
   await sendMetaPurchase({
     token: env.META_CAPI_TOKEN,
     transaction,
     buyer,
     price: purchase.price,
+    pixelId,
   });
 
   return new Response('OK', { status: 200 });
