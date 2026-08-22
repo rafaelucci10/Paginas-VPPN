@@ -46,6 +46,39 @@ async function sendMetaPurchase({ token, transaction, buyer, price, pixelId }) {
   });
 }
 
+const CORTEX_API_URL = 'https://crm.crtx.com.br/api/v1';
+const CORTEX_STAGE_COMPRA_REALIZADA = '39ae2bcf-b0d3-47b2-a77a-f746c266f442'; // pipeline "Funil de Infoproduto"
+
+function last8Digits(phone) {
+  const digits = String(phone || '').replace(/\D/g, '');
+  return digits.slice(-8);
+}
+
+// A API do Cortex não tem busca por telefone/e-mail — lista os leads e casa pelos
+// últimos 8 dígitos do telefone (ignora DDI/o 9º dígito extra do celular).
+async function markLeadAsPurchased({ apiKey, buyerPhone }) {
+  if (!apiKey || !buyerPhone) return;
+  const target = last8Digits(buyerPhone);
+  if (!target) return;
+
+  try {
+    const res = await fetch(`${CORTEX_API_URL}/leads?limit=200`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
+    const { data: leads = [] } = await res.json();
+    const match = leads.find((lead) => last8Digits(lead.phone) === target);
+    if (!match) return;
+
+    await fetch(`${CORTEX_API_URL}/leads/${match.id}/stage`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stage_id: CORTEX_STAGE_COMPRA_REALIZADA }),
+    });
+  } catch (e) {
+    // Best-effort — não derruba o webhook se o Cortex estiver fora do ar
+  }
+}
+
 export async function onRequestPost({ request, env }) {
   const hottok = request.headers.get('x-hotmart-hottok') || '';
   if (hottok !== env.HOTMART_TOKEN) {
@@ -126,6 +159,11 @@ export async function onRequestPost({ request, env }) {
     buyer,
     price: purchase.price,
     pixelId,
+  });
+
+  await markLeadAsPurchased({
+    apiKey: env.CORTEX_API_KEY,
+    buyerPhone: buyer.checkout_phone || buyer.phone,
   });
 
   return new Response('OK', { status: 200 });
