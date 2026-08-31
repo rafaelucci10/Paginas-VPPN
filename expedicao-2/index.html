@@ -200,6 +200,23 @@
       gap: 8px;
       align-items: center;
     }
+    .urgency-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .urgency-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border);
+    }
+    .urgency-countdown-label {
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
     .uc-unit {
       text-align: center;
       background: rgba(201,168,92,.12);
@@ -1034,6 +1051,11 @@
       .urgency-bar-inner { gap: 8px; }
       .urgency-text { font-size: .7rem; }
       .urgency-badge { display: none; }
+      .uc-unit { min-width: 34px; padding: 3px 6px; }
+      .uc-num { font-size: 1.05rem; }
+      .uc-label { font-size: .5rem; }
+      .urgency-divider { display: none; }
+      .urgency-countdown-label { font-size: .68rem; }
       .stat-item { padding: 16px 12px; border-right: none; border-bottom: 1px solid var(--border); }
       .stat-item:last-child { border-bottom: none; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1062,9 +1084,24 @@
 <div class="urgency-bar">
   <div class="container">
     <div class="urgency-bar-inner">
-      <span class="urgency-flame">🔥</span>
-      <span class="urgency-badge">1º LOTE ESGOTADO</span>
-      <span class="urgency-text">50% das vagas já preenchidas</span>
+      <div class="urgency-group">
+        <span class="urgency-flame">🔥</span>
+        <span class="urgency-badge">ÚLTIMAS VAGAS</span>
+        <span class="urgency-text">50% das vagas já preenchidas</span>
+      </div>
+      <span class="urgency-divider"></span>
+      <div class="urgency-group">
+        <span class="urgency-countdown-label">📅 Faltam para a Expedição:</span>
+        <div class="urgency-countdown" id="eventCountdown">
+          <div class="uc-unit"><div class="uc-num" data-cd="d">00</div><div class="uc-label">dias</div></div>
+          <span class="uc-sep">:</span>
+          <div class="uc-unit"><div class="uc-num" data-cd="h">00</div><div class="uc-label">hrs</div></div>
+          <span class="uc-sep">:</span>
+          <div class="uc-unit"><div class="uc-num" data-cd="m">00</div><div class="uc-label">min</div></div>
+          <span class="uc-sep">:</span>
+          <div class="uc-unit"><div class="uc-num" data-cd="s">00</div><div class="uc-label">seg</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1579,15 +1616,12 @@
           <li><span class="check">✦</span> Bônus: 1 ano de VPPN (R$1.450)</li>
         </ul>
 
-        <a href="https://wa.me/5592993252938?text=QUERO+ENTRAR+NA+LISTA+DE+ESPERA+%7C+1a+Expedi%C3%A7%C3%A3o+VPPN" target="_blank" class="btn btn-outline" style="width:100%;justify-content:center;">
-          Entrar na lista de espera
-        </a>
-        <div class="preco-prazo">Lote esgotado — próximas vagas no valor integral</div>
+        <div class="preco-prazo" style="text-align:center;font-weight:600;">Lote encerrado</div>
       </div>
 
       <!-- VALOR CHEIO -->
       <div class="preco-card preco-card-regular fade-up stagger-2">
-        <div class="preco-card-label">Valor Integral</div>
+        <div class="preco-card-label">2º Lote</div>
         <div class="preco-card-name">Valor Cheio</div>
 
         <div class="preco-valor">
@@ -1739,6 +1773,34 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
   });
+
+  // ── Countdown até o evento (24/09/2026 09h, horário de Brasília)
+  (function () {
+    const target = new Date('2026-09-24T09:00:00-03:00').getTime();
+    const box = document.getElementById('eventCountdown');
+    if (!box) return;
+    const els = {
+      d: box.querySelector('[data-cd="d"]'),
+      h: box.querySelector('[data-cd="h"]'),
+      m: box.querySelector('[data-cd="m"]'),
+      s: box.querySelector('[data-cd="s"]'),
+    };
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function tick() {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        els.d.textContent = els.h.textContent = els.m.textContent = els.s.textContent = '00';
+        clearInterval(timer);
+        return;
+      }
+      els.d.textContent = pad(Math.floor(diff / 86400000));
+      els.h.textContent = pad(Math.floor((diff % 86400000) / 3600000));
+      els.m.textContent = pad(Math.floor((diff % 3600000) / 60000));
+      els.s.textContent = pad(Math.floor((diff % 60000) / 1000));
+    }
+    tick();
+    const timer = setInterval(tick, 1000);
+  })();
 </script>
 
 </body>
