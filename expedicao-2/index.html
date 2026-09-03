@@ -180,20 +180,29 @@
       font-size: 1.2rem;
     }
     .urgency-text {
-      font-size: .85rem;
-      font-weight: 600;
+      font-size: .92rem;
+      font-weight: 700;
       letter-spacing: .04em;
       color: var(--cream);
+    }
+    .urgency-text strong {
+      color: var(--gold-lite);
+      font-weight: 800;
     }
     .urgency-badge {
       background: var(--gold);
       color: #050D06;
-      font-size: .75rem;
-      font-weight: 700;
+      font-size: .78rem;
+      font-weight: 800;
       letter-spacing: .08em;
       text-transform: uppercase;
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: 100px;
+      animation: badge-glow 1.8s infinite;
+    }
+    @keyframes badge-glow {
+      0%,100% { box-shadow: 0 0 0 0 rgba(201,168,92,.55); }
+      50% { box-shadow: 0 0 0 6px rgba(201,168,92,0); }
     }
     .urgency-countdown {
       display: flex;
@@ -364,30 +373,59 @@
     }
     .hero-meta-item .icon { font-size: 1rem; }
 
+    .hero-scarcity-block {
+      margin-bottom: 32px;
+    }
     .hero-scarcity {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(220,50,50,.15);
-      border: 1px solid rgba(220,50,50,.40);
+      background: rgba(220,50,50,.18);
+      border: 2px solid rgba(220,50,50,.55);
       border-radius: 100px;
-      padding: 10px 20px;
-      font-size: .85rem;
-      font-weight: 700;
-      color: #ff8080;
-      letter-spacing: .05em;
-      margin-bottom: 32px;
+      padding: 13px 26px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ff9999;
+      letter-spacing: .04em;
       backdrop-filter: blur(8px);
+      box-shadow: 0 0 24px rgba(220,50,50,.25);
     }
     .hero-scarcity .pulse {
-      width: 8px; height: 8px;
+      width: 9px; height: 9px;
       border-radius: 50%;
       background: #ff4444;
       animation: pulse-red 1.5s infinite;
+      flex-shrink: 0;
     }
     @keyframes pulse-red {
       0%,100% { box-shadow: 0 0 0 0 rgba(255,68,68,.6); }
       50% { box-shadow: 0 0 0 8px rgba(255,68,68,0); }
+    }
+    .scarcity-progress-wrap {
+      max-width: 280px;
+      margin-top: 10px;
+    }
+    .scarcity-progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,.12);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .scarcity-progress-fill {
+      height: 100%;
+      width: 50%;
+      background: linear-gradient(90deg, #ff8080, #ff3333);
+      border-radius: 100px;
+      box-shadow: 0 0 12px rgba(255,51,51,.6);
+    }
+    .scarcity-progress-label {
+      font-size: .74rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 6px;
+      letter-spacing: .02em;
     }
 
     .hero-cta-group {
@@ -952,14 +990,15 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(220,50,50,.15);
-      border: 1px solid rgba(220,50,50,.35);
+      background: rgba(220,50,50,.18);
+      border: 2px solid rgba(220,50,50,.55);
       border-radius: 100px;
-      padding: 8px 20px;
-      font-size: .85rem;
-      font-weight: 700;
+      padding: 13px 26px;
+      font-size: 1rem;
+      font-weight: 800;
       color: #ff9999;
-      margin-bottom: 32px;
+      margin-bottom: 14px;
+      box-shadow: 0 0 24px rgba(220,50,50,.25);
     }
 
     /* ──────────────────────────────────────────
@@ -1086,8 +1125,8 @@
     <div class="urgency-bar-inner">
       <div class="urgency-group">
         <span class="urgency-flame">🔥</span>
-        <span class="urgency-badge">ÚLTIMAS VAGAS</span>
-        <span class="urgency-text">50% das vagas já preenchidas</span>
+        <span class="urgency-badge">PRIMEIRO LOTE ESGOTADO</span>
+        <span class="urgency-text">Restam apenas 6 vagas</span>
       </div>
       <span class="urgency-divider"></span>
       <div class="urgency-group">
@@ -1154,9 +1193,15 @@
           </div>
         </div>
 
-        <div class="hero-scarcity fade-up stagger-4">
-          <span class="pulse"></span>
-          50% DAS VAGAS PREENCHIDAS · RESTAM 6
+        <div class="hero-scarcity-block fade-up stagger-4">
+          <div class="hero-scarcity">
+            <span class="pulse"></span>
+            🚨 50% DAS VAGAS PREENCHIDAS · RESTAM SÓ 6
+          </div>
+          <div class="scarcity-progress-wrap">
+            <div class="scarcity-progress-track"><div class="scarcity-progress-fill"></div></div>
+            <div class="scarcity-progress-label">6 de 12 vagas já garantidas</div>
+          </div>
         </div>
 
         <div class="hero-cta-group fade-up stagger-5">
@@ -1671,7 +1716,7 @@
       <div>
         <div class="garantia-title">Viagem já garantida</div>
         <div class="garantia-text">
-          O grupo mínimo de 10 participantes já foi atingido. A expedição está confirmada e sua reserva é 100% segura.
+          O grupo mínimo de 6 participantes já foi atingido. A expedição está confirmada e sua reserva é 100% segura.
         </div>
       </div>
     </div>
@@ -1699,8 +1744,12 @@
     </p>
 
     <div class="vagas-restantes fade-up stagger-3">
-      <span style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse-red 1.5s infinite;"></span>
-      50% DAS VAGAS PREENCHIDAS · RESTAM 6
+      <span style="width:9px;height:9px;border-radius:50%;background:#ff4444;animation:pulse-red 1.5s infinite;flex-shrink:0;"></span>
+      🚨 50% DAS VAGAS PREENCHIDAS · RESTAM SÓ 6
+    </div>
+    <div class="scarcity-progress-wrap fade-up stagger-3" style="margin-inline:auto;margin-bottom:28px;">
+      <div class="scarcity-progress-track"><div class="scarcity-progress-fill"></div></div>
+      <div class="scarcity-progress-label">6 de 12 vagas já garantidas</div>
     </div>
 
     <div class="fade-up stagger-4">
