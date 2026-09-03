@@ -216,6 +216,18 @@
       flex-wrap: wrap;
       justify-content: center;
     }
+    .countdown-bar {
+      background: linear-gradient(90deg, #0A1F0E, #1A3D20, #0A1F0E);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+    }
+    .countdown-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
     .urgency-divider {
       width: 1px;
       height: 18px;
@@ -1124,22 +1136,25 @@
   <div class="container">
     <div class="urgency-bar-inner">
       <div class="urgency-group">
-        <span class="urgency-flame">🔥</span>
         <span class="urgency-badge">PRIMEIRO LOTE ESGOTADO</span>
         <span class="urgency-text">Restam apenas 6 vagas</span>
       </div>
-      <span class="urgency-divider"></span>
-      <div class="urgency-group">
-        <span class="urgency-countdown-label">📅 Faltam para a Expedição:</span>
-        <div class="urgency-countdown" id="eventCountdown">
-          <div class="uc-unit"><div class="uc-num" data-cd="d">00</div><div class="uc-label">dias</div></div>
-          <span class="uc-sep">:</span>
-          <div class="uc-unit"><div class="uc-num" data-cd="h">00</div><div class="uc-label">hrs</div></div>
-          <span class="uc-sep">:</span>
-          <div class="uc-unit"><div class="uc-num" data-cd="m">00</div><div class="uc-label">min</div></div>
-          <span class="uc-sep">:</span>
-          <div class="uc-unit"><div class="uc-num" data-cd="s">00</div><div class="uc-label">seg</div></div>
-        </div>
+    </div>
+  </div>
+</div>
+
+<div class="countdown-bar">
+  <div class="container">
+    <div class="countdown-bar-inner">
+      <span class="urgency-countdown-label">Faltam para a Expedição:</span>
+      <div class="urgency-countdown" id="eventCountdown">
+        <div class="uc-unit"><div class="uc-num" data-cd="d">00</div><div class="uc-label">dias</div></div>
+        <span class="uc-sep">:</span>
+        <div class="uc-unit"><div class="uc-num" data-cd="h">00</div><div class="uc-label">hrs</div></div>
+        <span class="uc-sep">:</span>
+        <div class="uc-unit"><div class="uc-num" data-cd="m">00</div><div class="uc-label">min</div></div>
+        <span class="uc-sep">:</span>
+        <div class="uc-unit"><div class="uc-num" data-cd="s">00</div><div class="uc-label">seg</div></div>
       </div>
     </div>
   </div>
