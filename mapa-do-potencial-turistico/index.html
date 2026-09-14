@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa do Potencial Turístico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde-950:#05130D; --verde-900:#071A12; --verde-800:#0C2418; --verde-700:#123123;
+  --verde-600:#1B4332; --verde-500:#2D6A4F; --verde-400:#40916C;
+  --dourado:#E0A83C; --dourado-claro:#F2C572; --dourado-dim:rgba(224,168,60,.14);
+  --creme:#F3F0E6; --creme-2:#E4E0D2; --creme-dim:rgba(243,240,230,.70);
+  --papel:#F7F5EE; --papel-2:#EDE9DC; --tinta:#10241B;
+  --falha:#C4553D; --ok:#40916C;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --sans:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  --raio:14px; --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--verde-950);color:var(--creme);line-height:1.65;font-size:1.02rem;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+h1,h2,h3,h4{line-height:1.18;letter-spacing:-.022em;font-weight:800}
+section{padding:96px 24px;position:relative}
+.wrap{max-width:var(--maxw);margin:0 auto;position:relative;z-index:2}
+.narrow{max-width:820px;margin:0 auto}
+
+/* ---------- texturas: curvas de nivel + malha digital ---------- */
+.topo-bg::before{
+  content:'';position:absolute;inset:0;z-index:0;opacity:.5;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'%3E%3Cg fill='none' stroke='%232D6A4F' stroke-opacity='.42' stroke-width='1.1'%3E%3Cpath d='M-40 690 C 180 640 300 700 470 640 C 640 580 760 630 950 560 C 1080 512 1160 540 1260 500'/%3E%3Cpath d='M-40 620 C 190 566 320 630 486 566 C 652 502 770 552 960 486 C 1090 440 1170 466 1260 430'/%3E%3Cpath d='M-40 550 C 200 492 340 560 502 492 C 664 424 780 474 970 412 C 1100 368 1180 392 1260 360'/%3E%3Cpath d='M-40 480 C 210 418 360 490 518 418 C 676 346 790 396 980 338 C 1110 296 1190 318 1260 290'/%3E%3Cpath d='M-40 410 C 220 344 380 420 534 344 C 688 268 800 318 990 264 C 1120 224 1200 244 1260 220'/%3E%3Cpath d='M-40 340 C 230 270 400 350 550 270 C 700 190 810 240 1000 190 C 1130 152 1210 170 1260 150'/%3E%3Cpath d='M-40 264 C 240 194 420 276 566 194 C 712 112 820 162 1010 116 C 1140 80 1220 96 1260 78'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:1400px auto;background-position:center bottom;background-repeat:repeat;
+}
+.malha::after{
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55;
+  background-image:linear-gradient(rgba(224,168,60,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(224,168,60,.055) 1px,transparent 1px);
+  background-size:52px 52px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 78%);
+  mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 78%);
+}
+.brilho{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+
+/* ---------- rotulos tecnicos ---------- */
+.tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado)}
+.tag-box{display:inline-flex;align-items:center;gap:.5rem;padding:.42rem .85rem;border:1px solid rgba(224,168,60,.34);border-radius:99px;background:rgba(224,168,60,.07)}
+.tag-box::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--dourado);box-shadow:0 0 10px var(--dourado)}
+
+/* ---------- header ---------- */
+.header{position:fixed;inset:0 0 auto 0;z-index:100;padding:.8rem 1.5rem;background:rgba(7,26,18,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(224,168,60,.16)}
+.header-in{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.header .btn{padding:.6rem 1.1rem;font-size:.86rem}
+.marca{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:var(--creme)}
+.marca img{height:44px;width:auto}
+.marca span{font-size:.9rem;font-weight:800;line-height:1.15;letter-spacing:-.01em}
+
+/* ---------- botoes ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;background:linear-gradient(135deg,var(--dourado) 0%,var(--dourado-claro) 100%);color:#26180A;font-family:var(--sans);font-weight:800;font-size:1.02rem;padding:1.05rem 2rem;border:none;border-radius:12px;text-decoration:none;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 10px 28px rgba(224,168,60,.22);text-align:center;line-height:1.3}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(224,168,60,.32)}
+.btn-nota{font-family:var(--mono);font-size:.76rem;color:var(--creme-dim);margin-top:.85rem;letter-spacing:.04em}
+
+/* ---------- hero ---------- */
+.hero{padding:150px 24px 92px;background:radial-gradient(120% 90% at 50% 0%,var(--verde-700) 0%,var(--verde-900) 55%,var(--verde-950) 100%);text-align:center;overflow:hidden}
+.hero h1{font-size:clamp(2rem,4.6vw,3.35rem);max-width:19ch;margin:1.4rem auto 0}
+.hero h1 em{font-style:normal;color:var(--dourado-claro)}
+.hero .sub{font-size:clamp(1.02rem,2vw,1.22rem);color:var(--creme-dim);max-width:52ch;margin:1.3rem auto 0}
+.pitadas{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:2.1rem auto 2.4rem;max-width:760px}
+.pitada{font-family:var(--mono);font-size:.78rem;letter-spacing:.03em;padding:.48rem .9rem;border:1px solid rgba(243,240,230,.16);border-radius:8px;background:rgba(243,240,230,.045);color:var(--creme-2)}
+.pitada b{color:var(--dourado);font-weight:500}
+
+/* ---------- shimmer ---------- */
+.shimmer{height:1px;width:72px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--dourado),transparent);animation:shimmer 3.4s ease-in-out infinite}
+@keyframes shimmer{0%,100%{opacity:.35;width:60px}50%{opacity:1;width:96px}}
+
+/* ---------- cabecalho de secao ---------- */
+.sec-head{text-align:center;max-width:860px;margin:0 auto 3.2rem}
+.sec-head h2{font-size:clamp(1.65rem,3.4vw,2.5rem);margin:1rem 0 .9rem}
+.sec-head p{color:var(--creme-dim);font-size:1.06rem;max-width:58ch;margin:0 auto}
+.claro .sec-head p{color:rgba(16,36,27,.72)}
+
+/* ---------- temas de fundo ---------- */
+.claro{background:var(--papel);color:var(--tinta)}
+.claro h2,.claro h3{color:var(--tinta)}
+.papel2{background:var(--papel-2);color:var(--tinta)}
+.escuro{background:var(--verde-900)}
+.escuro-2{background:linear-gradient(180deg,var(--verde-950) 0%,var(--verde-800) 100%)}
+.foto{background-size:cover;background-position:center;color:var(--creme)}
+.foto::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,19,13,.90) 0%,rgba(5,19,13,.80) 100%)}
+
+/* ---------- comparador antes e depois ---------- */
+.cmp-titulos{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;max-width:820px;margin:0 auto 3rem}
+.cmp-lado{padding:1.5rem 1.25rem;border-radius:var(--raio);text-align:center}
+.cmp-ruim{background:rgba(196,85,61,.10);border:1px solid rgba(196,85,61,.34)}
+.cmp-bom{background:rgba(64,145,108,.13);border:1px solid rgba(64,145,108,.42);box-shadow:0 0 34px rgba(64,145,108,.16)}
+.cmp-lado .ico{font-size:1.6rem;font-weight:800;display:block;margin-bottom:.45rem}
+.cmp-ruim .ico{color:var(--falha)}
+.cmp-bom .ico{color:var(--ok)}
+.cmp-lado h3{font-size:1.16rem}
+.cmp-vs{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;color:var(--creme-dim)}
+.claro .cmp-vs{color:rgba(16,36,27,.55)}
+
+.galeria{display:grid;grid-template-columns:1fr;gap:1.9rem;max-width:960px;margin:0 auto}
+@media(min-width:760px){
+  .galeria{grid-template-columns:repeat(2,1fr)}
+  .galeria .ba:last-child:nth-child(odd){grid-column:1 / -1;width:calc(50% - .95rem);margin-inline:auto}
+}
+.ba{position:relative}
+.ba h4{font-size:1.04rem;margin-bottom:.7rem;text-align:center;font-weight:700}
+.ba-box{position:relative;aspect-ratio:4/3;border-radius:var(--raio);overflow:hidden;border:1px solid rgba(224,168,60,.30);cursor:ew-resize;user-select:none;touch-action:pan-y}
+.ba-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;user-select:none}
+.ba-depois{clip-path:inset(0 0 0 50%)}
+.ba-linha{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--dourado);box-shadow:0 0 14px rgba(224,168,60,.75);pointer-events:none}
+.ba-alca{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:var(--dourado);display:grid;place-items:center;color:#26180A;font-size:1rem;font-weight:800;box-shadow:0 4px 18px rgba(0,0,0,.45);pointer-events:none}
+.ba-badge{position:absolute;top:12px;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;padding:.3rem .6rem;border-radius:6px;background:rgba(5,19,13,.78);color:var(--creme);pointer-events:none}
+.ba-badge.esq{left:12px}.ba-badge.dir{right:12px}
+.ba-legenda{font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;text-align:center;margin-top:.65rem;color:var(--creme-dim)}
+.claro .ba-legenda{color:rgba(16,36,27,.55)}
+.aviso{font-family:var(--mono);font-size:.73rem;text-align:center;margin-top:2.2rem;color:var(--creme-dim)}
+.claro .aviso{color:rgba(16,36,27,.55)}
+
+/* ---------- tabela comparacao ---------- */
+.tab-bloco{margin-bottom:2.6rem}
+.tab-bloco > .tag{display:block;margin-bottom:.9rem}
+.tabela{width:100%;border-collapse:separate;border-spacing:0;border:1px solid rgba(16,36,27,.14);border-radius:var(--raio);overflow:hidden}
+.tabela th{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:1rem 1.25rem;text-align:left}
+.tabela th.ruim{background:rgba(196,85,61,.14);color:#8F3A27}
+.tabela th.bom{background:rgba(64,145,108,.16);color:#1B4332}
+.tabela td{padding:1rem 1.25rem;font-size:.97rem;vertical-align:top;border-top:1px solid rgba(16,36,27,.10);width:50%}
+.tabela td.ruim{color:rgba(16,36,27,.66)}
+.tabela td.bom{color:var(--tinta);font-weight:600;background:rgba(64,145,108,.05)}
+
+/* ---------- cards genericos ---------- */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
+.card{padding:30px;border-radius:var(--raio);border:1px solid rgba(243,240,230,.12);background:rgba(243,240,230,.045);font-size:.98rem}
+.claro .card{border-color:rgba(16,36,27,.12);background:#fff}
+
+/* ---------- dialogo mental ---------- */
+.pensamentos{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.35rem;max-width:920px;margin:0 auto}
+.balao{position:relative;padding:28px 30px;border-radius:18px 18px 18px 4px;background:rgba(243,240,230,.055);border:1px solid rgba(243,240,230,.13);font-size:1.02rem;color:var(--creme-2)}
+.balao b{color:var(--dourado-claro);font-weight:700}
+
+/* ---------- culpa ---------- */
+.culpa-bloco{padding:32px;border-radius:var(--raio);margin-bottom:1.4rem;border:1px solid rgba(16,36,27,.12);background:#fff}
+.culpa-bloco.destaque{background:var(--papel-2);border-color:rgba(224,168,60,.4)}
+.culpa-bloco h3{font-size:1.02rem;color:var(--verde-600);margin-bottom:1rem;font-family:var(--mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.culpa-bloco li{list-style:none;padding-left:1.7rem;position:relative;margin-bottom:1rem;font-size:1rem}
+.culpa-bloco li::before{content:'';position:absolute;left:0;top:.62em;width:9px;height:9px;border-radius:2px;background:var(--dourado)}
+.revelacao{padding:1.2rem 0;border-top:1px solid rgba(16,36,27,.10)}
+.revelacao:first-of-type{border-top:none;padding-top:0}
+.revelacao b{color:var(--verde-500)}
+
+/* ---------- faca as contas ---------- */
+.conta{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;max-width:960px;margin:0 auto}
+.conta-card{padding:32px;border-radius:var(--raio);border:1px solid rgba(243,240,230,.13);background:rgba(243,240,230,.04)}
+.conta-card.b{border-color:rgba(224,168,60,.45);background:rgba(224,168,60,.07);box-shadow:0 0 40px rgba(224,168,60,.10)}
+.conta-card h3{font-size:1.1rem;margin-bottom:1.2rem}
+.linha{display:flex;justify-content:space-between;gap:1rem;font-family:var(--mono);font-size:.86rem;padding:.55rem 0;border-bottom:1px dashed rgba(243,240,230,.13);color:var(--creme-dim)}
+.linha.total{border-bottom:none;border-top:1px solid rgba(243,240,230,.2);margin-top:.5rem;padding-top:.9rem;color:var(--creme);font-size:.98rem;font-weight:500}
+.conta-card p{font-size:.95rem;color:var(--creme-dim);margin-top:1.2rem}
+.impacto{max-width:820px;margin:2.6rem auto 0;padding:28px 32px;border-radius:var(--raio);background:rgba(64,145,108,.12);border:1px solid rgba(64,145,108,.35);text-align:center;font-size:1.14rem;font-weight:700}
+.impacto span{color:var(--dourado-claro)}
+
+/* ---------- centro da atencao ---------- */
+.radial{position:relative;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;gap:1.2rem;align-items:center}
+.radial-col{display:grid;gap:1rem}
+.orb{font-family:var(--mono);font-size:.79rem;letter-spacing:.05em;padding:.85rem 1rem;border-radius:10px;background:rgba(243,240,230,.05);border:1px solid rgba(243,240,230,.13);text-align:center;color:var(--creme-2)}
+.nucleo{width:224px;height:224px;border-radius:50%;display:grid;place-items:center;text-align:center;padding:1.5rem;background:radial-gradient(circle at 50% 40%,rgba(224,168,60,.26),rgba(224,168,60,.05) 70%);border:2px solid var(--dourado);box-shadow:0 0 60px rgba(224,168,60,.25)}
+.nucleo strong{display:block;font-size:1.12rem;line-height:1.3}
+.nucleo span{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;color:var(--dourado);display:block;margin-top:.5rem}
+
+/* ---------- trilha de passos ---------- */
+.trilha{max-width:800px;margin:0 auto;position:relative}
+.trilha::before{content:'';position:absolute;left:26px;top:14px;bottom:14px;width:2px;background:linear-gradient(180deg,var(--dourado),rgba(224,168,60,.15))}
+.passo{display:grid;grid-template-columns:56px 1fr;gap:1.4rem;margin-bottom:1.6rem;align-items:start}
+.passo-num{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--verde-800);border:2px solid var(--dourado);font-family:var(--mono);font-weight:500;color:var(--dourado);position:relative;z-index:2}
+.passo-txt h4{font-size:1.1rem;margin-bottom:.3rem}
+.passo-txt p{color:var(--creme-dim);font-size:.97rem}
+
+
+/* ---------- diagrama do metodo ---------- */
+.metodo{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.9rem;align-items:stretch;max-width:900px;margin:0 auto 2.4rem}
+.metodo-card{background:rgba(243,240,230,.05);border:1px solid rgba(224,168,60,.32);border-radius:16px;padding:30px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.6rem}
+.metodo-card svg{width:46px;height:46px;stroke:var(--dourado);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.metodo-card h4{font-size:1.14rem;color:var(--creme)}
+.metodo-card p{font-size:.94rem;color:var(--creme-dim);line-height:1.5}
+.metodo-seta{align-self:center;color:var(--dourado);font-size:1.5rem;line-height:1}
+.regua{max-width:900px;margin:0 auto;padding-top:.4rem}
+.regua-barra{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(224,168,60,.45)}
+.regua-barra span{height:11px;border-left:1px solid rgba(224,168,60,.45)}
+.regua-barra span:last-child{border-right:1px solid rgba(224,168,60,.45)}
+.regua-rotulos{display:grid;grid-template-columns:repeat(5,1fr);margin-top:.55rem}
+.regua-rotulos span{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--creme-dim);text-align:center}
+.regua-nota{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;color:var(--dourado);margin-top:1rem}
+@media(max-width:820px){
+  .metodo{grid-template-columns:1fr}
+  .metodo-seta{transform:rotate(90deg);margin:.1rem 0}
+  .regua-rotulos span{font-size:.62rem}
+}
+
+/* ---------- demonstracao ---------- */
+.demo-img{max-width:820px;margin:0 auto;filter:drop-shadow(0 22px 44px rgba(16,36,27,.22))}
+.legenda{font-size:.93rem;color:var(--creme-dim);text-align:center;max-width:64ch;margin:1.6rem auto 0}
+
+/* ---------- especialista ---------- */
+.esp{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:3rem;align-items:center;max-width:1020px;margin:0 auto}
+.esp img{border-radius:var(--raio);border:2px solid rgba(224,168,60,.45)}
+.esp p{margin-bottom:1.15rem;color:var(--creme-2)}
+.esp b{color:var(--dourado-claro);font-weight:700}
+
+/* ---------- depoimentos ---------- */
+.dep{padding:30px;border-radius:var(--raio);border:1px solid rgba(16,36,27,.12);background:#fff;position:relative}
+.dep .estrelas{color:var(--dourado);letter-spacing:.15em;font-size:.9rem;margin-bottom:.9rem}
+.dep blockquote{font-size:1.02rem;font-style:normal;color:var(--tinta);margin-bottom:1.2rem}
+.dep .autor{font-weight:800;font-size:.98rem}
+.dep .origem{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(16,36,27,.55)}
+.dados{display:grid;grid-template-columns:1fr;gap:1.2rem;margin-top:2.4rem}
+@media(min-width:560px){
+  .dados{grid-template-columns:repeat(2,1fr)}
+  .dados > *:last-child:nth-child(odd){grid-column:1 / -1;width:calc(50% - .6rem);margin-inline:auto}
+}
+@media(min-width:860px){
+  .dados{grid-template-columns:repeat(3,1fr)}
+  .dados > *:last-child:nth-child(odd){grid-column:auto;width:auto;margin-inline:0}
+}
+.dado{padding:24px;border-radius:var(--raio);background:var(--papel-2);text-align:center}
+.dado strong{display:block;font-size:2rem;color:var(--verde-500);line-height:1.1}
+.dado span{font-size:.87rem;color:rgba(16,36,27,.68)}
+
+
+/* ---------- faixa de dados de mercado ---------- */
+.faixa-dados{margin-top:3.4rem;padding:40px 36px;border-radius:20px;background:var(--verde-800);color:var(--creme);border:1px solid rgba(224,168,60,.26)}
+.faixa-dados .tag{display:block;text-align:center;margin-bottom:.9rem}
+.faixa-dados > p{max-width:64ch;margin:0 auto;text-align:center;font-size:1.06rem;color:var(--creme-2)}
+.faixa-dados .fonte{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--creme-dim);text-align:center;margin-top:.9rem}
+.faixa-dados .dados{margin-top:2.4rem}
+.faixa-dados .dado{background:rgba(243,240,230,.055);border:1px solid rgba(243,240,230,.10)}
+.faixa-dados .dado strong{color:var(--dourado-claro)}
+.faixa-dados .dado span{color:var(--creme-dim)}
+@media(max-width:480px){.faixa-dados{padding:30px 22px}}
+
+/* ---------- entregaveis ---------- */
+.ent{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.4rem;max-width:920px;margin:0 auto}
+.ent-card{padding:28px;border-radius:var(--raio);border:1px solid rgba(224,168,60,.22);background:rgba(243,240,230,.045)}
+.ent-card h4{font-size:1.06rem;margin-bottom:.5rem}
+.ent-card p{font-size:.94rem;color:var(--creme-dim);margin-bottom:1rem}
+.ent-valor{font-family:var(--mono);font-size:.78rem;color:var(--dourado);letter-spacing:.06em}
+
+/* ---------- oferta ---------- */
+.oferta{max-width:760px;margin:0 auto;padding:44px 36px;border-radius:20px;border:1px solid rgba(224,168,60,.45);background:linear-gradient(180deg,rgba(224,168,60,.10),rgba(224,168,60,.03));text-align:center}
+.stack{text-align:left;margin-bottom:2rem}
+.stack .linha{color:var(--creme-2)}
+.preco-antigo{font-family:var(--mono);font-size:1.05rem;color:var(--creme-dim);display:block;margin-bottom:.2rem}
+.preco{font-size:clamp(3rem,8vw,4.4rem);font-weight:800;color:var(--dourado-claro);line-height:1}
+.preco small{font-size:1.2rem;font-weight:600}
+.acesso{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;color:var(--creme-dim);margin:.7rem 0 1.8rem}
+.retorno{max-width:620px;margin:2.2rem auto 0;padding:24px 28px;border-radius:var(--raio);background:rgba(243,240,230,.05);border-left:3px solid var(--dourado);text-align:left;font-size:1rem;color:var(--creme-2)}
+.mini-dep{max-width:620px;margin:1.2rem auto 0;padding:22px 26px;border-radius:var(--raio);background:rgba(243,240,230,.04);text-align:left;font-size:.95rem;color:var(--creme-dim)}
+.mini-dep b{color:var(--creme)}
+
+/* ---------- garantia e suporte ---------- */
+.gs{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;max-width:900px;margin:0 auto}
+.gs-card{padding:32px;border-radius:var(--raio);background:#fff;border:1px solid rgba(16,36,27,.12);text-align:center}
+.gs-marca{width:120px;height:120px;margin:0 auto 1.4rem;color:var(--verde-500)}
+.gs-marca svg{width:100%;height:100%;display:block}
+.gs-card h3{font-size:1.2rem;margin-bottom:.7rem}
+.gs-card p{font-size:.97rem;color:rgba(16,36,27,.72)}
+
+/* ---------- faq ---------- */
+.faq{max-width:800px;margin:0 auto}
+.faq-grupo{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado);margin:2.4rem 0 1rem}
+.faq-grupo:first-child{margin-top:0}
+.faq-item{border-bottom:1px solid rgba(243,240,230,.12)}
+.faq-q{width:100%;background:none;border:none;color:var(--creme);font-family:var(--sans);font-size:1.04rem;font-weight:700;text-align:left;padding:1.25rem 2.4rem 1.25rem 0;cursor:pointer;position:relative;line-height:1.4}
+.faq-q::after{content:'+';position:absolute;right:.2rem;top:1.1rem;font-size:1.5rem;color:var(--dourado);font-weight:400;transition:transform .3s ease}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .38s ease}
+.faq-a p{padding:0 0 1.3rem;color:var(--creme-dim);font-size:.99rem}
+
+/* ---------- cta final ---------- */
+.final{background:linear-gradient(160deg,var(--verde-600) 0%,var(--verde-900) 70%);text-align:center}
+.final h2{font-size:clamp(1.8rem,4vw,2.9rem);max-width:20ch;margin:0 auto 1.2rem}
+
+/* ---------- footer ---------- */
+footer{background:var(--verde-950);padding:56px 24px 110px;text-align:center;border-top:1px solid rgba(243,240,230,.09)}
+footer img{height:116px;margin:0 auto 1.4rem}
+footer p{font-size:.86rem;color:var(--creme-dim)}
+footer a{color:var(--creme-dim);text-decoration:none;margin:0 .6rem;font-size:.84rem}
+
+/* ---------- cta flutuante ---------- */
+.flutuante{display:none;position:fixed;left:0;right:0;bottom:0;z-index:99;padding:.75rem 1rem;background:rgba(7,26,18,.95);backdrop-filter:blur(14px);border-top:1px solid rgba(224,168,60,.28)}
+.flutuante .btn{width:100%;font-size:.95rem;padding:.95rem 1rem}
+
+
+/* ---------- item sozinho na ultima linha fica centralizado ---------- */
+@media(min-width:760px){
+  .grid2,.ent,.pensamentos{grid-template-columns:repeat(2,1fr)}
+  .grid2 > *:last-child:nth-child(odd),
+  .ent > *:last-child:nth-child(odd),
+  .pensamentos > *:last-child:nth-child(odd){grid-column:1 / -1;width:calc(50% - .75rem);margin-inline:auto}
+}
+@media(min-width:1080px){
+  .grid2{grid-template-columns:repeat(3,1fr)}
+  /* anula a regra de duas colunas antes de aplicar a de tres */
+  .grid2 > *:last-child:nth-child(odd){grid-column:auto;width:auto;margin-inline:0}
+  .grid2 > *:last-child:nth-child(3n+1){grid-column:1 / -1;width:calc(33.333% - 1rem);margin-inline:auto}
+}
+
+/* ---------- scroll reveal ---------- */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.on{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .esp{grid-template-columns:1fr;gap:2rem}
+  .radial{grid-template-columns:1fr;justify-items:center}
+  .nucleo{width:200px;height:200px}
+}
+@media(max-width:768px){
+  section{padding:68px 20px}
+  .header img{height:38px}
+  .header .btn{display:none}
+  .cmp-titulos{grid-template-columns:1fr;gap:.7rem}
+  .cmp-vs{display:none}
+  .tabela td,.tabela th{padding:.85rem .9rem;font-size:.92rem}
+  .flutuante{display:block}
+  footer{padding-bottom:104px}
+}
+@media(max-width:480px){
+  section{padding:58px 16px}
+  .card,.conta-card,.culpa-bloco,.gs-card,.ent-card{padding:24px}
+  .oferta{padding:32px 22px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-in">
+    <a class="marca" href="#topo">
+      <img src="images/brasao-claro.png" alt="">
+      <span>Mapa do Potencial<br>Turístico</span>
+    </a>
+    <a href="#oferta" class="btn">Quero saber se minha terra atrai visitantes</a>
+  </div>
+</header>
+
+<!-- 1. CABECALHO -->
+<section class="hero topo-bg malha" id="topo">
+  <div class="brilho" style="width:520px;height:520px;background:rgba(64,145,108,.22);top:-140px;left:50%;transform:translateX(-50%)"></div>
+  <div class="wrap">
+    <span class="tag tag-box">Índice de Atratividade Turística</span>
+    <h1>Aplique dez indicadores na sua área e saiba hoje se ela tem potencial para <em>receber visitantes</em>.</h1>
+    <p class="sub">Antes de investir em trilha, chalé ou camping, descubra se a sua terra atrai visitante de verdade.</p>
+    <div class="pitadas">
+      <span class="pitada"><b>✦</b> O critério usado em parque nacional</span>
+      <span class="pitada"><b>✦</b> Fica pronto em 30 minutos</span>
+      <span class="pitada"><b>✦</b> Relatório em PDF para guardar</span>
+      <span class="pitada"><b>✦</b> Serve para terra que você ainda vai comprar</span>
+      <span class="pitada"><b>✦</b> Uma IA explica o seu resultado</span>
+    </div>
+    <a href="#oferta" class="btn">Quero saber se minha terra atrai visitantes</a>
+    <p class="btn-nota">Acesso imediato após o pagamento</p>
+  </div>
+</section>
+
+<!-- 2. COMPARACAO PRIMARIA -->
+<section class="claro">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">A mesma terra, duas decisões</span>
+      <h2>A sua área já tem tudo que precisa. O que muda é o que você coloca nela.</h2>
+      <p>Arraste a alça de cada imagem para ver a mesma paisagem antes e depois de uma estrutura simples.</p>
+    </div>
+
+    <div class="cmp-titulos reveal">
+      <div class="cmp-lado cmp-ruim"><span class="ico">✗</span><h3>Terra parada</h3></div>
+      <div class="cmp-vs">versus</div>
+      <div class="cmp-lado cmp-bom"><span class="ico">✓</span><h3>Terra que recebe visitante</h3></div>
+    </div>
+
+    <div class="galeria reveal">
+      <div class="ba"><h4>Trilha</h4>
+        <div class="ba-box" data-ba>
+          <img src="images/trilha-antes.webp" alt="Mata fechada sem trilha marcada">
+          <img class="ba-depois" src="images/trilha-depois.webp" alt="Trilha marcada com portal de entrada">
+          <span class="ba-badge esq">Antes</span><span class="ba-badge dir">Depois</span>
+          <div class="ba-linha"></div><div class="ba-alca">⇔</div>
+        </div>
+        <p class="ba-legenda">Arraste pros lados para comparar</p>
+      </div>
+      <div class="ba"><h4>Mirante</h4>
+        <div class="ba-box" data-ba>
+          <img src="images/mirante-antes.webp" alt="Vista da serra sem ponto de observação">
+          <img class="ba-depois" src="images/mirante-depois.webp" alt="Deck de madeira com vista para a serra">
+          <span class="ba-badge esq">Antes</span><span class="ba-badge dir">Depois</span>
+          <div class="ba-linha"></div><div class="ba-alca">⇔</div>
+        </div>
+        <p class="ba-legenda">Arraste pros lados para comparar</p>
+      </div>
+      <div class="ba"><h4>Cabana</h4>
+        <div class="ba-box" data-ba>
+          <img src="images/cabana-antes.webp" alt="Encosta sem nenhuma construção">
+          <img class="ba-depois" src="images/cabana-depois.webp" alt="Cabana de madeira iluminada no fim da tarde">
+          <span class="ba-badge esq">Antes</span><span class="ba-badge dir">Depois</span>
+          <div class="ba-linha"></div><div class="ba-alca">⇔</div>
+        </div>
+        <p class="ba-legenda">Arraste pros lados para comparar</p>
+      </div>
+      <div class="ba"><h4>Deck na cachoeira</h4>
+        <div class="ba-box" data-ba>
+          <img src="images/deck-antes.webp" alt="Cachoeira sem acesso estruturado">
+          <img class="ba-depois" src="images/deck-depois.webp" alt="Deck de madeira na beira da cachoeira">
+          <span class="ba-badge esq">Antes</span><span class="ba-badge dir">Depois</span>
+          <div class="ba-linha"></div><div class="ba-alca">⇔</div>
+        </div>
+        <p class="ba-legenda">Arraste pros lados para comparar</p>
+      </div>
+      <div class="ba"><h4>Camping</h4>
+        <div class="ba-box" data-ba>
+          <img src="images/camping-antes.webp" alt="Campo aberto sem área de camping">
+          <img class="ba-depois" src="images/camping-depois.webp" alt="Área de camping com barracas montadas">
+          <span class="ba-badge esq">Antes</span><span class="ba-badge dir">Depois</span>
+          <div class="ba-linha"></div><div class="ba-alca">⇔</div>
+        </div>
+        <p class="ba-legenda">Arraste pros lados para comparar</p>
+      </div>
+    </div>
+
+    <p class="aviso">Ilustrações de exemplo. Não são fotos reais de uma propriedade específica.</p>
+  </div>
+</section>
+
+<!-- 3. TABELA COMPARACAO -->
+<section class="papel2">
+  <div class="wrap narrow">
+    <div class="sec-head reveal">
+      <span class="tag">Palpite contra critério</span>
+      <h2>O que muda quando a terra deixa de ser palpite</h2>
+    </div>
+
+    <div class="tab-bloco reveal">
+      <span class="tag">O resultado</span>
+      <table class="tabela">
+        <tr><th class="ruim">✗ Sem o diagnóstico</th><th class="bom">✓ Com o diagnóstico</th></tr>
+        <tr><td class="ruim">Acha que a área tem potencial porque é bonita</td><td class="bom">Sabe a atratividade dela, da região ao país inteiro</td></tr>
+        <tr><td class="ruim">Não sabe se põe R$80 mil em chalé ou não</td><td class="bom">Sabe quais indicadores mudam a nota antes de gastar</td></tr>
+        <tr><td class="ruim">Não tem nenhum documento técnico sobre a área</td><td class="bom">Tem um relatório em PDF para mostrar a sócio, banco ou família</td></tr>
+        <tr><td class="ruim">Ouve "sua terra é linda" e continua sem visitante</td><td class="bom">Entende o que separa terra bonita de terra visitada</td></tr>
+        <tr><td class="ruim">Compara com a fazenda do vizinho no achismo</td><td class="bom">Compara com Iguaçu, Noronha e Chapada na mesma régua</td></tr>
+        <tr><td class="ruim">Adia a decisão há anos</td><td class="bom">Decide em 30 minutos com critério técnico</td></tr>
+      </table>
+    </div>
+
+    <div class="tab-bloco reveal">
+      <span class="tag">O processo</span>
+      <table class="tabela">
+        <tr><th class="ruim">✗ Como fazia</th><th class="bom">✓ Como faz agora</th></tr>
+        <tr><td class="ruim">Decide por opinião de corretor, construtor e vizinho</td><td class="bom">Decide por dez indicadores medidos</td></tr>
+        <tr><td class="ruim">Olha só para dentro da porteira</td><td class="bom">Mede também acesso, entorno e demanda da região</td></tr>
+        <tr><td class="ruim">Começa pela obra</td><td class="bom">Começa pelo diagnóstico, e a obra vem depois</td></tr>
+        <tr><td class="ruim">Procura caso de fazenda parecida no YouTube</td><td class="bom">Aplica o critério na própria terra</td></tr>
+        <tr><td class="ruim">Explica o projeto de cabeça, sem material nenhum</td><td class="bom">Apresenta um relatório técnico em PDF</td></tr>
+        <tr><td class="ruim">Pagaria a partir de R$15 mil por uma consultoria</td><td class="bom">Roda a medição quantas vezes quiser</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 4. DIALOGO MENTAL NEGATIVO -->
+<section class="escuro-2 topo-bg">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">O que passa na sua cabeça</span>
+      <h2>Todo mundo diz que a sua terra é linda. <em style="font-style:normal;color:var(--dourado-claro)">E mesmo assim ninguém vem.</em></h2>
+      <p>E você convive todo dia com pensamentos como estes.</p>
+    </div>
+    <div class="pensamentos reveal">
+      <div class="balao">"Meu pai deixou essa terra e eu <b>não estou fazendo nada com ela</b>."</div>
+      <div class="balao">"Tenho medo de gastar e descobrir depois que <b>a área não valia isso</b>."</div>
+      <div class="balao">"Fiz curso do SENAR e continuo <b>sem saber se a minha área serve</b>."</div>
+      <div class="balao">"Minha fazenda fica a três horas da capital, <b>será que isso mata o projeto</b>."</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. A CULPA NAO E SUA -->
+<section class="claro">
+  <div class="wrap narrow">
+    <div class="sec-head reveal">
+      <span class="tag">A culpa não é sua</span>
+      <h2>Você conhece cada palmo da sua terra e mesmo assim não consegue dizer se ela serve para receber visitante.</h2>
+      <p>O problema não está na sua área. Está no fato de ninguém nunca ter te dado uma régua para medir ela.</p>
+    </div>
+
+    <div class="culpa-bloco reveal">
+      <h3>Você faz a sua parte</h3>
+      <ul>
+        <li>Você mantém a mata em pé, paga imposto, cerca, roça e fiscaliza, enquanto a terra não devolve nada em dinheiro.</li>
+        <li>Você já abriu estrada, colocou placa, arrumou um acesso melhor, e o movimento continuou igual.</li>
+        <li>Você já procurou curso, assistiu vídeo, entrou em grupo de WhatsApp, e todo mundo ensina a fazer turismo rural sem nunca olhar para a sua terra.</li>
+      </ul>
+    </div>
+
+    <div class="culpa-bloco destaque reveal">
+      <h3>Mas ninguém te explicou isso</h3>
+      <p>Todo o conteúdo disponível ensina o processo e pula o diagnóstico. Você aprendeu a fazer antes de alguém te dizer se compensa fazer. Isso não é falta de esforço seu, é uma etapa que simplesmente não existe no mercado brasileiro.</p>
+    </div>
+
+    <div class="culpa-bloco reveal">
+      <h3>O que quem recebe visitante sabe e quase ninguém conta</h3>
+      <div class="revelacao"><p><b>O tamanho da área quase não pesa.</b> Propriedades entre 11 e 100 hectares recebem entre mil e mil e quinhentos visitantes por ano, volume que muitas áreas grandes e desorganizadas nunca alcançam.</p></div>
+      <div class="revelacao"><p><b>Metade da sua nota está fora da porteira.</b> O Monte Roraima tem paisagem de nível internacional e perde pontos no acesso. A sua terra é avaliada junto com a região em volta, e isso muda completamente a estratégia certa para ela.</p></div>
+      <div class="revelacao"><p><b>Beleza não é atratividade.</b> Uma propriedade comum de cerrado perto de Brasília, sem cachoeira e sem vista, virou passeio conhecido na cidade quando o dono criou um café da manhã e uma aula de ioga com as cabras dele.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FACA AS CONTAS -->
+<section class="escuro malha">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Faça a conta comigo</span>
+      <h2>Pega o orçamento do chalé e faz a conta comigo.</h2>
+    </div>
+    <div class="conta reveal">
+      <div class="conta-card">
+        <h3>Cenário A. Você constrói primeiro e mede depois</h3>
+        <div class="linha"><span>Chalé simples de madeira</span><span>R$ 80.000</span></div>
+        <div class="linha"><span>Melhoria de acesso e cascalho</span><span>R$ 15.000</span></div>
+        <div class="linha"><span>Placas e sinalização</span><span>R$ 4.000</span></div>
+        <div class="linha total"><span>Investido antes de saber</span><span>R$ 99.000</span></div>
+        <p>Se o que estava segurando a atratividade da sua área era o acesso e a falta de serviço, o chalé não muda a sua classificação. Você continua no mesmo nível, com R$ 99.000 a menos no caixa.</p>
+      </div>
+      <div class="conta-card b">
+        <h3>Cenário B. Você mede primeiro e constrói depois</h3>
+        <div class="linha"><span>Diagnóstico completo</span><span>R$ 67</span></div>
+        <div class="linha"><span>Tempo até o resultado</span><span>30 minutos</span></div>
+        <div class="linha"><span>Correção apontada no relatório</span><span>R$ 6.000</span></div>
+        <div class="linha total"><span>Ainda no caixa</span><span>R$ 93.000</span></div>
+        <p>O relatório aponta os indicadores que puxam a sua nota para baixo. Você resolve primeiro o que muda a classificação, e decide o resto já sabendo onde o dinheiro faz diferença.</p>
+      </div>
+    </div>
+    <div class="impacto reveal">A conta aqui não é sobre o dinheiro que entra. É sobre os <span>R$ 93.000</span> que não saem no lugar errado.</div>
+    <p class="aviso">Números hipotéticos, usados para ilustrar a ordem das decisões.</p>
+  </div>
+</section>
+
+<!-- 7. CENTRO DA ATENCAO -->
+<section class="foto" style="background-image:url('images/mirante-depois.webp')">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Dez indicadores, um documento</span>
+      <h2>Tudo que a sua terra tem vira uma nota só</h2>
+    </div>
+    <div class="radial reveal">
+      <div class="radial-col">
+        <div class="orb">Variedade de atrativos</div>
+        <div class="orb">Atividades possíveis</div>
+        <div class="orb">Infraestrutura atual</div>
+        <div class="orb">Tempo até o aeroporto</div>
+      </div>
+      <div class="nucleo"><div><strong>Relatório do seu diagnóstico</strong><span>PDF · 30 min</span></div></div>
+      <div class="radial-col">
+        <div class="orb">Atratividade cênica</div>
+        <div class="orb">Grau de isolamento</div>
+        <div class="orb">Serviços existentes</div>
+        <div class="orb">Demanda do entorno</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. DINAMICA DE ACESSO -->
+<section class="escuro-2">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Levantamento, Diagnóstico, Roteiro</span>
+      <h2>Do pagamento ao diagnóstico, tudo acontece hoje</h2>
+    </div>
+    <div class="reveal" style="margin-bottom:3.4rem">
+      <div class="metodo">
+        <div class="metodo-card">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4"/><path d="M8 7h8"/><path d="M10 7 6 21"/><path d="M14 7l4 14"/><path d="M8.5 15h7"/></svg>
+          <h4>Levantamento</h4>
+          <p>O que a sua área tem hoje</p>
+        </div>
+        <div class="metodo-seta">→</div>
+        <div class="metodo-card">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 17a9 9 0 1 1 17 0"/><path d="M12 17l4.2-5"/><circle cx="12" cy="17" r="1.4"/></svg>
+          <h4>Diagnóstico</h4>
+          <p>Em que nível ela está</p>
+        </div>
+        <div class="metodo-seta">→</div>
+        <div class="metodo-card">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20z"/><path d="M9 4v13.5"/><path d="M15 6.5V20"/></svg>
+          <h4>Roteiro</h4>
+          <p>O que dá para oferecer agora</p>
+        </div>
+      </div>
+      <div class="regua">
+        <div class="regua-barra"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="regua-rotulos"><span>Local</span><span>Regional</span><span>Estadual</span><span>Nacional</span><span>Internacional</span></div>
+        <p class="regua-nota">Os cinco níveis em que a sua área pode se enquadrar</p>
+      </div>
+    </div>
+    <div class="trilha reveal">
+      <div class="passo"><div class="passo-num">01</div><div class="passo-txt"><h4>Entra hoje</h4><p>Acesso liberado logo após o pagamento.</p></div></div>
+      <div class="passo"><div class="passo-num">02</div><div class="passo-txt"><h4>Assiste em 20 minutos</h4><p>Aulas curtas mostrando como observar a sua área.</p></div></div>
+      <div class="passo"><div class="passo-num">03</div><div class="passo-txt"><h4>Preenche a medição</h4><p>Dez indicadores, por dentro da porteira e no entorno.</p></div></div>
+      <div class="passo"><div class="passo-num">04</div><div class="passo-txt"><h4>Gera o relatório</h4><p>O PDF com a nota e as recomendações sai na hora.</p></div></div>
+      <div class="passo"><div class="passo-num">05</div><div class="passo-txt"><h4>Conversa com a IARA</h4><p>A inteligência lê o seu resultado e explica o que fazer primeiro.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. DEMONSTRACAO -->
+<section class="claro">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">O que você recebe</span>
+      <h2>Olha o que sai depois de trinta minutos preenchendo.</h2>
+    </div>
+    <div class="demo-img reveal"><img src="images/calculadora-iat.png" alt="Relatório do Índice de Atratividade Turística com gráfico de radar e recomendações por indicador"></div>
+    <p class="legenda" style="color:rgba(16,36,27,.72)">À esquerda, o gráfico de radar com a pontuação da sua área e da região em volta, nos três grupos de atributos. À direita, a lista de recomendações indicador por indicador, com o que está puxando a sua nota para cima e para baixo.</p>
+  </div>
+</section>
+
+<!-- 10. QUEM E O ESPECIALISTA -->
+<section class="escuro topo-bg">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag">Por que essa ferramenta existe</span></div>
+    <div class="esp reveal">
+      <img src="images/thiago-bio.webp" alt="Thiago Beraldo">
+      <div>
+        <p>Thiago Beraldo passou <b>dezoito anos</b> no IBAMA e no ICMBio. Quando chegou à Coordenação-Geral de Uso Público, os parques nacionais brasileiros recebiam <b>2 milhões</b> de visitantes por ano. Quando saiu, eram <b>15 milhões</b>. Hoje são <b>25 milhões</b>. Ele escreveu boa parte dos manuais que o ICMBio usa até hoje, capacitou mais de 500 pessoas e preside o <b>grupo de especialistas em turismo da IUCN</b>, o braço ambiental da ONU.</p>
+        <p>Antes de tudo isso, ele queria juntar um milhão de reais e comprar um Escort XR3 conversível. Passou por uma crise, foi acampar atrás de respostas e voltou com outra: o que ele via de destruição no planeta era reflexo do que as pessoas tinham perdido dentro delas. Decidiu religar gente e natureza, e escolheu fazer isso pelo caminho mais difícil e mais duradouro, o da ciência.</p>
+        <p>O doutorado em ecologia foi estudar os parques nacionais americanos, e a descoberta foi decepcionante de tão simples: o que eles faziam de melhor era <b>fazer o básico bem feito</b>. Manual, regulamento e capacitação. Foi isso que ele trouxe para o Brasil, e é isso que está dentro desta ferramenta. Ele criou o diagnóstico para que qualquer proprietário, sem precisar de dezoito anos de serviço público, consiga saber se a terra dele atrai visitante.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. DEPOIMENTOS -->
+<section class="claro">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Quem já aplicou o método</span>
+      <h2>O que muda quando a área finalmente é medida</h2>
+    </div>
+    <div class="grid2 reveal">
+      <div class="dep">
+        <div class="estrelas">★★★★★</div>
+        <blockquote>"Totalmente virou nossa chave, encheu a gente de esperança. Estou estudando, estou fascinada, já estou usando, inclusive."</blockquote>
+        <div class="autor">Connie</div><div class="origem">Maple Leaf Reserva Florestal</div>
+      </div>
+      <div class="dep">
+        <div class="estrelas">★★★★★</div>
+        <blockquote>"O método trouxe uma visão do todo e das particularidades que muitas vezes a gente não consegue enxergar. Já conseguimos direcionar melhor nosso público e criar continuidade de receita."</blockquote>
+        <div class="autor">Sheila</div><div class="origem">Fazenda Colomi</div>
+      </div>
+      <div class="dep">
+        <div class="estrelas">★★★★★</div>
+        <blockquote>"Fizemos o IAT e aplicamos as ferramentas de verdade. Saímos com um documento concreto em mãos. Isso é extremamente estimulante."</blockquote>
+        <div class="autor">Bernardo</div><div class="origem">Pesquisador e consultor</div>
+      </div>
+    </div>
+    <div class="faixa-dados reveal">
+      <span class="tag">O mercado em volta da sua terra</span>
+      <p>O turismo de natureza responde por 60% do faturamento do setor de viagens no Brasil, e o ecoturismo é a segunda maior motivação de viagem do brasileiro, com 27% de preferência.</p>
+      <p class="fonte">Ministério do Turismo e Agência Brasil</p>
+      <div class="dados">
+        <div class="dado"><strong>12,5 mi</strong><span>visitas em parques nacionais em 2024, recorde pelo segundo ano seguido</span></div>
+        <div class="dado"><strong>1.200 a 1.500</strong><span>visitantes por ano em propriedades de 11 a 100 hectares organizadas</span></div>
+        <div class="dado"><strong>10</strong><span>indicadores medidos, por dentro da porteira e no entorno</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. ENTREGAVEIS -->
+<section class="escuro-2 malha">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Vai junto</span>
+      <h2>O diagnóstico responde onde você está. Isso aqui responde o que fazer depois.</h2>
+    </div>
+    <div class="ent reveal">
+      <div class="ent-card"><h4>Régua dos Cinco Níveis</h4><p>Cartela com o que caracteriza cada nível de atratividade, do local ao internacional, para você ler o seu resultado sem dúvida.</p><span class="ent-valor">Valor de mercado R$ 37</span></div>
+      <div class="ent-card"><h4>Calculadora de Cenário</h4><p>Roda a medição de novo com a estrutura que você pretende ter, e mostra quanto a nota sobe antes de você gastar.</p><span class="ent-valor">Valor de mercado R$ 97</span></div>
+      <div class="ent-card"><h4>Licenciamento sem Sustos</h4><p>Aula sobre o que precisa e o que não precisa de licença para receber visitante na sua área.</p><span class="ent-valor">Valor de mercado R$ 97</span></div>
+      <div class="ent-card"><h4>Modelo de Apresentação para Sócio ou Banco</h4><p>Slides prontos para apresentar o diagnóstico a quem precisa aprovar o projeto com você.</p><span class="ent-valor">Valor de mercado R$ 67</span></div>
+      <div class="ent-card"><h4>IARA Avançada</h4><p>Perguntas adicionais para explorar o seu resultado a fundo com a inteligência que lê o relatório.</p><span class="ent-valor">Valor de mercado R$ 97</span></div>
+      <div class="ent-card" style="border-color:rgba(64,145,108,.4);background:rgba(64,145,108,.08)"><h4>Aulas de preenchimento e leitura</h4><p>Vídeos curtos que mostram como observar a sua área e como interpretar cada indicador do relatório.</p><span class="ent-valor" style="color:var(--creme)">Incluso</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. RESUMO DA OPERA -->
+<section class="escuro topo-bg" id="oferta">
+  <div class="brilho" style="width:560px;height:560px;background:rgba(224,168,60,.14);top:10%;left:50%;transform:translateX(-50%)"></div>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Tudo que entra</span>
+      <h2>O que você leva por menos do que custa o diesel de duas viagens até a área</h2>
+    </div>
+    <div class="oferta reveal">
+      <div class="stack">
+        <div class="linha"><span>Calculadora do Índice de Atratividade Turística</span><span>R$ 197</span></div>
+        <div class="linha"><span>Relatório de diagnóstico em PDF</span><span>R$ 97</span></div>
+        <div class="linha"><span>IARA, a inteligência que lê o seu resultado</span><span>R$ 147</span></div>
+        <div class="linha"><span>Aulas curtas de preenchimento e leitura</span><span>R$ 97</span></div>
+        <div class="linha"><span>Régua dos Cinco Níveis</span><span>R$ 37</span></div>
+        <div class="linha"><span>Calculadora de Cenário</span><span>R$ 97</span></div>
+        <div class="linha"><span>Licenciamento sem Sustos</span><span>R$ 97</span></div>
+        <div class="linha"><span>Modelo de Apresentação para Sócio ou Banco</span><span>R$ 67</span></div>
+        <div class="linha"><span>IARA Avançada</span><span>R$ 97</span></div>
+        <div class="linha total"><span>Valor total</span><span><s>R$ 933</s></span></div>
+      </div>
+      <span class="preco-antigo"><s>R$ 267</s></span>
+      <div class="preco"><small>R$</small> 67</div>
+      <p class="acesso">Pagamento único · Acesso por 1 ano</p>
+      <a href="#checkout" class="btn">Quero saber se minha terra atrai visitantes</a>
+      <p class="btn-nota">Acesso imediato após o pagamento</p>
+    </div>
+    <div class="retorno reveal">Sessenta e sete reais é menos do que você gasta de diesel indo até a área e voltando duas vezes. A diferença é que a viagem acaba quando você chega em casa, e o relatório fica com você.</div>
+    <div class="mini-dep reveal">"Fizemos o IAT e aplicamos as ferramentas de verdade. Saímos com um documento concreto em mãos." <b>Bernardo, pesquisador e consultor.</b></div>
+  </div>
+</section>
+
+<!-- GARANTIA E SUPORTE -->
+<section class="claro">
+  <div class="wrap">
+    <div class="gs reveal">
+      <div class="gs-card">
+        <div class="gs-marca"><svg viewBox="0 0 120 120" role="img" aria-label="Selo de garantia de sete dias">
+          <path d="M60.00 2.00L64.08 8.16L69.07 2.71L72.14 9.44L77.92 4.84L79.90 11.96L86.33 8.32L87.17 15.66L94.09 13.08L93.77 20.46L101.01 18.99L99.54 26.23L106.92 25.91L104.34 32.83L111.68 33.67L108.04 40.10L115.16 42.08L110.56 47.86L117.29 50.93L111.84 55.92L118.00 60.00L111.84 64.08L117.29 69.07L110.56 72.14L115.16 77.92L108.04 79.90L111.68 86.33L104.34 87.17L106.92 94.09L99.54 93.77L101.01 101.01L93.77 99.54L94.09 106.92L87.17 104.34L86.33 111.68L79.90 108.04L77.92 115.16L72.14 110.56L69.07 117.29L64.08 111.84L60.00 118.00L55.92 111.84L50.93 117.29L47.86 110.56L42.08 115.16L40.10 108.04L33.67 111.68L32.83 104.34L25.91 106.92L26.23 99.54L18.99 101.01L20.46 93.77L13.08 94.09L15.66 87.17L8.32 86.33L11.96 79.90L4.84 77.92L9.44 72.14L2.71 69.07L8.16 64.08L2.00 60.00L8.16 55.92L2.71 50.93L9.44 47.86L4.84 42.08L11.96 40.10L8.32 33.67L15.66 32.83L13.08 25.91L20.46 26.23L18.99 18.99L26.23 20.46L25.91 13.08L32.83 15.66L33.67 8.32L40.10 11.96L42.08 4.84L47.86 9.44L50.93 2.71L55.92 8.16Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="60" cy="60" r="45" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="60" cy="60" r="41" fill="none" stroke="currentColor" stroke-width="0.8" stroke-dasharray="1.5 4"/>
+          <text x="60" y="62" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="34" font-weight="800" fill="currentColor">7</text>
+          <text x="60" y="80" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2.4" fill="currentColor">DIAS</text>
+          <path d="M34 92 Q60 104 86 92" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg></div>
+        <h3>Se não fizer sentido para a sua área</h3>
+        <p>Você tem sete dias para rodar o diagnóstico inteiro. Se concluir que não serviu para a sua terra, devolvemos o valor, sem burocracia e sem pergunta.</p>
+      </div>
+      <div class="gs-card">
+        <div class="gs-marca"><svg viewBox="0 0 120 120" role="img" aria-label="Atendimento por mensagem">
+          <path d="M24 38a10 10 0 0 1 10-10h52a10 10 0 0 1 10 10v30a10 10 0 0 1-10 10H54L36 92V78h-2a10 10 0 0 1-10-10z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+          <circle cx="46" cy="53" r="3.4" fill="currentColor"/>
+          <circle cx="60" cy="53" r="3.4" fill="currentColor"/>
+          <circle cx="74" cy="53" r="3.4" fill="currentColor"/>
+        </svg></div>
+        <h3>Você não fica sozinho no preenchimento</h3>
+        <p>Dúvida sobre o resultado você tira com a IARA, a qualquer hora. Dúvida de acesso ou de preenchimento vai pelo WhatsApp e é respondida por gente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14. FAQ -->
+<section class="escuro-2">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag">Antes de decidir</span><h2>O que costumam perguntar</h2></div>
+    <div class="faq reveal">
+      <p class="faq-grupo">Sobre o acesso</p>
+      <div class="faq-item"><button class="faq-q">Como recebo depois de pagar?</button><div class="faq-a"><p>O acesso chega no seu e-mail logo após a confirmação do pagamento. Se não aparecer em dez minutos, confira o spam ou chame no WhatsApp.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Por quanto tempo fica disponível?</button><div class="faq-a"><p>Um ano inteiro a partir da compra. Você pode voltar e refazer a medição quantas vezes quiser nesse período.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Funciona no celular?</button><div class="faq-a"><p>Funciona. Muita gente preenche no celular dentro da própria área, olhando para o que está descrevendo.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Preciso saber mexer em computador?</button><div class="faq-a"><p>Você precisa saber marcar opções numa tela e clicar num botão. As aulas mostram cada campo antes de você preencher.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Como tiro dúvida?</button><div class="faq-a"><p>Dúvida de interpretação do resultado você tira com a IARA, que fica disponível a qualquer hora. Dúvida de acesso ou de preenchimento vai pelo WhatsApp.</p></div></div>
+
+      <p class="faq-grupo">Sobre o diagnóstico</p>
+      <div class="faq-item"><button class="faq-q">Minha área é pequena. Vale a pena?</button><div class="faq-a"><p>Vale. O tamanho quase não pesa na conta. Propriedades entre 11 e 100 hectares recebem entre mil e mil e quinhentos visitantes por ano, volume que muitas áreas grandes e desorganizadas nunca alcançam. O que a medição olha é a combinação de atrativos, atividades, estrutura e entorno.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Ainda não comprei a terra. Serve?</button><div class="faq-a"><p>Serve, e talvez sirva mais para você do que para quem já comprou. Medir duas ou três propriedades pela mesma régua antes de assinar é exatamente o tipo de decisão em que um erro custa o valor da escritura.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Minha fazenda fica longe de cidade grande. Isso já elimina?</button><div class="faq-a"><p>Não elimina, muda a estratégia. O acesso é um dos dez indicadores e ele pesa, mas áreas distantes que se organizam para receber visitante de pernoite operam num jogo diferente de áreas próximas que recebem visita de um dia. O relatório mostra em qual dos dois a sua terra está.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Já fiz o curso gratuito do SENAR. Isso é a mesma coisa?</button><div class="faq-a"><p>São coisas diferentes. O SENAR ensina como empreender em turismo rural, e ensina bem. O que não existe em curso nenhum é a avaliação da sua área específica. Um ensina o processo, o outro diz se compensa começar.</p></div></div>
+      <div class="faq-item"><button class="faq-q">R$67 é barato demais. O que tem aí dentro?</button><div class="faq-a"><p>A ferramenta foi desenvolvida no ICMBio em parceria com o Serviço Florestal americano, testada em tese de doutorado e aplicada no planejamento de parques nacionais. O preço é baixo porque a distribuição é digital, não porque o conteúdo é raso. A mesma metodologia aplicada em consultoria com o Thiago começa em R$15 mil.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Não entendo nada de turismo. Consigo preencher?</button><div class="faq-a"><p>Consegue. Você não precisa saber de turismo, precisa conhecer a sua terra. As perguntas são sobre o que existe na área: quantos atrativos, quais atividades, que estrutura, que serviço.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Isso substitui uma consultoria?</button><div class="faq-a"><p>Não substitui. Uma consultoria do Thiago começa em R$15 mil e entra em licenciamento, projeto executivo e operação, feita para a sua área com ele acompanhando. O diagnóstico responde a pergunta que vem antes de tudo isso, que é se vale a pena contratar consultoria.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Vou sair com o projeto pronto?</button><div class="faq-a"><p>Você sai com o diagnóstico, as recomendações indicador por indicador e as primeiras ideias de visitação compatíveis com a sua área. O projeto executivo é uma etapa seguinte.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="final topo-bg">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="tag tag-box">Trinta minutos</span>
+      <h2 style="margin-top:1.2rem">Saiba hoje se a sua terra atrai visitantes</h2>
+      <p style="color:var(--creme-dim);max-width:54ch;margin:0 auto 2rem">Com escritura na mão ou ainda em negociação, a régua é a mesma que classifica os parques nacionais brasileiros.</p>
+      <span class="preco-antigo"><s>R$ 267</s></span>
+      <div class="preco" style="margin-bottom:.4rem"><small>R$</small> 67</div>
+      <p class="acesso">Pagamento único · Acesso por 1 ano</p>
+      <a href="#checkout" class="btn">Quero saber se minha terra atrai visitantes</a>
+      <p class="btn-nota">Sete dias de garantia. Se não servir para a sua área, devolvemos.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <img src="images/logo-fundo-escuro.png" alt="Mapa do Potencial Turístico">
+  <p>Mapa do Potencial Turístico · Método VPPN</p>
+  <p style="margin-top:1rem"><a href="#">Política de privacidade</a><a href="#">Termos de uso</a><a href="#">Contato</a></p>
+</footer>
+
+<div class="flutuante"><a href="#oferta" class="btn">Quero saber se minha terra atrai visitantes</a></div>
+
+<script>
+// scroll reveal
+var reveals=document.querySelectorAll('.reveal');
+var semMovimento=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!('IntersectionObserver' in window)||semMovimento){
+  reveals.forEach(function(el){el.classList.add('on')});
+}else{
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+  reveals.forEach(function(el){io.observe(el)});
+  // rede de seguranca: nada pode ficar invisivel por falha de observador
+  setTimeout(function(){reveals.forEach(function(el){var r=el.getBoundingClientRect();if(r.top<window.innerHeight&&r.bottom>0)el.classList.add('on')})},1200);
+}
+
+// faq accordion
+document.querySelectorAll('.faq-q').forEach(function(b){
+  b.addEventListener('click',function(){
+    var item=b.parentElement, painel=item.querySelector('.faq-a'), aberto=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');i.querySelector('.faq-a').style.maxHeight=null});
+    if(!aberto){item.classList.add('open');painel.style.maxHeight=painel.scrollHeight+'px'}
+  });
+});
+
+// comparador antes e depois
+document.querySelectorAll('[data-ba]').forEach(function(box){
+  var depois=box.querySelector('.ba-depois'), linha=box.querySelector('.ba-linha'), alca=box.querySelector('.ba-alca'), arrastando=false;
+  function mover(x){
+    var r=box.getBoundingClientRect(), p=(x-r.left)/r.width;
+    p=Math.max(0.04,Math.min(0.96,p));
+    depois.style.clipPath='inset(0 0 0 '+(p*100)+'%)';
+    linha.style.left=(p*100)+'%'; alca.style.left=(p*100)+'%';
+  }
+  box.addEventListener('dragstart',function(e){e.preventDefault()});
+  box.addEventListener('pointerdown',function(e){e.preventDefault();arrastando=true;box.setPointerCapture(e.pointerId);mover(e.clientX)});
+  box.addEventListener('pointermove',function(e){if(arrastando)mover(e.clientX)});
+  box.addEventListener('pointerup',function(){arrastando=false});
+  box.addEventListener('pointercancel',function(){arrastando=false});
+});
+</script>
+</body>
+</html>
