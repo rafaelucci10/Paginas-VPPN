@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<!-- Meta Pixel (Pixel IAT) -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','791417620220737');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=791417620220737&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mapa do Potencial Turístico</title>
@@ -633,7 +637,7 @@ footer a{color:var(--creme-dim);text-decoration:none;margin:0 .6rem;font-size:.8
     <div class="esp reveal">
       <img src="images/thiago-bio.webp" alt="Thiago Beraldo">
       <div>
-        <p>Thiago Beraldo passou <b>dezoito anos</b> no IBAMA e no ICMBio. Quando chegou à Coordenação-Geral de Uso Público, os parques nacionais brasileiros recebiam <b>2 milhões</b> de visitantes por ano. Quando saiu, eram <b>15 milhões</b>. Hoje são <b>25 milhões</b>. Ele é <b>coautor</b> de boa parte dos manuais que o ICMBio usa até hoje. Já capacitou mais de <b>mil pessoas</b>. Atualmente é presidente do <b>Grupo de Especialistas em Turismo da Comissão Mundial de Áreas Protegidas</b>.</p>
+        <p>Thiago Beraldo trabalhou <b>dezoito anos</b> com parques nacionais. Quando começou, os parques nacionais brasileiros recebiam <b>2 milhões</b> de visitantes por ano. Anos depois, eram <b>15 milhões</b>. Hoje são <b>25 milhões</b>. Ele é <b>coautor</b> de boa parte dos manuais de visitação usados nos parques nacionais até hoje. Já capacitou mais de <b>mil pessoas</b>. Atualmente é presidente do <b>Grupo de Especialistas em Turismo da Comissão Mundial de Áreas Protegidas</b>.</p>
         <p>Antes de tudo isso, ele queria juntar um milhão de reais e comprar um Escort XR3 conversível. Passou por uma crise, foi acampar atrás de respostas e voltou com outra: o que ele via de destruição no planeta era reflexo do que as pessoas tinham perdido dentro delas. Decidiu religar gente e natureza, e escolheu fazer isso pelo caminho mais difícil e mais duradouro, o da ciência.</p>
         <p>O doutorado em ecologia foi estudar os parques nacionais americanos, e a descoberta foi decepcionante de tão simples: o que eles faziam de melhor era <b>fazer o básico bem feito</b>. Manual, regulamento e capacitação. Foi isso que ele trouxe para o Brasil, e é isso que está dentro desta ferramenta. Ele criou o diagnóstico para que qualquer proprietário, sem precisar de dezoito anos de serviço público, consiga saber se a terra dele atrai visitante.</p>
       </div>
@@ -715,7 +719,7 @@ footer a{color:var(--creme-dim);text-decoration:none;margin:0 .6rem;font-size:.8
       </div>
       <div class="preco"><small>R$</small> 67</div>
       <p class="acesso">Pagamento único · Acesso vitalício</p>
-      <a href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
+      <a data-cta href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
       <p class="btn-nota">Acesso imediato após o pagamento</p>
     </div>
     <div class="retorno reveal">Sessenta e sete reais é menos do que você gasta de gasolina indo até a área e voltando. A diferença é que a viagem acaba quando você chega em casa, e o relatório fica com você.</div>
@@ -786,7 +790,7 @@ footer a{color:var(--creme-dim);text-decoration:none;margin:0 .6rem;font-size:.8
       <p style="color:var(--creme-dim);max-width:54ch;margin:0 auto 2rem">Com escritura na mão ou ainda em negociação, a régua é a mesma que classifica os parques nacionais brasileiros.</p>
       <div class="preco" style="margin-bottom:.4rem"><small>R$</small> 67</div>
       <p class="acesso">Pagamento único · Acesso vitalício</p>
-      <a href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
+      <a data-cta href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
       <p class="btn-nota">Sete dias de garantia. Se não servir para a sua área, devolvemos.</p>
     </div>
   </div>
@@ -836,6 +840,13 @@ document.querySelectorAll('[data-ba]').forEach(function(box){
   box.addEventListener('pointermove',function(e){if(arrastando)mover(e.clientX)});
   box.addEventListener('pointerup',function(){arrastando=false});
   box.addEventListener('pointercancel',function(){arrastando=false});
+});
+</script>
+<!-- Meta Pixel: eventos da página de vendas -->
+<script>
+fbq('track','ViewContent',{content_name:'Mapa do Potencial Turístico',value:67,currency:'BRL'});
+document.querySelectorAll('[data-cta]').forEach(function(el){
+  el.addEventListener('click',function(){fbq('track','InitiateCheckout',{value:67,currency:'BRL'});});
 });
 </script>
 </body>
