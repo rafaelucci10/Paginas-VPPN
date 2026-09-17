@@ -719,7 +719,7 @@ footer a{color:var(--creme-dim);text-decoration:none;margin:0 .6rem;font-size:.8
       </div>
       <div class="preco"><small>R$</small> 67</div>
       <p class="acesso">Pagamento único · Acesso vitalício</p>
-      <a data-cta href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
+      <a href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
       <p class="btn-nota">Acesso imediato após o pagamento</p>
     </div>
     <div class="retorno reveal">Sessenta e sete reais é menos do que você gasta de gasolina indo até a área e voltando. A diferença é que a viagem acaba quando você chega em casa, e o relatório fica com você.</div>
@@ -790,7 +790,7 @@ footer a{color:var(--creme-dim);text-decoration:none;margin:0 .6rem;font-size:.8
       <p style="color:var(--creme-dim);max-width:54ch;margin:0 auto 2rem">Com escritura na mão ou ainda em negociação, a régua é a mesma que classifica os parques nacionais brasileiros.</p>
       <div class="preco" style="margin-bottom:.4rem"><small>R$</small> 67</div>
       <p class="acesso">Pagamento único · Acesso vitalício</p>
-      <a data-cta href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
+      <a href="https://pay.hotmart.com/O104844917E?checkoutMode=10" class="btn">Quero saber se minha terra atrai visitantes</a>
       <p class="btn-nota">Sete dias de garantia. Se não servir para a sua área, devolvemos.</p>
     </div>
   </div>
@@ -845,9 +845,6 @@ document.querySelectorAll('[data-ba]').forEach(function(box){
 <!-- Meta Pixel: eventos da página de vendas -->
 <script>
 fbq('track','ViewContent',{content_name:'Mapa do Potencial Turístico',value:67,currency:'BRL'});
-document.querySelectorAll('[data-cta]').forEach(function(el){
-  el.addEventListener('click',function(){fbq('track','InitiateCheckout',{value:67,currency:'BRL'});});
-});
 </script>
 </body>
 </html>
